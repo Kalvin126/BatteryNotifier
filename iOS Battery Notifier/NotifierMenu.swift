@@ -44,7 +44,7 @@ class NotifierMenu: NSMenu {
     }
 
     private func setupLabelForDevice(device: Device) {
-        let view = NSView(frame: NSRectFromCGRect(CGRectMake(0,0,150,22)))
+        let view = NSView(frame: NSRectFromCGRect(CGRectMake(0,0,175,22)))
 
         // TODO: Dynamic length
         // TODO: Battery not setting maxlevel until shown
@@ -55,11 +55,12 @@ class NotifierMenu: NSMenu {
 
         batteryVC.displayedDevice = device
 
-        let textField = NSTextField(frame: NSRectFromCGRect(CGRectMake(18+30+2,0,100,21)))
+        let textField = NSTextField(frame: NSRectFromCGRect(CGRectMake(18+30+2,0,125,21)))
         textField.backgroundColor = NSColor.clearColor()
         textField.alignment = .Left
         textField.cell?.bezeled = false
         textField.font = NSFont.systemFontOfSize(14.0)
+        // TODO: Disbale textField Interaction
 
         textField.cell?.title = device.name
 
