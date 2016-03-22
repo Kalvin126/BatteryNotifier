@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
+    </dependencies>
+    <scenes>
+        <!--Application-->
+        <scene sceneID="JPo-4y-FX3">
+            <objects>
+                <application id="hnw-xV-0zn" sceneMemberID="viewController">
+                    <menu key="mainMenu" title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
+                        <items>
+                            <menuItem title="iOS Battery Notifier" id="1Xt-HY-uBw">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="iOS Battery Notifier" systemMenu="apple" id="uQy-DD-JDr">
+                                    <items>
+                                        <menuItem title="About iOS Battery Notifier" id="5kV-Vb-QxS">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="orderFrontStandardAboutPanel:" target="Ady-hI-5gd" id="Exp-CZ-Vem"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="VOq-y0-SEH"/>
+                                        <menuItem title="Preferences…" keyEquivalent="," id="BOF-NM-1cW"/>
+                                        <menuItem isSeparatorItem="YES" id="wFC-TO-SCJ"/>
+                                        <menuItem title="Services" id="NMo-om-nkz">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <menu key="submenu" title="Services" systemMenu="services" id="hz9-B4-Xy5"/>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="4je-JR-u6R"/>
+                                        <menuItem title="Hide iOS Battery Notifier" keyEquivalent="h" id="Olw-nP-bQN">
+                                            <connections>
+                                                <action selector="hide:" target="Ady-hI-5gd" id="PnN-Uc-m68"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Hide Others" keyEquivalent="h" id="Vdr-fp-XzO">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                            <connections>
+                                                <action selector="hideOtherApplications:" target="Ady-hI-5gd" id="VT4-aY-XCT"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Show All" id="Kd2-mp-pUS">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="unhideAllApplications:" target="Ady-hI-5gd" id="Dhg-Le-xox"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="kCx-OE-vgT"/>
+                                        <menuItem title="Quit iOS Battery Notifier" keyEquivalent="q" id="4sb-4s-VLi">
+                                            <connections>
+                                                <action selector="terminate:" target="Ady-hI-5gd" id="Te7-pn-YzF"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                        </items>
+                    </menu>
+                    <connections>
+                        <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
+                    </connections>
+                </application>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="iOS_Battery_Notifier" customModuleProvider="target"/>
+                <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="75" y="0.0"/>
+        </scene>
+        <!--BatteryVC-->
+        <scene sceneID="Uaf-4Z-bOJ">
+            <objects>
+                <viewController storyboardIdentifier="batteryVC" id="7Vi-Bj-mc3" customClass="BatteryVC" customModule="iOS_Battery_Notifier" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="aWd-mC-Osz" customClass="BatteryView" customModule="iOS_Battery_Notifier" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="308" height="117"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="bii-3b-b6Y">
+                                <rect key="frame" x="305" y="56" width="2" height="6"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="2" id="IFc-Y9-1be"/>
+                                    <constraint firstAttribute="height" constant="6" id="er6-yB-aKj"/>
+                                </constraints>
+                            </customView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="BwP-OH-rN9">
+                                <rect key="frame" x="5" y="5" width="299" height="107"/>
+                                <subviews>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="tWb-A5-NGu">
+                                        <rect key="frame" x="2" y="2" width="295" height="103"/>
+                                    </customView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="tWb-A5-NGu" firstAttribute="leading" secondItem="BwP-OH-rN9" secondAttribute="leading" constant="2" id="9sN-Xr-6oB"/>
+                                    <constraint firstAttribute="bottom" secondItem="tWb-A5-NGu" secondAttribute="bottom" constant="2" id="HBh-Lb-Zpz"/>
+                                    <constraint firstAttribute="trailing" secondItem="tWb-A5-NGu" secondAttribute="trailing" constant="2" id="ihz-Ra-lXP"/>
+                                    <constraint firstItem="tWb-A5-NGu" firstAttribute="top" secondItem="BwP-OH-rN9" secondAttribute="top" constant="2" id="xgP-lP-aai"/>
+                                </constraints>
+                            </customView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="BwP-OH-rN9" firstAttribute="top" secondItem="aWd-mC-Osz" secondAttribute="top" constant="5" id="Qet-PQ-OuQ"/>
+                            <constraint firstItem="BwP-OH-rN9" firstAttribute="leading" secondItem="aWd-mC-Osz" secondAttribute="leading" constant="5" id="hul-uP-HRr"/>
+                            <constraint firstItem="bii-3b-b6Y" firstAttribute="centerY" secondItem="aWd-mC-Osz" secondAttribute="centerY" id="lMu-dB-QNY"/>
+                            <constraint firstAttribute="trailing" secondItem="bii-3b-b6Y" secondAttribute="trailing" constant="1" id="oBU-Me-YCf"/>
+                            <constraint firstAttribute="bottom" secondItem="BwP-OH-rN9" secondAttribute="bottom" constant="5" id="oxr-Xt-vFb"/>
+                            <constraint firstItem="bii-3b-b6Y" firstAttribute="leading" secondItem="BwP-OH-rN9" secondAttribute="trailing" constant="1" id="wYc-Nh-jCF"/>
+                        </constraints>
+                        <connections>
+                            <outlet property="body" destination="BwP-OH-rN9" id="vQb-98-yfc"/>
+                            <outlet property="level" destination="tWb-A5-NGu" id="gJn-df-dxU"/>
+                            <outlet property="levelOffsetConstraint" destination="ihz-Ra-lXP" id="eqG-LO-NHX"/>
+                            <outlet property="nub" destination="bii-3b-b6Y" id="tAL-Z6-h40"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <outlet property="batteryView" destination="aWd-mC-Osz" id="Gpf-Tj-A0T"/>
+                    </connections>
+                </viewController>
+                <customObject id="Qtp-zN-430" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <menu id="bgq-sW-TTB">
+                    <items>
+                        <menuItem title="Item 1" id="sXC-ab-7Zc">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                        </menuItem>
+                        <menuItem title="Item 2" id="Abx-RI-MrY">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                        </menuItem>
+                        <menuItem title="Item 3" id="z8j-IA-1Ix">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                        </menuItem>
+                    </items>
+                </menu>
+            </objects>
+            <point key="canvasLocation" x="170" y="218.5"/>
+        </scene>
+    </scenes>
+</document>

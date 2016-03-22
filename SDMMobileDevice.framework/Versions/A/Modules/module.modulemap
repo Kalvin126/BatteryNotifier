@@ -1,0 +1,6 @@
+framework module SDMMobileDevice {
+  umbrella header "SDMMobileDevice.h"
+
+  export *
+  module * { export * }
+}
