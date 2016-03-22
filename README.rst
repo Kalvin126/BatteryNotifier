@@ -8,6 +8,8 @@ This tool helps you manage your iOS device battery levels and warns you if they 
 
 Download app build: `BatteryNotifier.zip`_.
 
+.. _BatteryNotifier.zip:
+    https://raw.github.com/kalvin126/BatteryNotifier/master/Resources/BatteryNotifier.zip
 
 Features:
 ............
@@ -25,12 +27,10 @@ Roadmap:
 Q/A
 ...
 **Q: Why is my device not showing?**
-    A: An iOS device and your Mac must be on the same network for BatteryNotifier to work. In addition, iOS devices broadcast service announcements exponentialy if unused for a while. Sometimes it may just glitch and not work which may require restarting said iOS device.
-
+    A: An iOS device and your Mac must be on the same network for BatteryNotifier to work. In addition, iOS devices broadcast service announcements in exponential intervals if unused. Sometimes it may just glitch and not work which may require restarting said iOS device.
 
 Credits:
 ........
-
 - `Samantha Marshall`_ - `SDMMobileDevice`_ creator
 
 .. _Samantha Marshall:
@@ -38,6 +38,3 @@ Credits:
 
 .. _SDMMobileDevice:
     https://github.com/samdmarshall/SDMMobileDevice
-
-.. _BrightnessMenulet.zip:
-    https://raw.github.com/kalvin126/BatteryNotifier/master/Resources/Brightness_Menulet.zip
