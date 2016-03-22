@@ -31,7 +31,9 @@ class DeviceManager : NSObject {
             if $0.batteryCapacity < 40 {
                 let userNotif = NSUserNotification()
                 userNotif.title = "Low Battery: \($0.name)"
-                userNotif.subtitle = "40% of battery remaining"
+                userNotif.subtitle = "\($0.batteryCapacity)% of battery remaining"
+                // TODO: App Icon
+                //userNotif.contentImage =
 
                 userNotif.soundName = NSUserNotificationDefaultSoundName
 

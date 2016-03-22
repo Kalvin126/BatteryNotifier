@@ -16,7 +16,8 @@ class BatteryView : NSView {
 
     @IBOutlet weak var levelOffsetConstraint: NSLayoutConstraint!
 
-    var maxLevelWidth: CGFloat = 0
+    private var maxLevelWidth: CGFloat = 0
+    var batteryLevel = 0
 
     var defaultColor = NSColor.darkGrayColor().CGColor {
         didSet {
@@ -69,7 +70,7 @@ class BatteryView : NSView {
 
         if maxLevelWidth == 0 {
             maxLevelWidth = level.frame.width
-            fillLevelByPercent(0) // TODO: Not a great place to to initial setting
+            fillLevelByPercent(batteryLevel)
         }
     }
 
@@ -92,6 +93,7 @@ class BatteryView : NSView {
     }
 
     func fillLevelByPercent(percent: Int) {
+        batteryLevel = percent
         levelOffsetConstraint.constant = (maxLevelWidth*(CGFloat(100 - percent)/100.0)) + 2.0
 
         if !charging {

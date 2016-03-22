@@ -10,8 +10,7 @@ import Cocoa
 
 class NotifierMenu: NSMenu {
 
-    var menuItems = [String : NSMenuItem]()  // Serial - menuItem
-    var batteryVCs = [NSMenuItem : BatteryVC]()
+    private var menuItems = [String : DeviceMenuItem]()  // Serial - menuItem
 
     override init(title aTitle: String) {
         super.init(title: aTitle)
@@ -44,50 +43,21 @@ class NotifierMenu: NSMenu {
     }
 
     private func setupLabelForDevice(device: Device) {
-        let view = NSView(frame: NSRectFromCGRect(CGRectMake(0,0,175,22)))
-
-        // TODO: Dynamic length
-        // TODO: Battery not setting maxlevel until shown
-        let storyboard = NSStoryboard(name: "Main", bundle: nil)
-        let batteryVC = storyboard.instantiateControllerWithIdentifier("batteryVC") as! BatteryVC
-        batteryVC.view.frame = NSRectFromCGRect(CGRectMake(18,0,30,22))
-        view.addSubview(batteryVC.view)
-
-        batteryVC.displayedDevice = device
-
-        let textField = NSTextField(frame: NSRectFromCGRect(CGRectMake(18+30+2,0,125,21)))
-        textField.backgroundColor = NSColor.clearColor()
-        textField.alignment = .Left
-        textField.cell?.bezeled = false
-        textField.font = NSFont.systemFontOfSize(14.0)
-        // TODO: Disbale textField Interaction
-
-        textField.cell?.title = device.name
-
-        view.addSubview(batteryVC.view)
-        view.addSubview(textField)
-
-        let menuItem = NSMenuItem()
-        menuItem.view = view
+        let deviceItem = DeviceMenuItem(withDevice: device)
 
         // TODO: Sorting
 
-        menuItems[device.serialNumber] = menuItem
-        batteryVCs[menuItem] = batteryVC
-
-        insertItem(menuItem, atIndex: 0)
+        menuItems[device.serialNumber] = deviceItem
+        insertItem(deviceItem, atIndex: 0)
     }
 
 
     func updateBatteryLabels(devices: [Device]) {
-        for device in devices {
-
-            let existingItem = menuItems[device.serialNumber]
-
-            if existingItem == nil {
-                setupLabelForDevice(device)
+        devices.forEach {
+            if let item = menuItems[$0.serialNumber] {
+                item.updateWithDevice($0)
             } else {
-                batteryVCs[ menuItems[device.serialNumber]! ]!.displayedDevice = device;
+                setupLabelForDevice($0)
             }
         }
     }
