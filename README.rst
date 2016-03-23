@@ -27,7 +27,7 @@ Roadmap:
 Q/A
 ...
 **Q: Why is my device not showing?**
-    A: An iOS device and your Mac must be on the same network for BatteryNotifier to work. In addition, iOS devices broadcast service announcements in exponential intervals if unused. Sometimes it may just glitch and not work which may require restarting said iOS device.
+    A: An iOS device and your Mac must be on the same network for BatteryNotifier to work. Be sure to enable Wifi sync through iTunes for said device as well. In addition, iOS devices broadcast service announcements in exponential intervals if unused. Sometimes it may just glitch and not work which may require restarting said iOS device.
 
 Credits:
 ........
