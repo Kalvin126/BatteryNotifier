@@ -11,6 +11,7 @@ import Cocoa
 class NotifierMenu: NSMenu {
 
     private var menuItems = [String : DeviceMenuItem]()  // Serial - menuItem
+    var preferenceController: NSWindowController?
 
     override init(title aTitle: String) {
         super.init(title: aTitle)
@@ -24,11 +25,26 @@ class NotifierMenu: NSMenu {
     }
 
     private func setup() {
-        let quitItem = NSMenuItem(title: "Quit", action: #selector(NotifierMenu.quit(_:)), keyEquivalent: "q")
+        let listenItem = NSMenuItem(title: "Listening for devices...", action: nil, keyEquivalent: "")
+        let prefItem = NSMenuItem(title: "Preferences", action: #selector(clickedPreferences(_:)), keyEquivalent: "p")
+        let quitItem = NSMenuItem(title: "Quit", action: #selector(quit(_:)), keyEquivalent: "q")
+
+        prefItem.target = self
         quitItem.target = self
 
         insertItem(quitItem, atIndex: 0)
+        insertItem(prefItem, atIndex: 0)
         insertItem(NSMenuItem.separatorItem(), atIndex: 0)
+        insertItem(listenItem, atIndex: 0)
+    }
+
+    func clickedPreferences(sender: NSMenuItem) {
+        if preferenceController == nil {
+            let storyboard = NSStoryboard(name: "Main", bundle: nil)
+            preferenceController = storyboard.instantiateControllerWithIdentifier("preferencesController") as? NSWindowController
+        }
+
+        preferenceController!.window?.makeKeyAndOrderFront(nil)
     }
 
     func quit(sender: NSMenuItem) {
@@ -38,7 +54,10 @@ class NotifierMenu: NSMenu {
     // MARK: battery labels
 
     func clearDeviceLabels() {
-        menuItems.values.forEach { self.removeItem($0) }
+        while !(itemArray[0].separatorItem) {
+            removeItemAtIndex(0)
+        }
+
         menuItems.removeAll()
     }
 
@@ -52,6 +71,10 @@ class NotifierMenu: NSMenu {
     }
 
     func updateBatteryLabels(devices: [Device]) {
+        if itemArray[0].title == "Listening for devices..." {
+            removeItemAtIndex(0)
+        }
+
         devices.forEach {
             if let item = menuItems[$0.serialNumber] {
                 item.updateWithDevice($0)

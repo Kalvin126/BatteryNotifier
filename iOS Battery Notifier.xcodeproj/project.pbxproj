@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		860B0C9E1C9CD61000ED63B7 /* BatteryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860B0C9D1C9CD61000ED63B7 /* BatteryView.swift */; };
 		860B0CA21C9DD22E00ED63B7 /* NotifierMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860B0CA11C9DD22E00ED63B7 /* NotifierMenu.swift */; };
+		86549D671CA274BE00B7D5ED /* PreferencesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86549D661CA274BE00B7D5ED /* PreferencesController.swift */; };
 		868E5EA61C98E19D001A68E6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868E5EA51C98E19D001A68E6 /* AppDelegate.swift */; };
 		868E5EAA1C98E19D001A68E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 868E5EA91C98E19D001A68E6 /* Assets.xcassets */; };
 		868E5EAD1C98E19D001A68E6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 868E5EAB1C98E19D001A68E6 /* Main.storyboard */; };
@@ -37,7 +38,8 @@
 /* Begin PBXFileReference section */
 		860B0C9D1C9CD61000ED63B7 /* BatteryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatteryView.swift; sourceTree = "<group>"; };
 		860B0CA11C9DD22E00ED63B7 /* NotifierMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotifierMenu.swift; sourceTree = "<group>"; };
-		868E5EA21C98E19D001A68E6 /* iOS Battery Notifier.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS Battery Notifier.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		86549D661CA274BE00B7D5ED /* PreferencesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesController.swift; sourceTree = "<group>"; };
+		868E5EA21C98E19D001A68E6 /* BatteryNotifier.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BatteryNotifier.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		868E5EA51C98E19D001A68E6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		868E5EA91C98E19D001A68E6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		868E5EAC1C98E19D001A68E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -76,7 +78,7 @@
 		868E5EA31C98E19D001A68E6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				868E5EA21C98E19D001A68E6 /* iOS Battery Notifier.app */,
+				868E5EA21C98E19D001A68E6 /* BatteryNotifier.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -119,6 +121,7 @@
 			children = (
 				868E5EBD1C98E721001A68E6 /* StatusItemController.swift */,
 				86FB9C0B1C9C83A4000330CD /* BatteryVC.swift */,
+				86549D661CA274BE00B7D5ED /* PreferencesController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -136,9 +139,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		868E5EA11C98E19D001A68E6 /* iOS Battery Notifier */ = {
+		868E5EA11C98E19D001A68E6 /* BatteryNotifier */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 868E5EB11C98E19D001A68E6 /* Build configuration list for PBXNativeTarget "iOS Battery Notifier" */;
+			buildConfigurationList = 868E5EB11C98E19D001A68E6 /* Build configuration list for PBXNativeTarget "BatteryNotifier" */;
 			buildPhases = (
 				868E5E9E1C98E19D001A68E6 /* Sources */,
 				868E5E9F1C98E19D001A68E6 /* Frameworks */,
@@ -149,9 +152,9 @@
 			);
 			dependencies = (
 			);
-			name = "iOS Battery Notifier";
+			name = BatteryNotifier;
 			productName = "iOS Battery Notifier";
-			productReference = 868E5EA21C98E19D001A68E6 /* iOS Battery Notifier.app */;
+			productReference = 868E5EA21C98E19D001A68E6 /* BatteryNotifier.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -182,7 +185,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				868E5EA11C98E19D001A68E6 /* iOS Battery Notifier */,
+				868E5EA11C98E19D001A68E6 /* BatteryNotifier */,
 			);
 		};
 /* End PBXProject section */
@@ -207,6 +210,7 @@
 				86BB7DE51CA1E18100EA3503 /* DeviceMenuItem.swift in Sources */,
 				86BB7DEA1CA2124400EA3503 /* DarwinNotificationsManager.m in Sources */,
 				860B0CA21C9DD22E00ED63B7 /* NotifierMenu.swift in Sources */,
+				86549D671CA274BE00B7D5ED /* PreferencesController.swift in Sources */,
 				860B0C9E1C9CD61000ED63B7 /* BatteryView.swift in Sources */,
 				868E5EE41C9B2150001A68E6 /* DeviceManager.swift in Sources */,
 				868E5EBE1C98E721001A68E6 /* StatusItemController.swift in Sources */,
@@ -322,7 +326,7 @@
 				INFOPLIST_FILE = "iOS Battery Notifier/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.redpanda.iOS-Battery-Notifier";
+				PRODUCT_BUNDLE_IDENTIFIER = com.redpanda.BatteryNotifier;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "iOS Battery Notifier/iOS Battery Notifier-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -342,7 +346,7 @@
 				INFOPLIST_FILE = "iOS Battery Notifier/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.redpanda.iOS-Battery-Notifier";
+				PRODUCT_BUNDLE_IDENTIFIER = com.redpanda.BatteryNotifier;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "iOS Battery Notifier/iOS Battery Notifier-Bridging-Header.h";
 			};
@@ -360,7 +364,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		868E5EB11C98E19D001A68E6 /* Build configuration list for PBXNativeTarget "iOS Battery Notifier" */ = {
+		868E5EB11C98E19D001A68E6 /* Build configuration list for PBXNativeTarget "BatteryNotifier" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				868E5EB21C98E19D001A68E6 /* Debug */,

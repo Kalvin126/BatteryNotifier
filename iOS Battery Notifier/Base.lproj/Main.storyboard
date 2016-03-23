@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
     </dependencies>
     <scenes>
@@ -61,7 +60,7 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="iOS_Battery_Notifier" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="BatteryNotifier" customModuleProvider="target"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="75" y="0.0"/>
@@ -69,8 +68,8 @@
         <!--BatteryVC-->
         <scene sceneID="Uaf-4Z-bOJ">
             <objects>
-                <viewController storyboardIdentifier="batteryVC" id="7Vi-Bj-mc3" customClass="BatteryVC" customModule="iOS_Battery_Notifier" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="aWd-mC-Osz" customClass="BatteryView" customModule="iOS_Battery_Notifier" customModuleProvider="target">
+                <viewController storyboardIdentifier="batteryVC" id="7Vi-Bj-mc3" customClass="BatteryVC" customModule="BatteryNotifier" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="aWd-mC-Osz" customClass="BatteryView" customModule="BatteryNotifier" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="308" height="117"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
@@ -131,6 +130,91 @@
                 </menu>
             </objects>
             <point key="canvasLocation" x="170" y="218.5"/>
+        </scene>
+        <!--Window Controller-->
+        <scene sceneID="Hhe-Eb-Gjf">
+            <objects>
+                <windowController storyboardIdentifier="preferencesController" id="NOe-ih-r3y" sceneMemberID="viewController">
+                    <window key="window" title="BatteryNotifier Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="4QP-sd-2AS">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="425" y="526" width="480" height="270"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1577"/>
+                    </window>
+                    <connections>
+                        <segue destination="nEj-fB-Ndm" kind="relationship" relationship="window.shadowedContentViewController" id="4C6-Oq-ElB"/>
+                    </connections>
+                </windowController>
+                <customObject id="V8n-3f-5ee" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="138" y="683"/>
+        </scene>
+        <!--Preferences Controller-->
+        <scene sceneID="WgG-VM-cbn">
+            <objects>
+                <viewController id="nEj-fB-Ndm" customClass="PreferencesController" customModule="BatteryNotifier" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="kcD-sJ-Kns">
+                        <rect key="frame" x="0.0" y="0.0" width="248" height="87"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lKE-xw-nhC">
+                                <rect key="frame" x="18" y="48" width="157" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Notification Interval(min):" id="5EL-eq-9Ao">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vxW-kQ-dQF">
+                                <rect key="frame" x="18" y="23" width="157" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Low Battery % Threshold: " id="NuB-1k-Dd7">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oex-Dx-YAn">
+                                <rect key="frame" x="176" y="48" width="37" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" enabled="NO" sendsActionOnEndEditing="YES" alignment="center" title="1.00" id="AYZ-qT-cv1">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vDv-ZX-VgV">
+                                <rect key="frame" x="176" y="23" width="37" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="40%" id="WLE-yJ-CVS">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bhw-6n-a7U">
+                                <rect key="frame" x="212" y="17" width="19" height="27"/>
+                                <stepperCell key="cell" alignment="left" minValue="10" maxValue="60" doubleValue="40" autorepeat="NO" id="ZBd-dW-o44"/>
+                                <connections>
+                                    <action selector="clickedLowBatteryThreshholdStepper:" target="nEj-fB-Ndm" id="Uc5-iX-GT8"/>
+                                </connections>
+                            </stepper>
+                            <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="acF-IW-MWh">
+                                <rect key="frame" x="212" y="42" width="19" height="27"/>
+                                <stepperCell key="cell" alignment="left" increment="0.5" minValue="1" maxValue="30" doubleValue="1" autorepeat="NO" id="Yrc-YM-DRZ"/>
+                                <connections>
+                                    <action selector="clickedNotificationIntervalStepper:" target="nEj-fB-Ndm" id="ixm-0a-uiK"/>
+                                </connections>
+                            </stepper>
+                        </subviews>
+                    </view>
+                    <connections>
+                        <outlet property="lowBatteryThresholdField" destination="vDv-ZX-VgV" id="Wcq-Kd-coT"/>
+                        <outlet property="lowBatteryThresholdStepper" destination="Bhw-6n-a7U" id="8bG-nd-WDG"/>
+                        <outlet property="notificationIntervalField" destination="oex-Dx-YAn" id="FV3-HG-HtG"/>
+                        <outlet property="notificationIntervalStepper" destination="acF-IW-MWh" id="OyF-tU-ipu"/>
+                    </connections>
+                </viewController>
+                <customObject id="Taa-Ud-fiV" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="613" y="675.5"/>
         </scene>
     </scenes>
 </document>

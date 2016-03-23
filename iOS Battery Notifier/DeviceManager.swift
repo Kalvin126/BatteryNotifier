@@ -17,7 +17,7 @@ class DeviceManager : NSObject {
     static func refreshDevices() -> [Device] {
         var devices = [Device]();
 
-        let deviceList = SDMMD_AMDCreateDeviceList().takeUnretainedValue()
+        let deviceList = SDMMD_AMDCreateDeviceList().takeRetainedValue()
         NSLog("DeviceManager: Fetched \((deviceList as NSArray).count) devices")
 
         for iosDev in deviceList as NSArray {
@@ -27,25 +27,25 @@ class DeviceManager : NSObject {
             devices.append(newDevice)
 
             // Low Battery Notifications
-            DeviceManager.sendNotifications(forDevice: newDevice)
+            DeviceManager.sendLowBatteryNotification(forDevice: newDevice)
         }
 
         return devices
     }
 
-    static private func sendNotifications(forDevice device: Device) {
-        guard device.batteryCapacity <= 40 else { // TODO: threshold setting
+    static private func sendLowBatteryNotification(forDevice device: Device) {
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+
+        guard device.batteryCapacity <= userDefaults.integerForKey("BatteryThreshold") else {
             return
         }
 
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-            let userDefaults = NSUserDefaults.standardUserDefaults()
-
             if var deviceDict = userDefaults.dictionaryForKey(device.serialNumber) {
                 // device has had a notification sent before
-                let timeSinceLastNotif = deviceDict["timeSinceLastNotification"] as! NSDate
+                let timeSinceLastNotif = deviceDict["TimeSinceLastNotification"] as! NSDate
 
-                if timeSinceLastNotif.timeIntervalSinceNow > 60 {   // TODO: Time interval setting
+                if timeSinceLastNotif.timeIntervalSinceNow > userDefaults.doubleForKey("NotificationInterval") {
                     let userNotif = NSUserNotification()
                     userNotif.title = "Low Battery: \(device.name)"
                     userNotif.subtitle = "\(device.batteryCapacity)% of battery remaining"
@@ -57,14 +57,14 @@ class DeviceManager : NSObject {
                         NSUserNotificationCenter.defaultUserNotificationCenter().deliverNotification(userNotif)
                     }
 
-                    deviceDict["timeSinceLastNotification"] = NSDate()
+                    deviceDict["TimeSinceLastNotification"] = NSDate()
                     userDefaults.setObject(deviceDict, forKey: device.serialNumber)
 
                     NSLog("DeviceManager: Battery notification for \(device.name)")
                 }
             } else {
                 let newDeviceDict = NSMutableDictionary()
-                newDeviceDict.setObject(NSDate(), forKey: "timeSinceLastNotification")
+                newDeviceDict.setObject(NSDate(), forKey: "TimeSinceLastNotification")
 
                 userDefaults.setObject(newDeviceDict, forKey: device.serialNumber)
             }
