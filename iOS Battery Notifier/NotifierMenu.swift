@@ -51,7 +51,6 @@ class NotifierMenu: NSMenu {
         insertItem(deviceItem, atIndex: 0)
     }
 
-
     func updateBatteryLabels(devices: [Device]) {
         devices.forEach {
             if let item = menuItems[$0.serialNumber] {
@@ -61,4 +60,5 @@ class NotifierMenu: NSMenu {
             }
         }
     }
+
 }

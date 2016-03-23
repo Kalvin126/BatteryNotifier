@@ -16,13 +16,7 @@ class StatusItemController : NSObject {
     private let menu = NotifierMenu(title: "notifierMenu")
     private var batteryVC: BatteryVC
 
-    private var callbackTimer: NSTimer?
-
-    var monitoring: Bool {
-        return (callbackTimer == nil)
-    }
-
-    private var fetching = false;
+    private var fetching = false
 
     override init() {
         statusItem = NSStatusBar.systemStatusBar().statusItemWithLength(NSVariableStatusItemLength)
@@ -48,48 +42,27 @@ class StatusItemController : NSObject {
             let devices = DeviceManager.refreshDevices()
             self.fetching = false
 
-            dispatch_async(dispatch_get_main_queue()) {
-                if devices.count == 0 {
-                    self.batteryVC.displayedDevice = nil
-                } else {
-                    var lowestPercentageDevice: Device = devices[0]
+            if devices.count == 0 {
+                self.batteryVC.displayedDevice = nil
+            } else {
+                let lowestPercentageDevice = (devices.sort{ $0.batteryCapacity < $1.batteryCapacity })[0]
 
-                    for device in devices {
-                        if device.batteryCapacity < lowestPercentageDevice.batteryCapacity {
-                            lowestPercentageDevice = device
-                        }
-                    }
-
+                dispatch_async(dispatch_get_main_queue()) {
                     self.batteryVC.displayedDevice = lowestPercentageDevice
+                    self.menu.updateBatteryLabels(devices)
                 }
-
-                self.menu.updateBatteryLabels(devices)
             }
         }
     }
 
     func startMonitoring() {
-        updateBatteryViews()
+        NSLog("StatusItemController: Listening for iOS devices...")
 
-        callbackTimer = NSTimer.scheduledTimerWithTimeInterval(15, target: self, selector: #selector(StatusItemController.updateTimerCallback(_:)), userInfo: nil, repeats: true)
-
-
-//        let notif = "SDMMD_USBMuxListenerDeviceAttachedNotificationFinished"
-//        CFNotificationCenterAddObserver(CFNotificationCenterGetLocalCenter(), UnsafePointer<Void>(self), updateTimerCallback(_:), notif, nil, .DeliverImmediately)
-    }
-
-    func stopMonitoring() {
-        callbackTimer?.invalidate()
-        callbackTimer = nil
-
-//        let notif = "SDMMD_USBMuxListenerDeviceAttachedNotificationFinished"
-//        CFNotificationCenterRemoveObserver(CFNotificationCenterGetLocalCenter(), UnsafePointer<Void>(self), notif, nil)
-    }
-
-    func updateTimerCallback(sender: NSTimer) {
-        if !fetching {
-            print("Fetching devices...")
-            updateBatteryViews()
+        let darwinNotificationCenter = DarwinNotificationsManager.sharedInstance()
+        darwinNotificationCenter.registerForNotificationName("SDMMD_USBMuxListenerDeviceAttachedNotification"){
+            if !(self.fetching) {
+                self.updateBatteryViews()
+            }
         }
     }
 }

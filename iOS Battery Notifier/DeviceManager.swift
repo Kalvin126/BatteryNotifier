@@ -18,30 +18,57 @@ class DeviceManager : NSObject {
         var devices = [Device]();
 
         let deviceList = SDMMD_AMDCreateDeviceList().takeUnretainedValue()
-        print("Fetched \((deviceList as NSArray).count) devices")
+        NSLog("DeviceManager: Fetched \((deviceList as NSArray).count) devices")
 
         for iosDev in deviceList as NSArray {
             let rawDevice = unsafeBitCast(iosDev, SDMMD_AMDeviceRef.self)
             let newDevice = Device(withDevice: rawDevice)
 
             devices.append(newDevice)
-        }
 
-        devices.forEach {
-            if $0.batteryCapacity < 40 {
-                let userNotif = NSUserNotification()
-                userNotif.title = "Low Battery: \($0.name)"
-                userNotif.subtitle = "\($0.batteryCapacity)% of battery remaining"
-                // TODO: App Icon
-                //userNotif.contentImage =
-
-                userNotif.soundName = NSUserNotificationDefaultSoundName
-
-                NSUserNotificationCenter.defaultUserNotificationCenter().deliverNotification(userNotif)
-            }
+            // Low Battery Notifications
+            DeviceManager.sendNotifications(forDevice: newDevice)
         }
 
         return devices
+    }
+
+    static private func sendNotifications(forDevice device: Device) {
+        guard device.batteryCapacity <= 40 else { // TODO: threshold setting
+            return
+        }
+
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            let userDefaults = NSUserDefaults.standardUserDefaults()
+
+            if var deviceDict = userDefaults.dictionaryForKey(device.serialNumber) {
+                // device has had a notification sent before
+                let timeSinceLastNotif = deviceDict["timeSinceLastNotification"] as! NSDate
+
+                if timeSinceLastNotif.timeIntervalSinceNow > 60 {   // TODO: Time interval setting
+                    let userNotif = NSUserNotification()
+                    userNotif.title = "Low Battery: \(device.name)"
+                    userNotif.subtitle = "\(device.batteryCapacity)% of battery remaining"
+                    // TODO: App Icon
+                    //userNotif.contentImage =
+                    userNotif.soundName = NSUserNotificationDefaultSoundName
+
+                    dispatch_async(dispatch_get_main_queue()) {
+                        NSUserNotificationCenter.defaultUserNotificationCenter().deliverNotification(userNotif)
+                    }
+
+                    deviceDict["timeSinceLastNotification"] = NSDate()
+                    userDefaults.setObject(deviceDict, forKey: device.serialNumber)
+
+                    NSLog("DeviceManager: Battery notification for \(device.name)")
+                }
+            } else {
+                let newDeviceDict = NSMutableDictionary()
+                newDeviceDict.setObject(NSDate(), forKey: "timeSinceLastNotification")
+
+                userDefaults.setObject(newDeviceDict, forKey: device.serialNumber)
+            }
+        }
     }
 }
 
@@ -65,7 +92,6 @@ struct Device {
         if kr != Int32(kAMDSuccess.rawValue) {
             print(kr)
         }
-        print("Connected")
 
         let getValue = { (domain: UnsafePointer<Int8>, key: UnsafePointer<Int8>) -> AnyObject in
             let cfDomain: CFStringRef = CFStringCreateWithCString(kCFAllocatorDefault, domain, 0)
@@ -95,7 +121,6 @@ struct Device {
         if kr != Int32(kAMDSuccess.rawValue) {
             print(kr)
         }
-        print("Disconnected from \(name)")
     }
 
     /*

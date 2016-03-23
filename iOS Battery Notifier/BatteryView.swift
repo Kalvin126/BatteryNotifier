@@ -55,6 +55,7 @@ class BatteryView : NSView {
 
         wantsLayer = true
 
+        // Status bar theme change
         let center = NSDistributedNotificationCenter.defaultCenter()
         let notif = "AppleInterfaceThemeChangedNotification"
         center.addObserver(self, selector: #selector(BatteryView.setTheme(_:)), name: notif, object: nil)

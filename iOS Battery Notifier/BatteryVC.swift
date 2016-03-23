@@ -23,14 +23,11 @@ class BatteryVC: NSViewController {
     var displayedDevice: Device? {
         didSet {
             if let device = displayedDevice {
-                enabled = true
-
                 updateLevelWithPercent(device.batteryCapacity)
                 batteryView.charging = device.batteryCharging
-
-            } else {
-                enabled = false
             }
+
+            enabled = (displayedDevice != nil)
         }
     }
 

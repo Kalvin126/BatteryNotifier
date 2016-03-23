@@ -17,6 +17,7 @@
 		86BB7DE11CA1D3B200EA3503 /* SDMMobileDevice.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86BB7DE01CA1D3B200EA3503 /* SDMMobileDevice.framework */; };
 		86BB7DE31CA1D3E800EA3503 /* SDMMobileDevice.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 86BB7DE01CA1D3B200EA3503 /* SDMMobileDevice.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		86BB7DE51CA1E18100EA3503 /* DeviceMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BB7DE41CA1E18100EA3503 /* DeviceMenuItem.swift */; };
+		86BB7DEA1CA2124400EA3503 /* DarwinNotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 86BB7DE91CA2124400EA3503 /* DarwinNotificationsManager.m */; };
 		86FB9C0C1C9C83A4000330CD /* BatteryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86FB9C0B1C9C83A4000330CD /* BatteryVC.swift */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +46,9 @@
 		868E5EE31C9B2150001A68E6 /* DeviceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
 		86BB7DE01CA1D3B200EA3503 /* SDMMobileDevice.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDMMobileDevice.framework; sourceTree = "<group>"; };
 		86BB7DE41CA1E18100EA3503 /* DeviceMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceMenuItem.swift; sourceTree = "<group>"; };
+		86BB7DE71CA2124400EA3503 /* iOS Battery Notifier-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iOS Battery Notifier-Bridging-Header.h"; sourceTree = "<group>"; };
+		86BB7DE81CA2124400EA3503 /* DarwinNotificationsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DarwinNotificationsManager.h; sourceTree = "<group>"; };
+		86BB7DE91CA2124400EA3503 /* DarwinNotificationsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DarwinNotificationsManager.m; sourceTree = "<group>"; };
 		86FB9C0B1C9C83A4000330CD /* BatteryVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatteryVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -84,6 +88,7 @@
 				868E5EE31C9B2150001A68E6 /* DeviceManager.swift */,
 				868E5EBB1C98E67C001A68E6 /* Controller */,
 				868E5EBA1C98E676001A68E6 /* View */,
+				86BB7DE61CA2121900EA3503 /* DarwinNotificationsManager */,
 				868E5EA91C98E19D001A68E6 /* Assets.xcassets */,
 				868E5EAE1C98E19D001A68E6 /* Info.plist */,
 			);
@@ -118,6 +123,16 @@
 			name = Controller;
 			sourceTree = "<group>";
 		};
+		86BB7DE61CA2121900EA3503 /* DarwinNotificationsManager */ = {
+			isa = PBXGroup;
+			children = (
+				86BB7DE81CA2124400EA3503 /* DarwinNotificationsManager.h */,
+				86BB7DE91CA2124400EA3503 /* DarwinNotificationsManager.m */,
+				86BB7DE71CA2124400EA3503 /* iOS Battery Notifier-Bridging-Header.h */,
+			);
+			name = DarwinNotificationsManager;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -145,7 +160,7 @@
 		868E5E9A1C98E19D001A68E6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0720;
+				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Red Panda";
 				TargetAttributes = {
@@ -190,6 +205,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				86BB7DE51CA1E18100EA3503 /* DeviceMenuItem.swift in Sources */,
+				86BB7DEA1CA2124400EA3503 /* DarwinNotificationsManager.m in Sources */,
 				860B0CA21C9DD22E00ED63B7 /* NotifierMenu.swift in Sources */,
 				860B0C9E1C9CD61000ED63B7 /* BatteryView.swift in Sources */,
 				868E5EE41C9B2150001A68E6 /* DeviceManager.swift in Sources */,
@@ -297,6 +313,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -305,8 +322,10 @@
 				INFOPLIST_FILE = "iOS Battery Notifier/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				PRODUCT_BUNDLE_IDENTIFIER = "redpanda.iOS-Battery-Notifier";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.redpanda.iOS-Battery-Notifier";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "iOS Battery Notifier/iOS Battery Notifier-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -314,6 +333,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -322,8 +342,9 @@
 				INFOPLIST_FILE = "iOS Battery Notifier/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				PRODUCT_BUNDLE_IDENTIFIER = "redpanda.iOS-Battery-Notifier";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.redpanda.iOS-Battery-Notifier";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "iOS Battery Notifier/iOS Battery Notifier-Bridging-Header.h";
 			};
 			name = Release;
 		};
