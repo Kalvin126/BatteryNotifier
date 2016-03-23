@@ -45,7 +45,7 @@ class DeviceManager : NSObject {
                 // device has had a notification sent before
                 let timeSinceLastNotif = deviceDict["TimeSinceLastNotification"] as! NSDate
 
-                if timeSinceLastNotif.timeIntervalSinceNow > userDefaults.doubleForKey("NotificationInterval") {
+                if timeSinceLastNotif.timeIntervalSinceNow > (userDefaults.doubleForKey("NotificationInterval"))/60.0 {
                     let userNotif = NSUserNotification()
                     userNotif.title = "Low Battery: \(device.name)"
                     userNotif.subtitle = "\(device.batteryCapacity)% of battery remaining"
