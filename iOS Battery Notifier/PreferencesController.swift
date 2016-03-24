@@ -45,4 +45,11 @@ class PreferencesController: NSViewController {
         userDefaults.setInteger(newThreshold, forKey: "BatteryThreshold")
     }
 
+    @IBAction func clickedGitHub(sender: NSButton) {
+        NSWorkspace.sharedWorkspace().openURL(NSURL(string: "https://github.com/Kalvin126/BatteryNotifier")!)
+    }
+
+    @IBAction func clickedLinkedIn(sender: NSButton) {
+        NSWorkspace.sharedWorkspace().openURL(NSURL(string: "https://linkedin.com/in/kalvinloc")!)
+    }
 }

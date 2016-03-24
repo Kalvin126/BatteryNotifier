@@ -72,7 +72,7 @@ class DeviceManager : NSObject {
     }
 }
 
-struct Device {
+struct Device : Equatable {
     let name: String // kDeviceName
     let UUID: String // kUniqueDeviceID
     let serialNumber: String // kSerialNumber
@@ -98,11 +98,7 @@ struct Device {
             let cfKey: CFStringRef = CFStringCreateWithCString(kCFAllocatorDefault, key, 0)
             let retVal = SDMMD_AMDeviceCopyValue(device, cfDomain, cfKey)
 
-            if retVal != nil {
-                return retVal.takeUnretainedValue()
-            } else {
-                return "0"
-            }
+            return (retVal != nil ? retVal.takeUnretainedValue() : "0")
         }
 
         name         = String(getValue("NULL", kDeviceName    ) as! CFString)
@@ -123,10 +119,14 @@ struct Device {
         }
     }
 
-    /*
+    /* TODO: response handling?
     //kAMDSuccess
     //kAMDInvalidResponseError
     //kAMDDeviceDisconnectedError
     //kAMDSessionInactiveError
     */
+}
+
+func ==(lhs: Device, rhs: Device) -> Bool {
+    return lhs.serialNumber == rhs.serialNumber
 }

@@ -16,7 +16,7 @@ class StatusItemController : NSObject {
     private let menu = NotifierMenu(title: "notifierMenu")
     private var batteryVC: BatteryVC
 
-    private var fetching = false
+    private var updating = false
 
     override init() {
         statusItem = NSStatusBar.systemStatusBar().statusItemWithLength(NSVariableStatusItemLength)
@@ -37,19 +37,29 @@ class StatusItemController : NSObject {
     }
 
     private func updateBatteryViews() {
+        updating = true
+        
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-            self.fetching = true
             let devices = DeviceManager.refreshDevices()
-            self.fetching = false
 
-            if devices.count == 0 {
-                self.batteryVC.displayedDevice = nil
-            } else {
+            if devices.count > 0 {
                 let lowestPercentageDevice = (devices.sort{ $0.batteryCapacity < $1.batteryCapacity })[0]
+                var updateDeviceView = self.batteryVC.displayedDevice == nil
 
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.batteryVC.displayedDevice = lowestPercentageDevice
-                    self.menu.updateBatteryLabels(devices)
+                if self.batteryVC.displayedDevice == lowestPercentageDevice {   // lowestPercentageDevice is already the current displayDevice
+                    updateDeviceView = true
+                } else {    // new lowestPercentageDevie
+                    if let battVC = self.batteryVC.displayedDevice {
+                        updateDeviceView = (battVC.batteryCapacity > lowestPercentageDevice.batteryCapacity)
+                    }
+                }
+
+                if updateDeviceView {
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.updating = false
+                        self.batteryVC.displayedDevice = lowestPercentageDevice
+                        self.menu.updateBatteryLabels(devices)
+                    }
                 }
             }
         }
@@ -60,7 +70,7 @@ class StatusItemController : NSObject {
 
         let darwinNotificationCenter = DarwinNotificationsManager.sharedInstance()
         darwinNotificationCenter.registerForNotificationName("SDMMD_USBMuxListenerDeviceAttachedNotification"){
-            if !(self.fetching) {
+            if !(self.updating) {
                 self.updateBatteryViews()
             }
         }

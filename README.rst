@@ -7,7 +7,7 @@ Ever leave to go out and about only to find you did not charge your iPhone's bat
 Do not look at your phone to often? This tool helps you manage your iOS device battery levels and warns you if they need a charge.
 
 
-Download app build (updated 3/23/16): `BatteryNotifier.zip`_.
+Download app build (updated 3/24/16): `BatteryNotifier.zip`_.
 
 .. _BatteryNotifier.zip:
     https://raw.github.com/kalvin126/BatteryNotifier/master/Resources/BatteryNotifier.zip
@@ -22,7 +22,6 @@ Roadmap:
 ........
 
 - User notification customization
-- App Icon
 
 Q/A
 ...

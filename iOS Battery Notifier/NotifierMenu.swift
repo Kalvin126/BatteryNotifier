@@ -26,8 +26,8 @@ class NotifierMenu: NSMenu {
 
     private func setup() {
         let listenItem = NSMenuItem(title: "Listening for devices...", action: nil, keyEquivalent: "")
-        let prefItem = NSMenuItem(title: "Preferences", action: #selector(clickedPreferences(_:)), keyEquivalent: "p")
-        let quitItem = NSMenuItem(title: "Quit", action: #selector(quit(_:)), keyEquivalent: "q")
+        let prefItem = NSMenuItem(title: "Preferences", action: #selector(clickedPreferences(_:)), keyEquivalent: "")
+        let quitItem = NSMenuItem(title: "Quit", action: #selector(quit(_:)), keyEquivalent: "")
 
         prefItem.target = self
         quitItem.target = self

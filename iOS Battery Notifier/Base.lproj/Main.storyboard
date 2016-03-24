@@ -74,17 +74,17 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="bii-3b-b6Y">
-                                <rect key="frame" x="305" y="56" width="2" height="6"/>
+                                <rect key="frame" x="304" y="56" width="2" height="6"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="2" id="IFc-Y9-1be"/>
                                     <constraint firstAttribute="height" constant="6" id="er6-yB-aKj"/>
                                 </constraints>
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="BwP-OH-rN9">
-                                <rect key="frame" x="5" y="5" width="299" height="107"/>
+                                <rect key="frame" x="5" y="5" width="298" height="107"/>
                                 <subviews>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="tWb-A5-NGu">
-                                        <rect key="frame" x="2" y="2" width="295" height="103"/>
+                                        <rect key="frame" x="2" y="2" width="294" height="103"/>
                                     </customView>
                                 </subviews>
                                 <constraints>
@@ -99,7 +99,7 @@
                             <constraint firstItem="BwP-OH-rN9" firstAttribute="top" secondItem="aWd-mC-Osz" secondAttribute="top" constant="5" id="Qet-PQ-OuQ"/>
                             <constraint firstItem="BwP-OH-rN9" firstAttribute="leading" secondItem="aWd-mC-Osz" secondAttribute="leading" constant="5" id="hul-uP-HRr"/>
                             <constraint firstItem="bii-3b-b6Y" firstAttribute="centerY" secondItem="aWd-mC-Osz" secondAttribute="centerY" id="lMu-dB-QNY"/>
-                            <constraint firstAttribute="trailing" secondItem="bii-3b-b6Y" secondAttribute="trailing" constant="1" id="oBU-Me-YCf"/>
+                            <constraint firstAttribute="trailing" secondItem="bii-3b-b6Y" secondAttribute="trailing" constant="2" id="oBU-Me-YCf"/>
                             <constraint firstAttribute="bottom" secondItem="BwP-OH-rN9" secondAttribute="bottom" constant="5" id="oxr-Xt-vFb"/>
                             <constraint firstItem="bii-3b-b6Y" firstAttribute="leading" secondItem="BwP-OH-rN9" secondAttribute="trailing" constant="1" id="wYc-Nh-jCF"/>
                         </constraints>
@@ -154,11 +154,11 @@
             <objects>
                 <viewController id="nEj-fB-Ndm" customClass="PreferencesController" customModule="BatteryNotifier" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="kcD-sJ-Kns">
-                        <rect key="frame" x="0.0" y="0.0" width="248" height="87"/>
+                        <rect key="frame" x="0.0" y="0.0" width="248" height="158"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lKE-xw-nhC">
-                                <rect key="frame" x="18" y="48" width="157" height="17"/>
+                                <rect key="frame" x="18" y="119" width="157" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Notification Interval(min):" id="5EL-eq-9Ao">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -166,7 +166,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vxW-kQ-dQF">
-                                <rect key="frame" x="18" y="23" width="157" height="17"/>
+                                <rect key="frame" x="18" y="94" width="157" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Low Battery % Threshold: " id="NuB-1k-Dd7">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -174,7 +174,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oex-Dx-YAn">
-                                <rect key="frame" x="176" y="48" width="37" height="17"/>
+                                <rect key="frame" x="176" y="119" width="37" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" enabled="NO" sendsActionOnEndEditing="YES" alignment="center" title="1.00" id="AYZ-qT-cv1">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -182,7 +182,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vDv-ZX-VgV">
-                                <rect key="frame" x="176" y="23" width="37" height="17"/>
+                                <rect key="frame" x="176" y="94" width="37" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="40%" id="WLE-yJ-CVS">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -190,19 +190,55 @@
                                 </textFieldCell>
                             </textField>
                             <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bhw-6n-a7U">
-                                <rect key="frame" x="212" y="17" width="19" height="27"/>
+                                <rect key="frame" x="212" y="88" width="19" height="27"/>
                                 <stepperCell key="cell" alignment="left" minValue="10" maxValue="60" doubleValue="40" autorepeat="NO" id="ZBd-dW-o44"/>
                                 <connections>
                                     <action selector="clickedLowBatteryThreshholdStepper:" target="nEj-fB-Ndm" id="Uc5-iX-GT8"/>
                                 </connections>
                             </stepper>
                             <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="acF-IW-MWh">
-                                <rect key="frame" x="212" y="42" width="19" height="27"/>
+                                <rect key="frame" x="212" y="113" width="19" height="27"/>
                                 <stepperCell key="cell" alignment="left" increment="0.5" minValue="1" maxValue="30" doubleValue="1" autorepeat="NO" id="Yrc-YM-DRZ"/>
                                 <connections>
                                     <action selector="clickedNotificationIntervalStepper:" target="nEj-fB-Ndm" id="ixm-0a-uiK"/>
                                 </connections>
                             </stepper>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9ag-8e-mrI">
+                                <rect key="frame" x="18" y="65" width="124" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="BatteryNotifier" id="wmB-CL-sOo">
+                                    <font key="font" metaFont="systemBold" size="15"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qPC-cy-yB6">
+                                <rect key="frame" x="18" y="46" width="157" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="developed by Kalvin Loc" id="Kid-OA-NfJ">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nyt-Gu-pcb">
+                                <rect key="frame" x="20" y="19" width="70" height="19"/>
+                                <buttonCell key="cell" type="recessed" title="GitHub" bezelStyle="recessed" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yLz-c8-q7I">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="systemBold"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="clickedGitHub:" target="nEj-fB-Ndm" id="wn9-do-aia"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FDl-3D-XrK">
+                                <rect key="frame" x="94" y="19" width="70" height="19"/>
+                                <buttonCell key="cell" type="recessed" title="LinkedIn" bezelStyle="recessed" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="s0q-6y-bqY">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="systemBold"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="clickedLinkedIn:" target="nEj-fB-Ndm" id="rWI-wB-YnU"/>
+                                </connections>
+                            </button>
                         </subviews>
                     </view>
                     <connections>
@@ -214,7 +250,7 @@
                 </viewController>
                 <customObject id="Taa-Ud-fiV" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="613" y="675.5"/>
+            <point key="canvasLocation" x="613" y="711"/>
         </scene>
     </scenes>
 </document>

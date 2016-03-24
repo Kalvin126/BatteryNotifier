@@ -21,14 +21,8 @@ class BatteryView : NSView {
 
     var defaultColor = NSColor.darkGrayColor().CGColor {
         didSet {
-            if enabled {
-                nub.layer?.backgroundColor   = defaultColor
-                body.layer?.borderColor      = defaultColor
-
-                if !charging {
-                    level.layer?.backgroundColor = defaultColor
-                }
-            }
+            nub.layer?.backgroundColor   = defaultColor
+            body.layer?.borderColor      = defaultColor
         }
     }
 
@@ -97,9 +91,7 @@ class BatteryView : NSView {
         batteryLevel = percent
         levelOffsetConstraint.constant = (maxLevelWidth*(CGFloat(100 - percent)/100.0)) + 2.0
 
-        if !charging {
-            setLevelColorForPercent(percent)
-        }
+        setLevelColorForPercent(percent)
     }
 
     private func setLevelColorForPercent(percent: Int) {
