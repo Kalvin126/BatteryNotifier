@@ -21,7 +21,7 @@ Features:
 Roadmap:
 ........
 
-- User notification customization
+- Today Widget (Notification Center Widget)
 - App Icon
 
 Q/A
