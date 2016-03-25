@@ -56,12 +56,13 @@ class StatusItemController : NSObject {
 
                 if updateDeviceView {
                     dispatch_async(dispatch_get_main_queue()) {
-                        self.updating = false
                         self.batteryVC.displayedDevice = lowestPercentageDevice
                         self.menu.updateBatteryLabels(devices)
                     }
                 }
             }
+
+            self.updating = false
         }
     }
 

@@ -95,6 +95,8 @@ class BatteryView : NSView {
     }
 
     private func setLevelColorForPercent(percent: Int) {
+        if charging { return }
+
         var color: CGColor
 
         switch percent {
