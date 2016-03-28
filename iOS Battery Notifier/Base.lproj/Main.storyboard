@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
     </dependencies>
@@ -154,7 +154,7 @@
             <objects>
                 <viewController id="nEj-fB-Ndm" customClass="PreferencesController" customModule="BatteryNotifier" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="kcD-sJ-Kns">
-                        <rect key="frame" x="0.0" y="0.0" width="248" height="158"/>
+                        <rect key="frame" x="0.0" y="0.0" width="248" height="178"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lKE-xw-nhC">
@@ -166,7 +166,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vxW-kQ-dQF">
-                                <rect key="frame" x="18" y="94" width="157" height="17"/>
+                                <rect key="frame" x="13" y="94" width="162" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Low Battery % Threshold: " id="NuB-1k-Dd7">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -239,9 +239,20 @@
                                     <action selector="clickedLinkedIn:" target="nEj-fB-Ndm" id="rWI-wB-YnU"/>
                                 </connections>
                             </button>
+                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1vi-Zp-GtF">
+                                <rect key="frame" x="18" y="142" width="175" height="18"/>
+                                <buttonCell key="cell" type="check" title="Low Battery Notifications" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="0Vl-Nd-ukY">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="toggledLowBatteryNotifications:" target="nEj-fB-Ndm" id="HVw-uY-RzI"/>
+                                </connections>
+                            </button>
                         </subviews>
                     </view>
                     <connections>
+                        <outlet property="lowBatteryNotificaitonsCheckBox" destination="1vi-Zp-GtF" id="l08-St-TGx"/>
                         <outlet property="lowBatteryThresholdField" destination="vDv-ZX-VgV" id="Wcq-Kd-coT"/>
                         <outlet property="lowBatteryThresholdStepper" destination="Bhw-6n-a7U" id="8bG-nd-WDG"/>
                         <outlet property="notificationIntervalField" destination="oex-Dx-YAn" id="FV3-HG-HtG"/>
@@ -250,7 +261,7 @@
                 </viewController>
                 <customObject id="Taa-Ud-fiV" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="613" y="711"/>
+            <point key="canvasLocation" x="613" y="701"/>
         </scene>
     </scenes>
 </document>

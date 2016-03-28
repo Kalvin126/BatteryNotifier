@@ -13,8 +13,6 @@ class DeviceMenuItem: NSMenuItem {
     private var batteryVC: BatteryVC?
     private var textField = NSTextField()
 
-    // TODO: Dynamic length
-    
     init(withDevice device: Device) {
         super.init()
 
@@ -23,16 +21,16 @@ class DeviceMenuItem: NSMenuItem {
 
         let pad: CGFloat = 18.0
         let spacing: CGFloat = 2.0
-        batteryVC!.view.frame = NSRectFromCGRect(CGRectMake(pad,0,30,22))
+        batteryVC!.view.frame = NSMakeRect(pad,0,30,22)
 
-        textField.frame = NSRectFromCGRect(CGRectMake(pad+batteryVC!.view.frame.size.width+spacing,4,125,21))
+        textField.frame = NSMakeRect(pad+batteryVC!.view.frame.size.width+spacing,4,125,21)
         textField.backgroundColor = NSColor.clearColor()
         textField.font = NSFont.systemFontOfSize(14.0)
         textField.alignment = .Left
         textField.cell?.bezeled = false
         textField.selectable = false
 
-        let deviceView = NSView(frame: NSRectFromCGRect(CGRectMake(0,0,155,22)))
+        let deviceView = NSView(frame: NSMakeRect(0,0,155,22))
         deviceView.addSubview(batteryVC!.view)
         deviceView.addSubview(textField)
         view = deviceView
@@ -58,6 +56,7 @@ class DeviceMenuItem: NSMenuItem {
 
         let deviceViewWidth = textField.frame.origin.x + textField.frame.size.width + 18
 
-        view?.frame = NSRectFromCGRect(CGRectMake(0,0,deviceViewWidth,22))
+        view?.frame = NSMakeRect(0,0,deviceViewWidth,22)
     }
+    
 }

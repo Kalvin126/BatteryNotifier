@@ -1,0 +1,3 @@
+/* Display name and description for this extension. */
+"CFBundleDisplayName" = "BatteryNotifier";
+"com.apple.notificationcenter.widget.description" = "Monitor your iOS device battery levels";

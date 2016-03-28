@@ -10,6 +10,7 @@ import Cocoa
 
 class PreferencesController: NSViewController {
 
+    @IBOutlet weak var lowBatteryNotificaitonsCheckBox: NSButton!
     @IBOutlet weak var notificationIntervalField: NSTextField!
     @IBOutlet weak var notificationIntervalStepper: NSStepper!
 
@@ -21,12 +22,24 @@ class PreferencesController: NSViewController {
 
         let userDefaults = NSUserDefaults.standardUserDefaults()
 
+        lowBatteryNotificaitonsCheckBox.state = (userDefaults.boolForKey("LowBatteryNotificationsOn") ? NSOnState : NSOffState)
+
         notificationIntervalField.cell?.title = String(format: "%.2f", userDefaults.doubleForKey("NotificationInterval"))
+        notificationIntervalStepper.doubleValue = userDefaults.doubleForKey("NotificationInterval")
+
         lowBatteryThresholdField.cell?.title = "\(userDefaults.integerForKey("BatteryThreshold"))%"
+        lowBatteryThresholdStepper.integerValue = userDefaults.integerForKey("BatteryThreshold")
     }
 
     // MARK: IBActions
-    
+
+    @IBAction func toggledLowBatteryNotifications(sender: NSButton) {
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        let on = (sender.state == NSOnState ? true : false)
+
+        userDefaults.setBool(on, forKey: "LowBatteryNotificationsOn")
+    }
+
     @IBAction func clickedNotificationIntervalStepper(sender: NSStepper) {
         let userDefaults = NSUserDefaults.standardUserDefaults()
         let newInterval = sender.doubleValue
@@ -46,10 +59,10 @@ class PreferencesController: NSViewController {
     }
 
     @IBAction func clickedGitHub(sender: NSButton) {
-        NSWorkspace.sharedWorkspace().openURL(NSURL(string: "https://github.com/Kalvin126/BatteryNotifier")!)
+        NSWorkspace.sharedWorkspace().openURL(NSURL(string: "https://GitHub.com/Kalvin126/BatteryNotifier")!)
     }
 
     @IBAction func clickedLinkedIn(sender: NSButton) {
-        NSWorkspace.sharedWorkspace().openURL(NSURL(string: "https://linkedin.com/in/kalvinloc")!)
+        NSWorkspace.sharedWorkspace().openURL(NSURL(string: "https://LinkedIn.com/in/KalvinLoc")!)
     }
 }

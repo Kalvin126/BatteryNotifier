@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="ListRowViewController" customModule="BatteryNotifier_Widget" customModuleProvider="target">
+            <connections>
+                <outlet property="batteryLevelField" destination="J6j-b4-SAe" id="k1x-OZ-76Q"/>
+                <outlet property="batteryView" destination="NAs-vb-ucq" id="Cp7-va-WbE"/>
+                <outlet property="deviceImageView" destination="4ed-tT-4fu" id="Zgq-xf-9eS"/>
+                <outlet property="nameField" destination="Epe-ZT-RKu" id="4ei-O2-Djk"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView translatesAutoresizingMaskIntoConstraints="NO" id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="38"/>
+            <subviews>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="NAs-vb-ucq">
+                    <rect key="frame" x="290" y="8" width="30" height="22"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="30" id="cjT-qx-kMq"/>
+                        <constraint firstAttribute="height" constant="22" id="gVx-aw-v8X"/>
+                    </constraints>
+                </customView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Epe-ZT-RKu">
+                    <rect key="frame" x="30" y="10" width="214" height="18"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="4qO-My-BxZ">
+                        <font key="font" metaFont="system" size="14"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4ed-tT-4fu">
+                    <rect key="frame" x="0.0" y="4" width="30" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="45" id="3Zr-Ge-8rv"/>
+                        <constraint firstAttribute="width" secondItem="4ed-tT-4fu" secondAttribute="height" multiplier="1:1" id="Nnh-tF-0e6"/>
+                    </constraints>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="ML3-9c-hxH"/>
+                </imageView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="J6j-b4-SAe">
+                    <rect key="frame" x="240" y="10" width="44" height="18"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="40" id="eub-P3-RNZ"/>
+                    </constraints>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="100%" id="gTb-Hy-NK9">
+                        <font key="font" metaFont="system" size="14"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <constraints>
+                <constraint firstItem="NAs-vb-ucq" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="8" id="21a-S0-vEE"/>
+                <constraint firstAttribute="bottom" secondItem="4ed-tT-4fu" secondAttribute="bottom" constant="4" id="DKn-pS-KgZ"/>
+                <constraint firstAttribute="trailing" secondItem="NAs-vb-ucq" secondAttribute="trailing" id="Dkb-1p-k3S"/>
+                <constraint firstItem="J6j-b4-SAe" firstAttribute="centerY" secondItem="NAs-vb-ucq" secondAttribute="centerY" id="Dze-HF-GAC"/>
+                <constraint firstItem="Epe-ZT-RKu" firstAttribute="centerY" secondItem="4ed-tT-4fu" secondAttribute="centerY" id="PWG-9m-p4N"/>
+                <constraint firstItem="Epe-ZT-RKu" firstAttribute="leading" secondItem="4ed-tT-4fu" secondAttribute="trailing" constant="2" id="UP2-Og-Or7"/>
+                <constraint firstItem="NAs-vb-ucq" firstAttribute="leading" secondItem="J6j-b4-SAe" secondAttribute="trailing" constant="8" id="ayl-tv-71v"/>
+                <constraint firstItem="4ed-tT-4fu" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="4" id="czB-He-LNt"/>
+                <constraint firstItem="J6j-b4-SAe" firstAttribute="leading" secondItem="Epe-ZT-RKu" secondAttribute="trailing" id="dvl-1v-VHT"/>
+                <constraint firstAttribute="bottom" secondItem="NAs-vb-ucq" secondAttribute="bottom" constant="8" id="gba-8a-BaC"/>
+                <constraint firstItem="4ed-tT-4fu" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="tnh-jB-K7H"/>
+            </constraints>
+            <point key="canvasLocation" x="456" y="477"/>
+        </customView>
+    </objects>
+</document>

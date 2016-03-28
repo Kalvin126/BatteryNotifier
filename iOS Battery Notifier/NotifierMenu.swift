@@ -21,6 +21,7 @@ class NotifierMenu: NSMenu {
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        
         setup()
     }
 
@@ -42,6 +43,7 @@ class NotifierMenu: NSMenu {
         if preferenceController == nil {
             let storyboard = NSStoryboard(name: "Main", bundle: nil)
             preferenceController = storyboard.instantiateControllerWithIdentifier("preferencesController") as? NSWindowController
+            preferenceController?.window?.delegate = self
         }
 
         preferenceController!.window?.makeKeyAndOrderFront(nil)
@@ -63,9 +65,7 @@ class NotifierMenu: NSMenu {
 
     private func setupLabelForDevice(device: Device) {
         let deviceItem = DeviceMenuItem(withDevice: device)
-
-        // TODO: Sorting
-
+        
         menuItems[device.serialNumber] = deviceItem
         insertItem(deviceItem, atIndex: 0)
     }
@@ -82,6 +82,14 @@ class NotifierMenu: NSMenu {
                 setupLabelForDevice($0)
             }
         }
+    }
+
+}
+
+extension NotifierMenu : NSWindowDelegate {
+
+    func windowWillClose(notification: NSNotification) {
+        preferenceController = nil
     }
 
 }

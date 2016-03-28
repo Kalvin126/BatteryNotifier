@@ -37,11 +37,8 @@ class BatteryVC: NSViewController {
         batteryView.setup()
     }
 
-    override func viewDidLayout() {
-        super.viewDidLayout()
-    }
-
     private func updateLevelWithPercent(percent: Int) {
         batteryView.fillLevelByPercent(percent)
     }
+    
 }
