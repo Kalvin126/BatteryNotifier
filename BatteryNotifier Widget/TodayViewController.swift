@@ -45,9 +45,7 @@ class TodayViewController: NSViewController {
     }
 
     func updateDeviceContent() -> Bool {
-        guard needsUpdate else {
-            return false
-        }
+        guard needsUpdate else { return false }
 
         let sharedDefaults = NSUserDefaults(suiteName: "group.redpanda.BatteryNotifier")!
 

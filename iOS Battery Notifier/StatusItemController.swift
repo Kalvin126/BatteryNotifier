@@ -41,25 +41,15 @@ class StatusItemController : NSObject {
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
             let devices = DeviceManager.refreshDevices()
+            guard devices.count > 0 else { self.updating = false; return }
 
-            if devices.count > 0 {
-                let lowestPercentageDevice = (devices.sort{ $0.batteryCapacity < $1.batteryCapacity })[0]
-                var updateDeviceView = self.batteryVC.displayedDevice == nil
+            let lowestDevice = (devices.sort{ $0.batteryCapacity < $1.batteryCapacity })[0]
 
-                if self.batteryVC.displayedDevice == lowestPercentageDevice {   // lowestPercentageDevice is already the current displayDevice
-                    updateDeviceView = true
-                } else {    // new lowestPercentageDevie
-                    if let battVC = self.batteryVC.displayedDevice {
-                        updateDeviceView = (battVC.batteryCapacity > lowestPercentageDevice.batteryCapacity)
-                    }
+            dispatch_async(dispatch_get_main_queue()) {
+                if  self.batteryVC.displayedDevice == nil || lowestDevice.batteryCapacity < self.batteryVC.displayedDevice!.batteryCapacity {
+                    self.batteryVC.displayedDevice = lowestDevice
                 }
-
-                if updateDeviceView {
-                    dispatch_async(dispatch_get_main_queue()) {
-                        self.batteryVC.displayedDevice = lowestPercentageDevice
-                        self.menu.updateBatteryLabels(devices)
-                    }
-                }
+                self.menu.updateBatteryLabels(devices)
             }
 
             self.updating = false

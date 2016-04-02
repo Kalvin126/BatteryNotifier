@@ -31,6 +31,12 @@ class BatteryVC: NSViewController {
         }
     }
 
+    var whiteThemeOnly = false {
+        didSet {
+            batteryView.whiteThemeOnly = whiteThemeOnly
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 

@@ -33,8 +33,10 @@ class ListRowViewController: NSViewController {
         let image = NSImage(named: device.deviceClass) ?? NSImage(named: "iPhone")
         deviceImageView.image = image
         nameField.cell?.title = device.name
+
         batteryLevelField.cell?.title = "\(device.batteryCapacity)%"
         batteryVC?.displayedDevice = device
+        batteryVC?.whiteThemeOnly = true
     }
 
     override func viewDidLayout() {

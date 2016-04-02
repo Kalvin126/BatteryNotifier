@@ -26,6 +26,12 @@ class BatteryView : NSView {
         }
     }
 
+    var whiteThemeOnly = false {
+        didSet {
+            setTheme(nil)
+        }
+    }
+
     var enabled = false {
         didSet {
             if enabled != oldValue {
@@ -83,6 +89,11 @@ class BatteryView : NSView {
     }
 
     func setTheme(notification: NSNotification?) {
+        if whiteThemeOnly {
+            defaultColor = NSColor.whiteColor().CGColor
+            return
+        }
+
         let darkMode = NSUserDefaults.standardUserDefaults().stringForKey("AppleInterfaceStyle") == "Dark"
         defaultColor = (darkMode ? NSColor.whiteColor() : NSColor.blackColor()).CGColor
     }
@@ -95,7 +106,7 @@ class BatteryView : NSView {
     }
 
     private func setLevelColorForPercent(percent: Int) {
-        if charging { return }
+        guard !charging else { return }
 
         var color: CGColor
 
