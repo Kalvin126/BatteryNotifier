@@ -154,7 +154,7 @@
             <objects>
                 <viewController id="nEj-fB-Ndm" customClass="PreferencesController" customModule="BatteryNotifier" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="kcD-sJ-Kns">
-                        <rect key="frame" x="0.0" y="0.0" width="248" height="178"/>
+                        <rect key="frame" x="0.0" y="0.0" width="248" height="197"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lKE-xw-nhC">
@@ -204,7 +204,7 @@
                                 </connections>
                             </stepper>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9ag-8e-mrI">
-                                <rect key="frame" x="18" y="65" width="124" height="17"/>
+                                <rect key="frame" x="18" y="65" width="116" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="BatteryNotifier" id="wmB-CL-sOo">
                                     <font key="font" metaFont="systemBold" size="15"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -240,8 +240,8 @@
                                 </connections>
                             </button>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1vi-Zp-GtF">
-                                <rect key="frame" x="18" y="142" width="175" height="18"/>
-                                <buttonCell key="cell" type="check" title="Low Battery Notifications" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="0Vl-Nd-ukY">
+                                <rect key="frame" x="18" y="161" width="172" height="18"/>
+                                <buttonCell key="cell" type="check" title="Low battery notifications" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="0Vl-Nd-ukY">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -249,19 +249,39 @@
                                     <action selector="toggledLowBatteryNotifications:" target="nEj-fB-Ndm" id="HVw-uY-RzI"/>
                                 </connections>
                             </button>
+                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4RK-mK-YpX">
+                                <rect key="frame" x="18" y="142" width="180" height="18"/>
+                                <buttonCell key="cell" type="check" title="Show percentage in menu" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Edi-SB-Em9">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="toggledMenuPercentage:" target="nEj-fB-Ndm" id="p9O-IH-tpn"/>
+                                </connections>
+                            </button>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AJU-73-uwM">
+                                <rect key="frame" x="129" y="63" width="37" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="v1.0" id="kkr-tN-7ys">
+                                    <font key="font" metaFont="system" size="12"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                     </view>
                     <connections>
-                        <outlet property="lowBatteryNotificaitonsCheckBox" destination="1vi-Zp-GtF" id="l08-St-TGx"/>
+                        <outlet property="lowBatteryNotificationsCheckBox" destination="1vi-Zp-GtF" id="s5A-a1-YAD"/>
                         <outlet property="lowBatteryThresholdField" destination="vDv-ZX-VgV" id="Wcq-Kd-coT"/>
                         <outlet property="lowBatteryThresholdStepper" destination="Bhw-6n-a7U" id="8bG-nd-WDG"/>
                         <outlet property="notificationIntervalField" destination="oex-Dx-YAn" id="FV3-HG-HtG"/>
                         <outlet property="notificationIntervalStepper" destination="acF-IW-MWh" id="OyF-tU-ipu"/>
+                        <outlet property="showPercentageCheckBox" destination="4RK-mK-YpX" id="osx-dQ-xXy"/>
+                        <outlet property="versionField" destination="AJU-73-uwM" id="n5b-eQ-Fcv"/>
                     </connections>
                 </viewController>
                 <customObject id="Taa-Ud-fiV" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="613" y="701"/>
+            <point key="canvasLocation" x="615" y="673.5"/>
         </scene>
     </scenes>
 </document>

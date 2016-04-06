@@ -16,31 +16,19 @@ class BatteryView : NSView {
 
     @IBOutlet weak var levelOffsetConstraint: NSLayoutConstraint!
 
-    private var maxLevelWidth: CGFloat = 0
-    var batteryLevel = 0
+    var batteryLevel = 0 {
+        didSet {
+            // needs layout to set level width
+            needsLayout = true
+        }
+    }
 
     var defaultColor = NSColor.darkGrayColor().CGColor {
         didSet {
             nub.layer?.backgroundColor   = defaultColor
             body.layer?.borderColor      = defaultColor
-        }
-    }
 
-    var whiteThemeOnly = false {
-        didSet {
-            setTheme(nil)
-        }
-    }
-
-    var enabled = false {
-        didSet {
-            if enabled != oldValue {
-                if enabled {
-                    setTheme(nil)
-                } else {
-                    defaultColor = NSColor.darkGrayColor().CGColor
-                }
-            }
+            setLevelColorForPercent(batteryLevel)
         }
     }
 
@@ -54,30 +42,16 @@ class BatteryView : NSView {
         super.init(coder: coder)
 
         wantsLayer = true
-
-        // Status bar theme change
-        let center = NSDistributedNotificationCenter.defaultCenter()
-        let notif = "AppleInterfaceThemeChangedNotification"
-        center.addObserver(self, selector: #selector(BatteryView.setTheme(_:)), name: notif, object: nil)
-    }
-
-    deinit {
-        let center = NSDistributedNotificationCenter.defaultCenter()
-        center.removeObserver(self, name: "AppleInterfaceThemeChangedNotification", object: nil)
     }
 
     override func layout() {
         super.layout()
 
-        if maxLevelWidth == 0 {
-            maxLevelWidth = level.frame.width
-            fillLevelByPercent(batteryLevel)
-        }
+        let maxLevelWidth = body.frame.width - (2.0*2)
+        levelOffsetConstraint.constant = (maxLevelWidth*(CGFloat(100 - batteryLevel)/100.0)) + 2.0
     }
 
     func setup() {
-        setTheme(nil)
-
         body.layer?.borderWidth = 1.0
 
         nub.layer?.cornerRadius   = 2.5
@@ -88,19 +62,9 @@ class BatteryView : NSView {
         level.layer?.backgroundColor = NSColor.darkGrayColor().CGColor
     }
 
-    func setTheme(notification: NSNotification?) {
-        if whiteThemeOnly {
-            defaultColor = NSColor.whiteColor().CGColor
-            return
-        }
-
-        let darkMode = NSUserDefaults.standardUserDefaults().stringForKey("AppleInterfaceStyle") == "Dark"
-        defaultColor = (darkMode ? NSColor.whiteColor() : NSColor.blackColor()).CGColor
-    }
-
     func fillLevelByPercent(percent: Int) {
+        // changing level width to be done at layout time
         batteryLevel = percent
-        levelOffsetConstraint.constant = (maxLevelWidth*(CGFloat(100 - percent)/100.0)) + 2.0
 
         setLevelColorForPercent(percent)
     }

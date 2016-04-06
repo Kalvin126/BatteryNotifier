@@ -43,10 +43,18 @@ class StatusItemController : NSObject {
             let devices = DeviceManager.refreshDevices()
             guard devices.count > 0 else { self.updating = false; return }
 
-            let lowestDevice = (devices.sort{ $0.batteryCapacity < $1.batteryCapacity })[0]
+            let lowestDevice = (devices.sort{ $0.batteryCapacity < $1.batteryCapacity }).first!
+            var updateDisplayDevice = false
+
+            if self.batteryVC.displayedDevice == nil ||
+               self.batteryVC.displayedDevice == lowestDevice ||
+               self.batteryVC.displayedDevice?.batteryCapacity > lowestDevice.batteryCapacity
+            {
+                updateDisplayDevice = true
+            }
 
             dispatch_async(dispatch_get_main_queue()) {
-                if  self.batteryVC.displayedDevice == nil || lowestDevice.batteryCapacity < self.batteryVC.displayedDevice!.batteryCapacity {
+                if updateDisplayDevice {
                     self.batteryVC.displayedDevice = lowestDevice
                 }
                 self.menu.updateBatteryLabels(devices)
@@ -66,4 +74,17 @@ class StatusItemController : NSObject {
             }
         }
     }
+}
+
+extension StatusItemController: DeviceManagerDelegate {
+
+    func expirationMetForDevice(serial: String) {
+        if batteryVC.displayedDevice?.serialNumber == serial {
+            let sortedDevices = DeviceManager.getAllDevices().sort { $0.batteryCapacity < $1.batteryCapacity }
+            batteryVC.displayedDevice = sortedDevices.first
+        }
+
+        menu.invalidateDeviceItem(serial)
+    }
+
 }

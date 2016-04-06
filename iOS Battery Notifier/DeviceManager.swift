@@ -9,9 +9,20 @@
 import Cocoa
 import SDMMobileDevice
 
-class DeviceManager : NSObject {
-    
+protocol DeviceManagerDelegate: class {
+    func expirationMetForDevice(serial: String)
+}
 
+class DeviceManager : NSObject {
+
+    static let shared = DeviceManager()
+    weak var delegate: DeviceManagerDelegate?
+
+    var devices = [String : Device]()
+    private var deviceTimers = [String : NSTimer]()
+
+    // MARK: Static funcs
+    
     static func refreshDevices() -> [Device] {
         var devices = [Device]();
 
@@ -22,23 +33,31 @@ class DeviceManager : NSObject {
             guard SDMMD_AMDeviceIsAttached(rawDevice) else { continue }
 
             let newDevice = Device(withDevice: rawDevice)
-            guard newDevice.name != "0" else { continue }
+            guard newDevice.name != "0" && newDevice.serialNumber != "0" else { continue }
 
             NSLog("DeviceManager: Fetched \(newDevice.name) at \(newDevice.batteryCapacity)")
 
             devices.append(newDevice)
 
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            dispatch_async(dispatch_get_main_queue()) {
                 // Low Battery Notifications
-                DeviceManager.recordDevice(newDevice)
-                DeviceManager.sendLowBatteryNotification(forDevice: newDevice)
+                recordDevice(newDevice)
+                sendLowBatteryNotification(forDevice: newDevice)
+
+                shared.updateDeviceTimer(forDevice: newDevice)
             }
         }
 
         return devices
     }
 
+    static func getAllDevices() -> [Device] {
+        return Array(shared.devices.values)
+    }
+
     static private func recordDevice(device: Device) {
+        shared.devices[device.serialNumber] = device
+
         let sharedDefaults = NSUserDefaults(suiteName: "group.redpanda.BatteryNotifier")!
         var devicesDict = sharedDefaults.dictionaryForKey("Devices") ?? [String : AnyObject]()  // Nil Coalescing!
         var deviceDict = [String : AnyObject]()
@@ -90,10 +109,37 @@ class DeviceManager : NSObject {
 
             devicesDict[device.serialNumber] = deviceDict
             sharedDefaults.setObject(devicesDict, forKey: "Devices")
+            sharedDefaults.synchronize()
 
             NSUserNotificationCenter.defaultUserNotificationCenter().deliverNotification(userNotif)
-            sharedDefaults.synchronize()
         }
+    }
+
+
+    // MARK: Instance funcs
+
+    func updateDeviceTimer(forDevice device: Device) {
+        let timer = NSTimer.scheduledTimerWithTimeInterval(30*60, target: self, selector: #selector(DeviceManager.invalidateDevice(_:)), userInfo: device.serialNumber, repeats: false)
+
+        deviceTimers[device.serialNumber]?.invalidate()
+        deviceTimers[device.serialNumber] = timer
+    }
+
+    func invalidateDevice(timer: NSTimer) {
+        let deviceSerial = timer.userInfo as! String
+        devices.removeValueForKey(deviceSerial)
+        deviceTimers.removeValueForKey(deviceSerial)
+
+        // remove from sharedDefaults
+        let sharedDefaults = NSUserDefaults(suiteName: "group.redpanda.BatteryNotifier")!
+        var devicesDict = sharedDefaults.dictionaryForKey("Devices")! // Device has been recorded before so deviceDict must exist
+
+        devicesDict.removeValueForKey(deviceSerial)
+        
+        sharedDefaults.setObject(devicesDict, forKey: "Devices")
+        sharedDefaults.synchronize()
+
+        delegate?.expirationMetForDevice(deviceSerial)
     }
 
 }

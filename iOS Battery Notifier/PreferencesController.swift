@@ -10,7 +10,11 @@ import Cocoa
 
 class PreferencesController: NSViewController {
 
-    @IBOutlet weak var lowBatteryNotificaitonsCheckBox: NSButton!
+    @IBOutlet weak var versionField: NSTextField!
+
+    @IBOutlet weak var lowBatteryNotificationsCheckBox: NSButton!
+    @IBOutlet weak var showPercentageCheckBox: NSButton!
+
     @IBOutlet weak var notificationIntervalField: NSTextField!
     @IBOutlet weak var notificationIntervalStepper: NSStepper!
 
@@ -20,9 +24,13 @@ class PreferencesController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let version = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"]!
+        versionField.cell?.title = "v\(version)"
+
         let userDefaults = NSUserDefaults.standardUserDefaults()
 
-        lowBatteryNotificaitonsCheckBox.state = (userDefaults.boolForKey("LowBatteryNotificationsOn") ? NSOnState : NSOffState)
+        lowBatteryNotificationsCheckBox.state = (userDefaults.boolForKey("LowBatteryNotificationsOn") ? NSOnState : NSOffState)
+        showPercentageCheckBox.state = (userDefaults.boolForKey("ShowMenuPercentage") ? NSOnState : NSOffState)
 
         notificationIntervalField.cell?.title = String(format: "%.2f", userDefaults.doubleForKey("NotificationInterval"))
         notificationIntervalStepper.doubleValue = userDefaults.doubleForKey("NotificationInterval")
@@ -38,6 +46,13 @@ class PreferencesController: NSViewController {
         let on = (sender.state == NSOnState ? true : false)
 
         userDefaults.setBool(on, forKey: "LowBatteryNotificationsOn")
+    }
+
+    @IBAction func toggledMenuPercentage(sender: NSButton) {
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        let on = (sender.state == NSOnState ? true : false)
+
+        userDefaults.setBool(on, forKey: "ShowMenuPercentage")
     }
 
     @IBAction func clickedNotificationIntervalStepper(sender: NSStepper) {

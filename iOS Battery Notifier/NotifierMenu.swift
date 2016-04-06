@@ -46,7 +46,7 @@ class NotifierMenu: NSMenu {
             preferenceController?.window?.delegate = self
         }
 
-        preferenceController!.window?.makeKeyAndOrderFront(nil)
+        preferenceController?.window?.makeKeyAndOrderFront(nil)
     }
 
     func quit(sender: NSMenuItem) {
@@ -56,8 +56,8 @@ class NotifierMenu: NSMenu {
     // MARK: battery labels
 
     func clearDeviceLabels() {
-        while !(itemArray[0].separatorItem) {
-            removeItemAtIndex(0)
+        while let item = itemArray.first where !(item.separatorItem) {
+            removeItem(item)
         }
 
         menuItems.removeAll()
@@ -71,7 +71,7 @@ class NotifierMenu: NSMenu {
     }
 
     func updateBatteryLabels(devices: [Device]) {
-        if itemArray[0].title == "Listening for devices..." {
+        if itemArray.first!.title == "Listening for devices..." {
             removeItemAtIndex(0)
         }
 
@@ -81,6 +81,18 @@ class NotifierMenu: NSMenu {
             } else {
                 setupLabelForDevice($0)
             }
+        }
+    }
+
+    func invalidateDeviceItem(serial: String) {
+        if let item = menuItems[serial] {
+            removeItem(item)
+            menuItems.removeValueForKey(serial)
+        }
+
+        if menuItems.count == 0 {
+            let listenItem = NSMenuItem(title: "Listening for devices...", action: nil, keyEquivalent: "")
+            insertItem(listenItem, atIndex: 0)
         }
     }
 

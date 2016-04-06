@@ -23,7 +23,7 @@ class DeviceMenuItem: NSMenuItem {
         let spacing: CGFloat = 2.0
         batteryVC!.view.frame = NSMakeRect(pad,0,30,22)
 
-        textField.frame = NSMakeRect(pad+batteryVC!.view.frame.size.width+spacing,4,125,21)
+        textField.frame = NSMakeRect(pad+batteryVC!.view.frame.size.width+spacing,3,125,21)
         textField.backgroundColor = NSColor.clearColor()
         textField.font = NSFont.systemFontOfSize(14.0)
         textField.alignment = .Left
@@ -36,6 +36,8 @@ class DeviceMenuItem: NSMenuItem {
         view = deviceView
 
         updateWithDevice(device)
+
+        NSUserDefaults.standardUserDefaults().addObserver(self, forKeyPath: "ShowMenuPercentage", options: .New, context: nil)
     }
 
     override init(title aString: String, action aSelector: Selector, keyEquivalent charCode: String) {
@@ -48,15 +50,37 @@ class DeviceMenuItem: NSMenuItem {
         // Should not ever be invoked
     }
 
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        if keyPath == "ShowMenuPercentage" {
+            setItemText()
+        }
+    }
+
     func updateWithDevice(device: Device) {
         batteryVC!.displayedDevice = device
-        textField.cell?.title = device.name
 
+        setItemText()
+    }
+
+    func setItemText() {
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        let device = batteryVC!.displayedDevice!
+        var textString = device.name
+
+        let showPercentage = userDefaults.boolForKey("ShowMenuPercentage")
+        if showPercentage {
+            let digits = device.batteryCapacity.description.characters.map{ Int(String($0)) ?? 0 }
+            let padding = String(count: 2*(3-digits.count), repeatedValue: " " as Character)
+            let percentString = "\(padding)\(device.batteryCapacity)% "
+
+            textString = percentString + textString
+        }
+
+        textField.cell?.title = textString
         textField.sizeToFit()
 
         let deviceViewWidth = textField.frame.origin.x + textField.frame.size.width + 18
 
         view?.frame = NSMakeRect(0,0,deviceViewWidth,22)
     }
-    
 }

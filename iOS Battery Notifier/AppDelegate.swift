@@ -21,6 +21,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if !(userDefaults.dictionaryRepresentation().keys.contains("NotificationInterval")) {
             // Default values
             userDefaults.setBool(true, forKey: "LowBatteryNotificationsOn")
+            userDefaults.setBool(false, forKey: "ShowMenuPercentage")
             userDefaults.setDouble(2.0, forKey: "NotificationInterval")
             userDefaults.setInteger(40, forKey: "BatteryThreshold")
         }
@@ -32,6 +33,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         InitializeSDMMobileDevice()
         statusItemController.startMonitoring()
+
+        DeviceManager.shared.delegate = statusItemController
     }
 
 }

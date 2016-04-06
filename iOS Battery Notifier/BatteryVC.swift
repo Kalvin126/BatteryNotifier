@@ -10,41 +10,54 @@ import Cocoa
 
 class BatteryVC: NSViewController {
 
-    @IBOutlet var batteryView: BatteryView!
+    @IBOutlet private var batteryView: BatteryView!
 
     var enabled = false {
         didSet {
-            if enabled != oldValue {
-                batteryView.enabled = enabled
+            if enabled {
+                setTheme(nil)
+            } else {
+                batteryView.defaultColor = NSColor.darkGrayColor().CGColor
             }
         }
     }
 
     var displayedDevice: Device? {
         didSet {
-            if let device = displayedDevice {
-                batteryView.charging = device.batteryCharging
-                updateLevelWithPercent(device.batteryCapacity)
-            }
-
             enabled = (displayedDevice != nil)
+
+            batteryView.charging = displayedDevice?.batteryCharging ?? false
+            batteryView.fillLevelByPercent(displayedDevice?.batteryCapacity ?? 0)
         }
     }
 
     var whiteThemeOnly = false {
         didSet {
-            batteryView.whiteThemeOnly = whiteThemeOnly
+            batteryView.defaultColor = NSColor.whiteColor().CGColor
         }
+    }
+
+    deinit {
+        let center = NSDistributedNotificationCenter.defaultCenter()
+        center.removeObserver(self, name: "AppleInterfaceThemeChangedNotification", object: nil)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         batteryView.setup()
+
+        // Status bar theme change
+        let center = NSDistributedNotificationCenter.defaultCenter()
+        let notif = "AppleInterfaceThemeChangedNotification"
+        center.addObserver(self, selector: #selector(setTheme(_:)), name: notif, object: nil)
     }
 
-    private func updateLevelWithPercent(percent: Int) {
-        batteryView.fillLevelByPercent(percent)
+    func setTheme(notification: NSNotification?) {
+        guard !whiteThemeOnly else { return }
+
+        let darkMode = NSUserDefaults.standardUserDefaults().stringForKey("AppleInterfaceStyle") == "Dark"
+        batteryView.defaultColor = (darkMode ? NSColor.whiteColor() : NSColor.blackColor()).CGColor
     }
     
 }
