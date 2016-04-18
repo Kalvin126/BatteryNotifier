@@ -46,9 +46,11 @@ class StatusItemController : NSObject {
             let lowestDevice = (devices.sort{ $0.batteryCapacity < $1.batteryCapacity }).first!
             var updateDisplayDevice = false
 
-            if self.batteryVC.displayedDevice == nil ||
-               self.batteryVC.displayedDevice == lowestDevice ||
-               self.batteryVC.displayedDevice?.batteryCapacity > lowestDevice.batteryCapacity
+            let displayedDevice = self.batteryVC.displayedDevice
+            if  displayedDevice == nil ||
+                displayedDevice!.batteryCapacity > lowestDevice.batteryCapacity ||
+                displayedDevice! == lowestDevice ||
+                devices.contains(displayedDevice!)
             {
                 updateDisplayDevice = true
             }

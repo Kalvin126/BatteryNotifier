@@ -50,6 +50,10 @@ class DeviceMenuItem: NSMenuItem {
         // Should not ever be invoked
     }
 
+    deinit {
+        NSUserDefaults.standardUserDefaults().removeObserver(self, forKeyPath: "ShowMenuPercentage")
+    }
+
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if keyPath == "ShowMenuPercentage" {
             setItemText()

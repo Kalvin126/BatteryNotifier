@@ -16,6 +16,8 @@ struct Device : Equatable {
     let batteryCharging: Bool // kBatteryIsCharging
     let batteryCapacity: Int // kBatteryCurrentCapacity
 
+    var snoozed = false
+
     init(withDevice device:SDMMD_AMDeviceRef) {
         SDMMD_AMDeviceConnect(device)
         SDMMD_AMDeviceStartSession(device)
