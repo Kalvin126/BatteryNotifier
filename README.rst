@@ -1,6 +1,8 @@
 BatteryNotifier
 ==================
 
+**iOS 10 devices will not be detected by this tool because of changes in security.**
+
 .. image:: https://raw.github.com/kalvin126/BatteryNotifier/master/Resources/screenshot.png
 
 Ever leave to go out and about only to find you did not charge your iPhone's battery at all?
