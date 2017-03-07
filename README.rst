@@ -2,6 +2,7 @@ BatteryNotifier
 ==================
 
 **iOS 10 devices will not be detected by this tool because of changes in security.**
+
 **Currently not being maintained**
 
 .. image:: https://raw.github.com/kalvin126/BatteryNotifier/master/Resources/screenshot.png
