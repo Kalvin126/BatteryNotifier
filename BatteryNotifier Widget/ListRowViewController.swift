@@ -28,13 +28,16 @@ final class ListRowViewController: NSViewController {
         batteryVC = storyboard.instantiateController(withIdentifier: "batteryVC") as? BatteryVC
         batteryView.addSubview(batteryVC!.view, positioned: .above, relativeTo: nil)
 
-        let device = Device(withDictionary: representedObject as! [String : AnyObject])
+        guard let dictionary = representedObject as? [String : AnyObject],
+            let device = Device(dictionary: dictionary) else { return }
+
 
         let image = NSImage(named: device.deviceClass) ?? NSImage(named: "iPhone")
         deviceImageView.image = image
         nameField.cell?.title = device.name
 
         batteryLevelField.cell?.title = "\(device.batteryCapacity)%"
+
         batteryVC?.displayedDevice = device
         batteryVC?.whiteThemeOnly = true
     }
