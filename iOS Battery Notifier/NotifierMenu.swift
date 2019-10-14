@@ -11,7 +11,15 @@ import Cocoa
 final class NotifierMenu: NSMenu {
 
     private var menuItems = [String : DeviceMenuItem]()  // Serial - menuItem
-    var preferenceController: NSWindowController?
+    private var preferenceController: NSWindowController?
+
+    // MARK: Text
+
+    private static var listeningForDevicesText: String { "Listening for devices..." }
+    private static var preferencesTitle: String { "Preferences" }
+    private static var quitTitle: String { "Quit" }
+
+    // MARK: Init
 
     override init(title aTitle: String) {
         super.init(title: aTitle)
@@ -25,10 +33,15 @@ final class NotifierMenu: NSMenu {
         setup()
     }
 
+}
+
+// MARK: - Actions
+extension NotifierMenu {
+
     private func setup() {
-        let listenItem = NSMenuItem(title: "Listening for devices...", action: nil, keyEquivalent: "")
-        let prefItem = NSMenuItem(title: "Preferences", action: #selector(clickedPreferences(sender:)), keyEquivalent: "")
-        let quitItem = NSMenuItem(title: "Quit", action: #selector(quit(sender:)), keyEquivalent: "")
+        let listenItem = NSMenuItem(title: Self.listeningForDevicesText, action: nil, keyEquivalent: "")
+        let prefItem = NSMenuItem(title: Self.preferencesTitle, action: #selector(clickedPreferences(sender:)), keyEquivalent: "")
+        let quitItem = NSMenuItem(title: Self.quitTitle, action: #selector(quit(sender:)), keyEquivalent: "")
 
         prefItem.target = self
         quitItem.target = self
@@ -39,21 +52,7 @@ final class NotifierMenu: NSMenu {
         insertItem(listenItem, at: 0)
     }
 
-    @objc func clickedPreferences(sender: NSMenuItem) {
-        if preferenceController == nil {
-            let storyboard = NSStoryboard(name: "Main", bundle: nil)
-            preferenceController = storyboard.instantiateController(withIdentifier: "preferencesController") as? NSWindowController
-            preferenceController?.window?.delegate = self
-        }
-
-        preferenceController?.window?.makeKeyAndOrderFront(nil)
-    }
-
-    @objc func quit(sender: NSMenuItem) {
-        exit(1)
-    }
-
-    // MARK: battery labels
+    // MARK: Battery Labels
 
     func clearDeviceLabels() {
         while let item = items.first, !item.isSeparatorItem {
@@ -71,7 +70,8 @@ final class NotifierMenu: NSMenu {
     }
 
     func updateBatteryLabels(devices: [Device]) {
-        if items.first!.title == "Listening for devices..." {
+        if let firstMenuItem = items.first,
+            firstMenuItem.title == Self.listeningForDevicesText {
             removeItem(at: 0)
         }
 
@@ -90,15 +90,35 @@ final class NotifierMenu: NSMenu {
             menuItems.removeValue(forKey: serial)
         }
 
-        if menuItems.count == 0 {
-            let listenItem = NSMenuItem(title: "Listening for devices...", action: nil, keyEquivalent: "")
+        if menuItems.isEmpty {
+            let listenItem = NSMenuItem(title: Self.listeningForDevicesText, action: nil, keyEquivalent: "")
             insertItem(listenItem, at: 0)
         }
     }
 
 }
 
-extension NotifierMenu : NSWindowDelegate {
+// MARK: - Events
+extension NotifierMenu {
+
+    @objc func clickedPreferences(sender: NSMenuItem) {
+        if preferenceController == nil {
+            let storyboard = NSStoryboard(name: "Main", bundle: nil)
+            preferenceController = storyboard.instantiateController(withIdentifier: "preferencesController") as? NSWindowController
+            preferenceController?.window?.delegate = self
+        }
+
+        preferenceController?.window?.makeKeyAndOrderFront(nil)
+    }
+
+    @objc func quit(sender: NSMenuItem) {
+        exit(1)
+    }
+
+}
+
+// MARK: - NSWindowDelegate
+extension NotifierMenu: NSWindowDelegate {
 
     func windowWillClose(_ notification: Notification) {
         preferenceController = nil
