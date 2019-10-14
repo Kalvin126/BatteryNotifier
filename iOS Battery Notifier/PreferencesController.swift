@@ -10,6 +10,11 @@ import Cocoa
 
 final class PreferencesController: NSViewController {
 
+    private var userDefaults: UserDefaults { .standard }
+    private var bundle: Bundle { .main }
+
+    // MARK: Subviews
+
     @IBOutlet weak var versionField: NSTextField!
 
     @IBOutlet weak var lowBatteryNotificationsCheckBox: NSButton!
@@ -24,10 +29,12 @@ final class PreferencesController: NSViewController {
     @IBOutlet weak var snoozeIntervalField: NSTextField!
     @IBOutlet weak var snoozeIntervalStepper: NSStepper!
 
+    // MARK: NSViewController
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let version = Bundle.main.infoDictionary!["CFBundleShortVersionString"]!
+        let version = bundle.infoDictionary!["CFBundleShortVersionString"]!
         versionField.cell?.title = "v\(version)"
 
         let userDefaults = UserDefaults.standard
@@ -45,7 +52,10 @@ final class PreferencesController: NSViewController {
         snoozeIntervalStepper.integerValue = userDefaults.integer(forKey: "SnoozeInterval")
     }
 
-    // MARK: IBActions
+}
+
+// MARK: - Events
+extension PreferencesController {
 
     @IBAction func toggledMenuPercentage(sender: NSButton) {
         let userDefaults = UserDefaults.standard
@@ -55,14 +65,12 @@ final class PreferencesController: NSViewController {
     }
 
     @IBAction func toggledLowBatteryNotifications(sender: NSButton) {
-        let userDefaults = UserDefaults.standard
-        let on = (sender.state == .on ? true : false)
+        let isOn = sender.state == .on
 
-        userDefaults.set(on, forKey: "LowBatteryNotificationsOn")
+        userDefaults.set(isOn, forKey: "LowBatteryNotificationsOn")
     }
 
     @IBAction func clickedLowBatteryThreshholdStepper(sender: NSStepper) {
-        let userDefaults = UserDefaults.standard
         let newThreshold = sender.integerValue
 
         lowBatteryThresholdField.cell?.title = "\(newThreshold)%"
@@ -71,7 +79,6 @@ final class PreferencesController: NSViewController {
     }
 
     @IBAction func clickedNotificationIntervalStepper(sender: NSStepper) {
-        let userDefaults = UserDefaults.standard
         let newInterval = sender.doubleValue
 
         notificationIntervalField.cell?.title = String(format: "%.2f", newInterval)
@@ -80,7 +87,6 @@ final class PreferencesController: NSViewController {
     }
 
     @IBAction func clickedSnoozeIntervalIntervalStepper(sender: NSStepper) {
-        let userDefaults = UserDefaults.standard
         let newInterval = sender.integerValue
 
         snoozeIntervalField.cell?.title = "\(newInterval)"
@@ -89,10 +95,15 @@ final class PreferencesController: NSViewController {
     }
 
     @IBAction func clickedGitHub(sender: NSButton) {
-        NSWorkspace.shared.open(URL(string: "https://GitHub.com/Kalvin126/BatteryNotifier")!)
+        guard let url = URL(string: "https://GitHub.com/Kalvin126/BatteryNotifier") else { return }
+
+        NSWorkspace.shared.open(url)
     }
 
     @IBAction func clickedLinkedIn(sender: NSButton) {
-        NSWorkspace.shared.open(URL(string: "https://LinkedIn.com/in/KalvinLoc")!)
+        guard let url = URL(string: "https://LinkedIn.com/in/KalvinLoc") else { return }
+
+        NSWorkspace.shared.open(url)
     }
+
 }
