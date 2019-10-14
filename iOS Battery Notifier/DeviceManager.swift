@@ -10,7 +10,9 @@ import Cocoa
 import SDMMobileDevice
 
 protocol DeviceManagerDelegate: class {
-    func expirationMetForDevice(serial: String)
+
+    func deviceManager(_ manager: DeviceManager, expirationMetForDeviceWith serial: String)
+
 }
 
 final class DeviceManager : NSObject {
@@ -204,7 +206,7 @@ final class DeviceManager : NSObject {
         sharedDefaults.set(devicesDict, forKey: "Devices")
         sharedDefaults.synchronize()
 
-        delegate?.expirationMetForDevice(serial: deviceSerial)
+        delegate?.deviceManager(self, expirationMetForDeviceWith: deviceSerial)
     }
 
 }

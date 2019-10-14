@@ -80,13 +80,14 @@ final class StatusItemController : NSObject {
     }
 }
 
+// MARK - DeviceManagerDelegate
 extension StatusItemController: DeviceManagerDelegate {
 
-    func expirationMetForDevice(serial: String) {
-        if batteryVC.displayedDevice?.serialNumber == serial {
+    func deviceManager(_ manager: DeviceManager, expirationMetForDeviceWith serial: String) {
+        if batteryViewController.displayedDevice?.serialNumber == serial {
             let sortedDevices = DeviceManager.getAllDevices()
                 .sorted { $0.batteryCapacity < $1.batteryCapacity }
-            batteryVC.displayedDevice = sortedDevices.first
+            batteryViewController.displayedDevice = sortedDevices.first
         }
 
         menu.invalidateDeviceItem(serial: serial)
