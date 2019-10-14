@@ -69,12 +69,13 @@ final class StatusItemController : NSObject {
     func startMonitoring() {
         NSLog("StatusItemController: Listening for iOS devices...")
 
-        let darwinNotificationCenter = DarwinNotificationsManager.sharedInstance()
-        darwinNotificationCenter?.register(forNotificationName: "SDMMD_USBMuxListenerDeviceAttachedNotification") {
-            print("Recieved SDMMD_USBMuxListenerDeviceAttachedNotification")
-            if !(self.updating) {
-                self.updateBatteryViews()
-            }
+        DarwinNotificationsManager.default
+            .observeNotification(forName: "SDMMD_USBMuxListenerDeviceAttachedNotification") {
+                print("Recieved SDMMD_USBMuxListenerDeviceAttachedNotification")
+
+                if !(self.updating) {
+                    self.updateBatteryViews()
+                }
         }
     }
 }

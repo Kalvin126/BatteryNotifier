@@ -11,16 +11,20 @@
 #ifndef DarwinNotifications_h
 #define DarwinNotifications_h
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface DarwinNotificationsManager : NSObject
+
+@property(class, readonly, strong) DarwinNotificationsManager *defaultCenter NS_SWIFT_NAME(default);
 
 @property (strong, nonatomic) id someProperty;
 
-+ (instancetype)sharedInstance;
-
-- (void)registerForNotificationName:(NSString *)name callback:(void (^)(void))callback;
+- (void)observeNotificationForName:(NSString *)name callback:(void (^)(void))callback;
 - (void)postNotificationWithName:(NSString *)name;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 #endif
 
