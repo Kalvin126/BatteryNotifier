@@ -8,13 +8,11 @@
 
 import Cocoa
 
-final class BatteryView : NSView {
+final class BatteryView: NSView {
 
-    @IBOutlet weak var nub: NSView!
-    @IBOutlet weak var body: NSView!
-    @IBOutlet weak var level: NSView!
-
-    @IBOutlet weak var levelOffsetConstraint: NSLayoutConstraint!
+    static var lowChargeColor: NSColor { .red }
+    static var mediumChargeColor: NSColor { .yellow }
+    static var chargingColor: NSColor { .green }
 
     var batteryLevel = 0 {
         didSet {
@@ -23,26 +21,38 @@ final class BatteryView : NSView {
         }
     }
 
-    var defaultColor = NSColor.darkGray.cgColor {
+    var defaultColor: NSColor = .darkGray {
         didSet {
-            nub.layer?.backgroundColor   = defaultColor
-            body.layer?.borderColor      = defaultColor
+            nub.layer?.backgroundColor   = defaultColor.cgColor
+            body.layer?.borderColor      = defaultColor.cgColor
 
             setLevelColor(by: batteryLevel)
         }
     }
 
-    var charging = false {
+    var isCharging = false {
         didSet {
-            level.layer?.backgroundColor = (charging ? NSColor.green.cgColor : defaultColor)
+            level.layer?.backgroundColor = (isCharging ? Self.chargingColor : defaultColor).cgColor
         }
     }
+
+    // MARK: Subviews
+
+    @IBOutlet weak var nub: NSView!
+    @IBOutlet weak var body: NSView!
+    @IBOutlet weak var level: NSView!
+
+    @IBOutlet weak var levelOffsetConstraint: NSLayoutConstraint!
+
+    // MARK: Init
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
 
         wantsLayer = true
     }
+
+    // MARK: NSView
 
     override func layout() {
         super.layout()
@@ -51,15 +61,20 @@ final class BatteryView : NSView {
         levelOffsetConstraint.constant = (maxLevelWidth*(CGFloat(100 - batteryLevel)/100.0)) + 2.0
     }
 
+}
+
+// MARK: - Actions
+extension BatteryView {
+
     func setup() {
         body.layer?.borderWidth = 1.0
 
         nub.layer?.cornerRadius   = 2.5
         body.layer?.cornerRadius  = 2.5
 
-        nub.layer?.backgroundColor   = NSColor.darkGray.cgColor
-        body.layer?.borderColor      = NSColor.darkGray.cgColor
-        level.layer?.backgroundColor = NSColor.darkGray.cgColor
+        nub.layer?.backgroundColor   = defaultColor.cgColor
+        body.layer?.borderColor      = defaultColor.cgColor
+        level.layer?.backgroundColor = defaultColor.cgColor
     }
 
     func fillLevel(by percent: Int) {
@@ -70,19 +85,17 @@ final class BatteryView : NSView {
     }
 
     private func setLevelColor(by percent: Int) {
-        guard !charging else { return }
+        guard !isCharging else { return }
 
-        var color: CGColor
+        let color: NSColor = {
+            switch percent {
+            case 1...20:    return Self.lowChargeColor
+            case 21...50:   return Self.mediumChargeColor
+            default:        return defaultColor
+            }
+        }()
 
-        switch percent {
-        case 1...20:
-            color = NSColor.red.cgColor
-        case 21...50:
-            color = NSColor.yellow.cgColor
-        default:
-            color = defaultColor
-        }
-
-        level.layer?.backgroundColor = color
+        level.layer?.backgroundColor = color.cgColor
     }
+
 }

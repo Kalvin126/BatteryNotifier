@@ -15,7 +15,7 @@ final class BatteryViewController: NSViewController {
             if isEnabled {
                 setTheme(notification: nil)
             } else {
-                batteryView.defaultColor = NSColor.darkGray.cgColor
+                batteryView.defaultColor = .darkGray
             }
         }
     }
@@ -24,14 +24,14 @@ final class BatteryViewController: NSViewController {
         didSet {
             isEnabled = (displayedDevice != nil)
 
-            batteryView.charging = displayedDevice?.isBatteryCharging ?? false
+            batteryView.isCharging = displayedDevice?.isBatteryCharging ?? false
             batteryView.fillLevel(by: displayedDevice?.batteryCapacity ?? 0)
         }
     }
 
     var whiteThemeOnly = false {
         didSet {
-            batteryView.defaultColor = NSColor.white.cgColor
+            batteryView.defaultColor = .white
         }
     }
 
@@ -71,7 +71,7 @@ private extension BatteryViewController {
         guard !whiteThemeOnly else { return }
 
         let isDarkMode = UserDefaults.standard.string(forKey: "AppleInterfaceStyle") == "Dark"
-        batteryView.defaultColor = (isDarkMode ? NSColor.white : NSColor.black).cgColor
+        batteryView.defaultColor = (isDarkMode ? .white : .black)
     }
 
 }
