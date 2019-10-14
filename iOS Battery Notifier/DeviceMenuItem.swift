@@ -44,7 +44,7 @@ final class DeviceMenuItem: NSMenuItem {
 
         updateWithDevice(device)
 
-        UserDefaults.standard.addObserver(self, forKeyPath: "ShowMenuPercentage", options: .new, context: nil)
+        UserDefaults.standard.addObserver(self, forKeyPath: ConfigKey.showMenuPercentage.id, options: .new, context: nil)
     }
 
     override init(title aString: String, action aSelector: Selector?, keyEquivalent charCode: String) {
@@ -58,13 +58,13 @@ final class DeviceMenuItem: NSMenuItem {
     }
 
     deinit {
-        UserDefaults.standard.removeObserver(self, forKeyPath: "ShowMenuPercentage")
+        UserDefaults.standard.removeObserver(self, forKeyPath: ConfigKey.showMenuPercentage.id)
     }
 
     // MARK: NSKeyValueObserving
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == "ShowMenuPercentage" {
+        if keyPath == ConfigKey.showMenuPercentage.id {
             setItemText()
         }
     }
@@ -85,7 +85,7 @@ extension DeviceMenuItem {
         let device = batteryViewController!.displayedDevice!
         var textString = device.name
 
-        let showPercentage = userDefaults.bool(forKey: "ShowMenuPercentage")
+        let showPercentage = userDefaults.bool(forKey: .showMenuPercentage)
         if showPercentage {
             let digits = device.batteryCapacity.description.map{ Int(String($0)) ?? 0 }
             let padding = String(repeating: " ", count: 2*(3-digits.count))

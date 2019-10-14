@@ -53,7 +53,7 @@ final class TodayViewController: NSViewController {
     func updateDeviceContent() -> Bool {
         guard needsUpdate else { return false }
 
-        let sharedDefaults = UserDefaults(suiteName: "group.redpanda.BatteryNotifier")!
+        let sharedDefaults = UserDefaults.sharedSuite!
 
         if let devicesDict = sharedDefaults.dictionary(forKey: "Devices") {
             listViewController.contents = Array(devicesDict.values)

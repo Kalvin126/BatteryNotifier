@@ -70,7 +70,7 @@ private extension BatteryViewController {
     @objc func setTheme(notification: NSNotification?) {
         guard !whiteThemeOnly else { return }
 
-        let isDarkMode = UserDefaults.standard.string(forKey: "AppleInterfaceStyle") == "Dark"
+        let isDarkMode = UserDefaults.standard.string(forKey: .appleInterfaceStyle) == "Dark"
         batteryView.defaultColor = (isDarkMode ? .white : .black)
     }
 
