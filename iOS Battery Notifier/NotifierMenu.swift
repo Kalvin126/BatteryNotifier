@@ -63,7 +63,7 @@ extension NotifierMenu {
     }
 
     private func setupLabelForDevice(_ device: Device) {
-        let deviceItem = DeviceMenuItem(withDevice: device)
+        let deviceItem = DeviceMenuItem(device: device)
         
         menuItems[device.serialNumber] = deviceItem
         insertItem(deviceItem, at: 0)
