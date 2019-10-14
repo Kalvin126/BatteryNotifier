@@ -25,8 +25,8 @@ class ListRowViewController: NSViewController {
         super.loadView()
 
         let storyboard = NSStoryboard(name: "Main", bundle: nil)
-        batteryVC = storyboard.instantiateControllerWithIdentifier("batteryVC") as? BatteryVC
-        batteryView.addSubview(batteryVC!.view, positioned: .Above, relativeTo: nil)
+        batteryVC = storyboard.instantiateController(withIdentifier: "batteryVC") as? BatteryVC
+        batteryView.addSubview(batteryVC!.view, positioned: .above, relativeTo: nil)
 
         let device = Device(withDictionary: representedObject as! [String : AnyObject])
 
@@ -43,7 +43,7 @@ class ListRowViewController: NSViewController {
         super.viewDidLayout()
 
         var battFrame = batteryView.frame
-        battFrame.origin = CGPointZero
+        battFrame.origin = .zero
         batteryVC!.view.frame = battFrame
     }
 

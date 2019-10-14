@@ -19,60 +19,60 @@ class NotifierMenu: NSMenu {
         setup()
     }
 
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    required init(coder: NSCoder) {
+        super.init(coder: coder)
 
         setup()
     }
 
     private func setup() {
         let listenItem = NSMenuItem(title: "Listening for devices...", action: nil, keyEquivalent: "")
-        let prefItem = NSMenuItem(title: "Preferences", action: #selector(clickedPreferences(_:)), keyEquivalent: "")
-        let quitItem = NSMenuItem(title: "Quit", action: #selector(quit(_:)), keyEquivalent: "")
+        let prefItem = NSMenuItem(title: "Preferences", action: #selector(clickedPreferences(sender:)), keyEquivalent: "")
+        let quitItem = NSMenuItem(title: "Quit", action: #selector(quit(sender:)), keyEquivalent: "")
 
         prefItem.target = self
         quitItem.target = self
 
-        insertItem(quitItem, atIndex: 0)
-        insertItem(prefItem, atIndex: 0)
-        insertItem(NSMenuItem.separatorItem(), atIndex: 0)
-        insertItem(listenItem, atIndex: 0)
+        insertItem(quitItem, at: 0)
+        insertItem(prefItem, at: 0)
+        insertItem(.separator(), at: 0)
+        insertItem(listenItem, at: 0)
     }
 
-    func clickedPreferences(sender: NSMenuItem) {
+    @objc func clickedPreferences(sender: NSMenuItem) {
         if preferenceController == nil {
             let storyboard = NSStoryboard(name: "Main", bundle: nil)
-            preferenceController = storyboard.instantiateControllerWithIdentifier("preferencesController") as? NSWindowController
+            preferenceController = storyboard.instantiateController(withIdentifier: "preferencesController") as? NSWindowController
             preferenceController?.window?.delegate = self
         }
 
         preferenceController?.window?.makeKeyAndOrderFront(nil)
     }
 
-    func quit(sender: NSMenuItem) {
+    @objc func quit(sender: NSMenuItem) {
         exit(1)
     }
 
     // MARK: battery labels
 
     func clearDeviceLabels() {
-        while let item = itemArray.first where !(item.separatorItem) {
+        while let item = items.first, !item.isSeparatorItem {
             removeItem(item)
         }
 
         menuItems.removeAll()
     }
 
-    private func setupLabelForDevice(device: Device) {
+    private func setupLabelForDevice(_ device: Device) {
         let deviceItem = DeviceMenuItem(withDevice: device)
         
         menuItems[device.serialNumber] = deviceItem
-        insertItem(deviceItem, atIndex: 0)
+        insertItem(deviceItem, at: 0)
     }
 
     func updateBatteryLabels(devices: [Device]) {
-        if itemArray.first!.title == "Listening for devices..." {
-            removeItemAtIndex(0)
+        if items.first!.title == "Listening for devices..." {
+            removeItem(at: 0)
         }
 
         devices.forEach {
@@ -87,12 +87,12 @@ class NotifierMenu: NSMenu {
     func invalidateDeviceItem(serial: String) {
         if let item = menuItems[serial] {
             removeItem(item)
-            menuItems.removeValueForKey(serial)
+            menuItems.removeValue(forKey: serial)
         }
 
         if menuItems.count == 0 {
             let listenItem = NSMenuItem(title: "Listening for devices...", action: nil, keyEquivalent: "")
-            insertItem(listenItem, atIndex: 0)
+            insertItem(listenItem, at: 0)
         }
     }
 
@@ -100,7 +100,7 @@ class NotifierMenu: NSMenu {
 
 extension NotifierMenu : NSWindowDelegate {
 
-    func windowWillClose(notification: NSNotification) {
+    func windowWillClose(_ notification: Notification) {
         preferenceController = nil
     }
 

@@ -23,18 +23,18 @@ class BatteryView : NSView {
         }
     }
 
-    var defaultColor = NSColor.darkGrayColor().CGColor {
+    var defaultColor = NSColor.darkGray.cgColor {
         didSet {
             nub.layer?.backgroundColor   = defaultColor
             body.layer?.borderColor      = defaultColor
 
-            setLevelColorForPercent(batteryLevel)
+            setLevelColor(by: batteryLevel)
         }
     }
 
     var charging = false {
         didSet {
-            level.layer?.backgroundColor = (charging ? NSColor.greenColor().CGColor : defaultColor)
+            level.layer?.backgroundColor = (charging ? NSColor.green.cgColor : defaultColor)
         }
     }
 
@@ -57,28 +57,28 @@ class BatteryView : NSView {
         nub.layer?.cornerRadius   = 2.5
         body.layer?.cornerRadius  = 2.5
 
-        nub.layer?.backgroundColor   = NSColor.darkGrayColor().CGColor
-        body.layer?.borderColor      = NSColor.darkGrayColor().CGColor
-        level.layer?.backgroundColor = NSColor.darkGrayColor().CGColor
+        nub.layer?.backgroundColor   = NSColor.darkGray.cgColor
+        body.layer?.borderColor      = NSColor.darkGray.cgColor
+        level.layer?.backgroundColor = NSColor.darkGray.cgColor
     }
 
-    func fillLevelByPercent(percent: Int) {
+    func fillLevel(by percent: Int) {
         // changing level width to be done at layout time
         batteryLevel = percent
 
-        setLevelColorForPercent(percent)
+        setLevelColor(by: percent)
     }
 
-    private func setLevelColorForPercent(percent: Int) {
+    private func setLevelColor(by percent: Int) {
         guard !charging else { return }
 
         var color: CGColor
 
         switch percent {
         case 1...20:
-            color = NSColor.redColor().CGColor
+            color = NSColor.red.cgColor
         case 21...50:
-            color = NSColor.yellowColor().CGColor
+            color = NSColor.yellow.cgColor
         default:
             color = defaultColor
         }

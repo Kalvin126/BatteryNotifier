@@ -14,21 +14,21 @@ class DeviceMenuItem: NSMenuItem {
     private var textField = NSTextField()
 
     init(withDevice device: Device) {
-        super.init()
+        super.init(title: "", action: nil, keyEquivalent: "")
 
         let storyboard = NSStoryboard(name: "Main", bundle: nil)
-        batteryVC = storyboard.instantiateControllerWithIdentifier("batteryVC") as? BatteryVC
+        batteryVC = storyboard.instantiateController(withIdentifier: "batteryVC") as? BatteryVC
 
         let pad: CGFloat = 18.0
         let spacing: CGFloat = 2.0
         batteryVC!.view.frame = NSMakeRect(pad,0,30,22)
 
         textField.frame = NSMakeRect(pad+batteryVC!.view.frame.size.width+spacing,3,125,21)
-        textField.backgroundColor = NSColor.clearColor()
-        textField.font = NSFont.systemFontOfSize(14.0)
-        textField.alignment = .Left
-        textField.cell?.bezeled = false
-        textField.selectable = false
+        textField.backgroundColor = NSColor.clear
+        textField.font = NSFont.systemFont(ofSize: 14.0)
+        textField.alignment = .left
+        textField.cell?.isBezeled = false
+        textField.isSelectable = false
 
         let deviceView = NSView(frame: NSMakeRect(0,0,155,22))
         deviceView.addSubview(batteryVC!.view)
@@ -37,44 +37,44 @@ class DeviceMenuItem: NSMenuItem {
 
         updateWithDevice(device)
 
-        NSUserDefaults.standardUserDefaults().addObserver(self, forKeyPath: "ShowMenuPercentage", options: .New, context: nil)
+        UserDefaults.standard.addObserver(self, forKeyPath: "ShowMenuPercentage", options: .new, context: nil)
     }
 
-    override init(title aString: String, action aSelector: Selector, keyEquivalent charCode: String) {
+    override init(title aString: String, action aSelector: Selector?, keyEquivalent charCode: String) {
         super.init(title: aString, action: aSelector, keyEquivalent: charCode)
     }
 
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    required init(coder: NSCoder) {
+        super.init(coder: coder)
 
         // Should not ever be invoked
     }
 
     deinit {
-        NSUserDefaults.standardUserDefaults().removeObserver(self, forKeyPath: "ShowMenuPercentage")
+        UserDefaults.standard.removeObserver(self, forKeyPath: "ShowMenuPercentage")
     }
 
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "ShowMenuPercentage" {
             setItemText()
         }
     }
 
-    func updateWithDevice(device: Device) {
+    func updateWithDevice(_ device: Device) {
         batteryVC!.displayedDevice = device
 
         setItemText()
     }
 
     func setItemText() {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
+        let userDefaults = UserDefaults.standard
         let device = batteryVC!.displayedDevice!
         var textString = device.name
 
-        let showPercentage = userDefaults.boolForKey("ShowMenuPercentage")
+        let showPercentage = userDefaults.bool(forKey: "ShowMenuPercentage")
         if showPercentage {
-            let digits = device.batteryCapacity.description.characters.map{ Int(String($0)) ?? 0 }
-            let padding = String(count: 2*(3-digits.count), repeatedValue: " " as Character)
+            let digits = device.batteryCapacity.description.map{ Int(String($0)) ?? 0 }
+            let padding = String(repeating: " ", count: 2*(3-digits.count))
             let percentString = "\(padding)\(device.batteryCapacity)% "
 
             textString = percentString + textString

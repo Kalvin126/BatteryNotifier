@@ -6,6 +6,7 @@
 //  Copyright © 2016 Red Panda. All rights reserved.
 //
 
+import Foundation
 import SDMMobileDevice
 
 struct Device : Equatable {
@@ -23,19 +24,21 @@ struct Device : Equatable {
         SDMMD_AMDeviceStartSession(device)
 
         let getValue = { (domain: UnsafePointer<Int8>, key: UnsafePointer<Int8>) -> AnyObject in
-            let cfDomain: CFStringRef = CFStringCreateWithCString(kCFAllocatorDefault, domain, 0)
-            let cfKey: CFStringRef = CFStringCreateWithCString(kCFAllocatorDefault, key, 0)
-            let retVal = SDMMD_AMDeviceCopyValue(device, cfDomain, cfKey)
+            let cfDomain: CFString = CFStringCreateWithCString(kCFAllocatorDefault, domain, 0)
+            let cfKey: CFString = CFStringCreateWithCString(kCFAllocatorDefault, key, 0)
+            guard let device = SDMMD_AMDeviceCopyValue(device, cfDomain, cfKey) else {
+                return "0" as CFString
+            }
 
-            return (retVal != nil ? retVal.takeUnretainedValue() : "0")
+            return device.takeUnretainedValue()
         }
 
         name         = String(getValue("NULL", kDeviceName    ) as! CFString)
         deviceClass  = String(getValue("NULL", kDeviceClass   ) as! CFString)
         serialNumber = String(getValue("NULL", kSerialNumber  ) as! CFString)
 
-        batteryCharging = Bool(getValue(kBatteryDomain, kBatteryIsCharging     ) as! CFBoolean)
-        batteryCapacity =  Int(getValue(kBatteryDomain, kBatteryCurrentCapacity) as! CFNumber )
+        batteryCharging = CFBooleanGetValue((getValue(kBatteryDomain, kBatteryIsCharging) as! CFBoolean))
+        batteryCapacity = ((getValue(kBatteryDomain, kBatteryCurrentCapacity) as! CFNumber) as NSNumber).intValue
 
         SDMMD_AMDeviceStopSession(device)
         SDMMD_AMDeviceDisconnect(device)
