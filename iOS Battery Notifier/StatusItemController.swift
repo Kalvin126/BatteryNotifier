@@ -8,7 +8,7 @@
 
 import Cocoa
 
-final class StatusItemController : NSObject {
+final class StatusItemController: NSObject {
 
     private var statusItem: NSStatusItem
     private let itemView = NSView()
@@ -16,7 +16,9 @@ final class StatusItemController : NSObject {
     private let menu = NotifierMenu(title: "notifierMenu")
     private var batteryViewController: BatteryViewController
 
-    private var updating = false
+    private var isUpdating = false
+
+    // MARK: Init
 
     override init() {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -36,33 +38,41 @@ final class StatusItemController : NSObject {
         statusItem.menu = menu
     }
 
+}
+
+// MARK: - Actions
+extension StatusItemController {
+
     private func updateBatteryViews() {
-        updating = true
+        isUpdating = true
 
         DispatchQueue.global(qos: .default).async {
             let devices = DeviceManager.refreshDevices()
-            guard devices.count > 0 else { self.updating = false; return }
 
-            let lowestDevice = devices.sorted { $0.batteryCapacity < $1.batteryCapacity }.first!
+            guard let lowestCapacityDevice = devices.min(by: { $0.batteryCapacity < $1.batteryCapacity }) else {
+                self.isUpdating = false
+                return
+            }
+            let displayedDevice = self.batteryViewController.displayedDevice
+
             var updateDisplayDevice = false
 
-            let displayedDevice = self.batteryViewController.displayedDevice
-            if  displayedDevice == nil ||
-                displayedDevice!.batteryCapacity > lowestDevice.batteryCapacity ||
-                displayedDevice! == lowestDevice ||
-                devices.contains(displayedDevice!)
-            {
+            if let displayedDevice = displayedDevice,
+                displayedDevice.batteryCapacity > lowestCapacityDevice.batteryCapacity ||
+                    displayedDevice == lowestCapacityDevice ||
+                    devices.contains(displayedDevice) {
                 updateDisplayDevice = true
             }
 
             DispatchQueue.main.async {
+                self.isUpdating = false
+
                 if updateDisplayDevice {
-                    self.batteryViewController.displayedDevice = lowestDevice
+                    self.batteryViewController.displayedDevice = lowestCapacityDevice
                 }
+
                 self.menu.updateBatteryLabels(devices: devices)
             }
-
-            self.updating = false
         }
     }
 
@@ -71,13 +81,16 @@ final class StatusItemController : NSObject {
 
         DarwinNotificationsManager.default
             .observeNotification(forName: "SDMMD_USBMuxListenerDeviceAttachedNotification") {
+                #if DEBUG
                 print("Recieved SDMMD_USBMuxListenerDeviceAttachedNotification")
+                #endif
 
-                if !(self.updating) {
+                if !(self.isUpdating) {
                     self.updateBatteryViews()
                 }
         }
     }
+
 }
 
 // MARK - DeviceManagerDelegate
