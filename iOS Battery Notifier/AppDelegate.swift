@@ -10,9 +10,14 @@ import Cocoa
 import SDMMobileDevice
 
 @NSApplicationMain
-final class AppDelegate: NSObject, NSApplicationDelegate {
+final class AppDelegate: NSObject {
 
     let statusItemController = StatusItemController()
+
+}
+
+// MARK: - NSApplicationDelegate
+extension AppDelegate: NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSUserNotificationCenter.default.delegate = self
@@ -41,6 +46,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
 }
 
+// MARK: - NSUserNotificationCenterDelegate
 extension AppDelegate: NSUserNotificationCenterDelegate {
 
     func userNotificationCenter(_ center: NSUserNotificationCenter, shouldPresent notification: NSUserNotification) -> Bool {
@@ -55,7 +61,6 @@ extension AppDelegate: NSUserNotificationCenterDelegate {
         default:
             break
         }
-
     }
 
 }
