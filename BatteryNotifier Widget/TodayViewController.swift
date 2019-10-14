@@ -19,37 +19,43 @@ class TodayViewController: NSViewController {
     override var nibName: String? {
         return "TodayViewController"
     }
-
-    override init?(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 
-        // TODO: Does this really detect change of NSUserDefaults, withSuite, or both?
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(sharedDefaultsDidChange(_:)), name:NSUserDefaultsDidChangeNotification, object: nil)
+        // TODO: Does this really detect change of UserDefaults, withSuite, or both?
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(sharedDefaultsDidChange(notification:)),
+                                               name: UserDefaults.didChangeNotification,
+                                               object: nil)
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(sharedDefaultsDidChange(_:)), name:NSUserDefaultsDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(sharedDefaultsDidChange(notification:)),
+                                               name: UserDefaults.didChangeNotification,
+                                               object: nil)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-       updateDeviceContent()
+        updateDeviceContent()
     }
 
-
+    @objc
     func sharedDefaultsDidChange(notification: NSNotification) {
         needsUpdate = true
     }
 
+    @discardableResult
     func updateDeviceContent() -> Bool {
         guard needsUpdate else { return false }
 
-        let sharedDefaults = NSUserDefaults(suiteName: "group.redpanda.BatteryNotifier")!
+        let sharedDefaults = UserDefaults(suiteName: "group.redpanda.BatteryNotifier")!
 
-        if let devicesDict = sharedDefaults.dictionaryForKey("Devices") {
+        if let devicesDict = sharedDefaults.dictionary(forKey: "Devices") {
             listViewController.contents = Array(devicesDict.values)
 
             return true
@@ -63,7 +69,7 @@ class TodayViewController: NSViewController {
 extension TodayViewController : NCWidgetProviding {
 
     func widgetPerformUpdateWithCompletionHandler(completionHandler: ((NCUpdateResult) -> Void)!) {
-        completionHandler( updateDeviceContent() ? .NewData : .NoData )
+        completionHandler( updateDeviceContent() ? .newData : .noData )
     }
 
     func widgetMarginInsetsForProposedMarginInsets(defaultMarginInset: NSEdgeInsets) -> NSEdgeInsets {
@@ -76,7 +82,7 @@ extension TodayViewController : NCWidgetProviding {
 // MARK: - NCWidgetListViewDelegate
 extension TodayViewController : NCWidgetListViewDelegate {
 
-    func widgetList(list: NCWidgetListViewController!, viewControllerForRow row: Int) -> NSViewController! {
+    func widgetList(_ list: NCWidgetListViewController, viewControllerForRow row: Int) -> NSViewController {
         let listRow = ListRowViewController()
         listRow.representedObject = list.contents[row]
 

@@ -19,10 +19,10 @@ class StatusItemController : NSObject {
     private var updating = false
 
     override init() {
-        statusItem = NSStatusBar.systemStatusBar().statusItemWithLength(NSVariableStatusItemLength)
+        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
         let storyboard = NSStoryboard(name: "Main", bundle: nil)
-        batteryVC = storyboard.instantiateControllerWithIdentifier("batteryVC") as! BatteryVC
+        batteryVC = storyboard.instantiateController(withIdentifier: "batteryVC") as! BatteryVC
 
         super.init()
 
@@ -30,7 +30,7 @@ class StatusItemController : NSObject {
 
         batteryVC.view.frame = statusItem.button!.frame  // This force loads view as well
 
-        statusItem.button?.addSubview(batteryVC.view, positioned: .Above, relativeTo: nil)
+        statusItem.button?.addSubview(batteryVC.view, positioned: .above, relativeTo: nil)
 
         statusItem.highlightMode = true
         statusItem.menu = menu
@@ -38,12 +38,12 @@ class StatusItemController : NSObject {
 
     private func updateBatteryViews() {
         updating = true
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+
+        DispatchQueue.global(qos: .default).async {
             let devices = DeviceManager.refreshDevices()
             guard devices.count > 0 else { self.updating = false; return }
 
-            let lowestDevice = (devices.sort{ $0.batteryCapacity < $1.batteryCapacity }).first!
+            let lowestDevice = devices.sorted { $0.batteryCapacity < $1.batteryCapacity }.first!
             var updateDisplayDevice = false
 
             let displayedDevice = self.batteryVC.displayedDevice
@@ -55,11 +55,11 @@ class StatusItemController : NSObject {
                 updateDisplayDevice = true
             }
 
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 if updateDisplayDevice {
                     self.batteryVC.displayedDevice = lowestDevice
                 }
-                self.menu.updateBatteryLabels(devices)
+                self.menu.updateBatteryLabels(devices: devices)
             }
 
             self.updating = false
@@ -70,7 +70,8 @@ class StatusItemController : NSObject {
         NSLog("StatusItemController: Listening for iOS devices...")
 
         let darwinNotificationCenter = DarwinNotificationsManager.sharedInstance()
-        darwinNotificationCenter.registerForNotificationName("SDMMD_USBMuxListenerDeviceAttachedNotification"){
+        darwinNotificationCenter?.register(forNotificationName: "SDMMD_USBMuxListenerDeviceAttachedNotification") {
+            print("Recieved SDMMD_USBMuxListenerDeviceAttachedNotification")
             if !(self.updating) {
                 self.updateBatteryViews()
             }
@@ -82,11 +83,12 @@ extension StatusItemController: DeviceManagerDelegate {
 
     func expirationMetForDevice(serial: String) {
         if batteryVC.displayedDevice?.serialNumber == serial {
-            let sortedDevices = DeviceManager.getAllDevices().sort { $0.batteryCapacity < $1.batteryCapacity }
+            let sortedDevices = DeviceManager.getAllDevices()
+                .sorted { $0.batteryCapacity < $1.batteryCapacity }
             batteryVC.displayedDevice = sortedDevices.first
         }
 
-        menu.invalidateDeviceItem(serial)
+        menu.invalidateDeviceItem(serial: serial)
     }
 
 }
