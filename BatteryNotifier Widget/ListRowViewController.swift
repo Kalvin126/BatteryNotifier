@@ -8,14 +8,14 @@
 
 import Cocoa
 
-class ListRowViewController: NSViewController {
+final class ListRowViewController: NSViewController {
 
     @IBOutlet weak var deviceImageView: NSImageView!
     @IBOutlet weak var nameField: NSTextField!
     @IBOutlet weak var batteryLevelField: NSTextField!
     @IBOutlet weak var batteryView: NSView!
 
-    private var batteryVC: BatteryVC?
+    private var batteryViewController: BatteryViewController?
     
     override var nibName: String? {
         return "ListRowViewController"
@@ -24,19 +24,26 @@ class ListRowViewController: NSViewController {
     override func loadView() {
         super.loadView()
 
-        let storyboard = NSStoryboard(name: "Main", bundle: nil)
-        batteryVC = storyboard.instantiateController(withIdentifier: "batteryVC") as? BatteryVC
-        batteryView.addSubview(batteryVC!.view, positioned: .above, relativeTo: nil)
+        guard let controller = MainStoryBoard.instantiateController(with: .batteryViewController) as? BatteryViewController else {
+            fatalError(#function + " - Could not instantiate BatteryViewController")
+        }
 
-        let device = Device(withDictionary: representedObject as! [String : AnyObject])
+        batteryViewController = controller
+
+        batteryView.addSubview(batteryViewController!.view, positioned: .above, relativeTo: nil)
+
+        guard let dictionary = representedObject as? [String : AnyObject],
+            let device = Device(dictionary: dictionary) else { return }
+
 
         let image = NSImage(named: device.deviceClass) ?? NSImage(named: "iPhone")
         deviceImageView.image = image
         nameField.cell?.title = device.name
 
         batteryLevelField.cell?.title = "\(device.batteryCapacity)%"
-        batteryVC?.displayedDevice = device
-        batteryVC?.whiteThemeOnly = true
+
+        batteryViewController?.displayedDevice = device
+        batteryViewController?.whiteThemeOnly = true
     }
 
     override func viewDidLayout() {
@@ -44,7 +51,7 @@ class ListRowViewController: NSViewController {
 
         var battFrame = batteryView.frame
         battFrame.origin = .zero
-        batteryVC!.view.frame = battFrame
+        batteryViewController!.view.frame = battFrame
     }
 
 }

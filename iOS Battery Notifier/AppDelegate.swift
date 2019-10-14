@@ -10,28 +10,34 @@ import Cocoa
 import SDMMobileDevice
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
+final class AppDelegate: NSObject {
 
     let statusItemController = StatusItemController()
+
+}
+
+// MARK: - NSApplicationDelegate
+extension AppDelegate: NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSUserNotificationCenter.default.delegate = self
 
         let userDefaults = UserDefaults.standard
 
-        if !(userDefaults.dictionaryRepresentation().keys.contains("NotificationInterval")) {
+        if !(userDefaults.dictionaryRepresentation().keys.contains(ConfigKey.notificationInterval.id)) {
             // Default values
-            userDefaults.set(true, forKey: "LowBatteryNotificationsOn")
-            userDefaults.set(false, forKey: "ShowMenuPercentage")
-            userDefaults.set(2.0, forKey: "NotificationInterval")
-            userDefaults.set(30, forKey: "BatteryThreshold")
-            userDefaults.set(10, forKey: "SnoozeInterval")
+            userDefaults.set(true, forKey: .lowBatteryNotificationsOn)
+            userDefaults.set(false, forKey: .showMenuPercentage)
+            userDefaults.set(2.0, forKey: .notificationInterval)
+            userDefaults.set(30, forKey: .batteryThreshold)
+            userDefaults.set(10, forKey: .snoozeInterval)
         }
 
         // Reset device history
-        let sharedDefaults = UserDefaults(suiteName: "group.redpanda.BatteryNotifier")!
-        sharedDefaults.removeObject(forKey: "Devices")
-        sharedDefaults.synchronize()
+        if let sharedDefaults = UserDefaults.sharedSuite {
+            sharedDefaults.removeObject(forKey: .devices)
+            sharedDefaults.synchronize()
+        }
 
         InitializeSDMMobileDevice()
         statusItemController.startMonitoring()
@@ -41,6 +47,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 }
 
+// MARK: - NSUserNotificationCenterDelegate
 extension AppDelegate: NSUserNotificationCenterDelegate {
 
     func userNotificationCenter(_ center: NSUserNotificationCenter, shouldPresent notification: NSUserNotification) -> Bool {
@@ -55,7 +62,6 @@ extension AppDelegate: NSUserNotificationCenterDelegate {
         default:
             break
         }
-
     }
 
 }

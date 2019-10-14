@@ -13,7 +13,7 @@
     NSMutableDictionary * handlers;
 }
 
-+ (instancetype)sharedInstance {
++ (instancetype)defaultCenter {
     static id instance = NULL;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -30,7 +30,7 @@
     return self;
 }
 
-- (void)registerForNotificationName:(NSString *)name callback:(void (^)(void))callback {
+- (void)observeNotificationForName:(NSString *)name callback:(void (^)(void))callback {
     handlers[name] = callback;
     CFNotificationCenterRef center = CFNotificationCenterGetLocalCenter();
     CFNotificationCenterAddObserver(center, (__bridge const void *)(self), defaultNotificationCallback, (__bridge CFStringRef)name, NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
@@ -53,7 +53,7 @@ void defaultNotificationCallback (CFNotificationCenterRef center,
                                   CFDictionaryRef userInfo)
 {
     NSString *identifier = (__bridge NSString *)name;
-    [[DarwinNotificationsManager sharedInstance] notificationCallbackReceivedWithName:identifier];
+    [[DarwinNotificationsManager defaultCenter] notificationCallbackReceivedWithName:identifier];
 }
 
 

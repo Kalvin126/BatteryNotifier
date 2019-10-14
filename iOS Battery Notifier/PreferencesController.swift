@@ -8,7 +8,12 @@
 
 import Cocoa
 
-class PreferencesController: NSViewController {
+final class PreferencesController: NSViewController {
+
+    private var userDefaults: UserDefaults { .standard }
+    private var bundle: Bundle { .main }
+
+    // MARK: Subviews
 
     @IBOutlet weak var versionField: NSTextField!
 
@@ -24,75 +29,82 @@ class PreferencesController: NSViewController {
     @IBOutlet weak var snoozeIntervalField: NSTextField!
     @IBOutlet weak var snoozeIntervalStepper: NSStepper!
 
+    // MARK: NSViewController
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let version = Bundle.main.infoDictionary!["CFBundleShortVersionString"]!
+        let version = bundle.infoDictionary!["CFBundleShortVersionString"]!
         versionField.cell?.title = "v\(version)"
 
         let userDefaults = UserDefaults.standard
 
-        showPercentageCheckBox.state = (userDefaults.bool(forKey: "ShowMenuPercentage") ? .on : .off)
-        lowBatteryNotificationsCheckBox.state = (userDefaults.bool(forKey: "LowBatteryNotificationsOn") ? .on : .off)
+        showPercentageCheckBox.state = (userDefaults.bool(forKey: .showMenuPercentage) ? .on : .off)
+        lowBatteryNotificationsCheckBox.state = (userDefaults.bool(forKey: .lowBatteryNotificationsOn) ? .on : .off)
 
-        lowBatteryThresholdField.cell?.title = "\(userDefaults.integer(forKey: "BatteryThreshold"))%"
-        lowBatteryThresholdStepper.integerValue = userDefaults.integer(forKey: "BatteryThreshold")
+        let batteryThreshold = userDefaults.integer(forKey: .batteryThreshold)
+        lowBatteryThresholdField.cell?.title = "\(batteryThreshold)%"
+        lowBatteryThresholdStepper.integerValue = batteryThreshold
 
-        notificationIntervalField.cell?.title = String(format: "%.2f", userDefaults.double(forKey: "NotificationInterval"))
-        notificationIntervalStepper.doubleValue = userDefaults.double(forKey: "NotificationInterval")
+        notificationIntervalField.cell?.title = String(format: "%.2f", userDefaults.double(forKey: .notificationInterval))
+        notificationIntervalStepper.doubleValue = userDefaults.double(forKey: .notificationInterval)
 
-        snoozeIntervalField.cell?.title = "\(userDefaults.integer(forKey: "SnoozeInterval"))"
-        snoozeIntervalStepper.integerValue = userDefaults.integer(forKey: "SnoozeInterval")
+        snoozeIntervalField.cell?.title = "\(userDefaults.integer(forKey: .snoozeInterval))"
+        snoozeIntervalStepper.integerValue = userDefaults.integer(forKey: .snoozeInterval)
     }
 
-    // MARK: IBActions
+}
+
+// MARK: - Events
+extension PreferencesController {
 
     @IBAction func toggledMenuPercentage(sender: NSButton) {
         let userDefaults = UserDefaults.standard
         let on = (sender.state == .on ? true : false)
 
-        userDefaults.set(on, forKey: "ShowMenuPercentage")
+        userDefaults.set(on, forKey: .showMenuPercentage)
     }
 
     @IBAction func toggledLowBatteryNotifications(sender: NSButton) {
-        let userDefaults = UserDefaults.standard
-        let on = (sender.state == .on ? true : false)
+        let isOn = sender.state == .on
 
-        userDefaults.set(on, forKey: "LowBatteryNotificationsOn")
+        userDefaults.set(isOn, forKey: .lowBatteryNotificationsOn)
     }
 
     @IBAction func clickedLowBatteryThreshholdStepper(sender: NSStepper) {
-        let userDefaults = UserDefaults.standard
         let newThreshold = sender.integerValue
 
         lowBatteryThresholdField.cell?.title = "\(newThreshold)%"
 
-        userDefaults.set(newThreshold, forKey: "BatteryThreshold")
+        userDefaults.set(newThreshold, forKey: .batteryThreshold)
     }
 
     @IBAction func clickedNotificationIntervalStepper(sender: NSStepper) {
-        let userDefaults = UserDefaults.standard
         let newInterval = sender.doubleValue
 
         notificationIntervalField.cell?.title = String(format: "%.2f", newInterval)
 
-        userDefaults.set(newInterval, forKey: "NotificationInterval")
+        userDefaults.set(newInterval, forKey: .notificationInterval)
     }
 
     @IBAction func clickedSnoozeIntervalIntervalStepper(sender: NSStepper) {
-        let userDefaults = UserDefaults.standard
         let newInterval = sender.integerValue
 
         snoozeIntervalField.cell?.title = "\(newInterval)"
 
-        userDefaults.set(newInterval, forKey: "SnoozeInterval")
+        userDefaults.set(newInterval, forKey: .snoozeInterval)
     }
 
     @IBAction func clickedGitHub(sender: NSButton) {
-        NSWorkspace.shared.open(URL(string: "https://GitHub.com/Kalvin126/BatteryNotifier")!)
+        guard let url = URL(string: "https://GitHub.com/Kalvin126/BatteryNotifier") else { return }
+
+        NSWorkspace.shared.open(url)
     }
 
     @IBAction func clickedLinkedIn(sender: NSButton) {
-        NSWorkspace.shared.open(URL(string: "https://LinkedIn.com/in/KalvinLoc")!)
+        guard let url = URL(string: "https://LinkedIn.com/in/KalvinLoc") else { return }
+
+        NSWorkspace.shared.open(url)
     }
+
 }

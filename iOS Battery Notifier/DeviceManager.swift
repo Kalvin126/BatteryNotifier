@@ -10,10 +10,12 @@ import Cocoa
 import SDMMobileDevice
 
 protocol DeviceManagerDelegate: class {
-    func expirationMetForDevice(serial: String)
+
+    func deviceManager(_ manager: DeviceManager, expirationMetForDeviceWith serial: String)
+
 }
 
-class DeviceManager : NSObject {
+final class DeviceManager : NSObject {
 
     static let shared = DeviceManager()
     weak var delegate: DeviceManagerDelegate?
@@ -33,7 +35,7 @@ class DeviceManager : NSObject {
             let rawDevice = unsafeBitCast(iosDev, to: SDMMD_AMDeviceRef.self)
             guard SDMMD_AMDeviceIsAttached(rawDevice) else { continue }
 
-            let newDevice = Device(withDevice: rawDevice)
+            let newDevice = Device(device: rawDevice)
             guard newDevice.name != "0" && newDevice.serialNumber != "0" else { continue }
 
             NSLog("DeviceManager: Fetched \(newDevice.name) at \(newDevice.batteryCapacity)")
@@ -57,11 +59,11 @@ class DeviceManager : NSObject {
     }
 
     static private func recordDevice(_ device: Device) {
-        let deviceSnoozed = shared.devices[device.serialNumber]?.snoozed ?? false
+        let deviceSnoozed = shared.devices[device.serialNumber]?.isSnoozed ?? false
         shared.devices[device.serialNumber] = device
-        shared.devices[device.serialNumber]?.snoozed = deviceSnoozed
+        shared.devices[device.serialNumber]?.isSnoozed = deviceSnoozed
 
-        let sharedDefaults = UserDefaults(suiteName: "group.redpanda.BatteryNotifier")!
+        let sharedDefaults = UserDefaults.sharedSuite!
         var devicesDict = sharedDefaults.dictionary(forKey: "Devices") ?? [String : AnyObject]()
         var deviceDict = [String : AnyObject]()
 
@@ -69,7 +71,7 @@ class DeviceManager : NSObject {
         deviceDict["Class"] = device.deviceClass as AnyObject
         deviceDict["Serial"] = device.serialNumber as AnyObject
 
-        deviceDict["BatteryCharging"] = device.batteryCharging as AnyObject
+        deviceDict["BatteryCharging"] = device.isBatteryCharging as AnyObject
         deviceDict["LastKnownBatteryLevel"] = NSNumber(value: device.batteryCapacity)
 
         devicesDict[device.serialNumber] = deviceDict
@@ -83,15 +85,15 @@ class DeviceManager : NSObject {
         super.init()
 
         // Observe LowBatteryNotificationsOn changes
-        UserDefaults.standard.addObserver(self, forKeyPath: "LowBatteryNotificationsOn", options: .new, context: nil)
+        UserDefaults.standard.addObserver(self, forKeyPath: ConfigKey.lowBatteryNotificationsOn.id, options: .new, context: nil)
     }
 
     deinit {
-        UserDefaults.standard.removeObserver(self, forKeyPath: "LowBatteryNotificationsOn")
+        UserDefaults.standard.removeObserver(self, forKeyPath: ConfigKey.lowBatteryNotificationsOn.id)
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == "LowBatteryNotificationsOn" {
+        if keyPath == ConfigKey.lowBatteryNotificationsOn.id {
             // Remove all pending notifications if turned off, notifications re enabled upon device re-connection
             if let newChange = change?[.newKey] as? Int,
                 newChange == 0 {
@@ -104,16 +106,16 @@ class DeviceManager : NSObject {
         let userDefaults = UserDefaults.standard
 
         // Do not need to send notification if below threshold, is charging or notifications not on
-        guard !(device.batteryCharging) ||
-            device.batteryCapacity <= userDefaults.integer(forKey: "BatteryThreshold") else {
+        guard !(device.isBatteryCharging) ||
+            device.batteryCapacity <= userDefaults.integer(forKey: .batteryThreshold) else {
             removeLowBatteryNotification(forSerial: device.serialNumber)
             return
         }
 
         if  deviceNotificationTimers[device.serialNumber] == nil &&
-            device.batteryCapacity <= userDefaults.integer(forKey: "BatteryThreshold") &&
-            devices[device.serialNumber]!.snoozed == false &&
-            userDefaults.bool(forKey: "LowBatteryNotificationsOn") {
+            device.batteryCapacity <= userDefaults.integer(forKey: .batteryThreshold) &&
+            devices[device.serialNumber]!.isSnoozed == false &&
+            userDefaults.bool(forKey: .lowBatteryNotificationsOn) {
 
             updateLowBatteryNotificationTimer(forSerial: device.serialNumber)
         }
@@ -123,10 +125,10 @@ class DeviceManager : NSObject {
     private func updateLowBatteryNotificationTimer(forSerial serial: String) {
         let userDefaults = UserDefaults.standard
 
-        guard !(devices[serial]!.batteryCharging) else { return }
+        guard !(devices[serial]!.isBatteryCharging) else { return }
 
         if deviceNotificationTimers[serial] == nil {
-            let interval = userDefaults.double(forKey: "NotificationInterval")*60.0
+            let interval = userDefaults.double(forKey: .notificationInterval)*60.0
             let timer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(sendLowBatteryNotification(timer:)), userInfo: serial, repeats: true)
             
             timer.fire()
@@ -135,8 +137,8 @@ class DeviceManager : NSObject {
     }
 
     @objc func sendLowBatteryNotification(timer: Timer) {
-        let sharedDefaults = UserDefaults(suiteName: "group.redpanda.BatteryNotifier")!
-        let devicesDict = sharedDefaults.dictionary(forKey: "Devices")!
+        let sharedDefaults = UserDefaults.sharedSuite!
+        let devicesDict = sharedDefaults.dictionary(forKey: .devices)!
         let deviceDict = devicesDict[timer.userInfo as! String] as! [String : AnyObject]
 
         let userNotif = NSUserNotification()
@@ -155,7 +157,7 @@ class DeviceManager : NSObject {
     }
 
     func snoozeDevice(deviceInfo: [String : AnyObject]) {
-        devices[deviceInfo["Serial"] as! String]?.snoozed = true
+        devices[deviceInfo["Serial"] as! String]?.isSnoozed = true
         removeLowBatteryNotification(forSerial: deviceInfo["Serial"] as! String)
 
         let userDefaults = UserDefaults.standard
@@ -163,7 +165,7 @@ class DeviceManager : NSObject {
 
         // dispatch re-enabling of notification timer after snooze interval
         DispatchQueue.main.asyncAfter(deadline: deadline) {
-            self.devices[deviceInfo["Serial"] as! String]?.snoozed = false
+            self.devices[deviceInfo["Serial"] as! String]?.isSnoozed = false
             self.updateLowBatteryNotificationTimer(forSerial: deviceInfo["Serial"] as! String)
         }
     }
@@ -196,15 +198,15 @@ class DeviceManager : NSObject {
         removeLowBatteryNotification(forSerial: deviceSerial)
 
         // remove from sharedDefaults
-        let sharedDefaults = UserDefaults(suiteName: "group.redpanda.BatteryNotifier")!
-        var devicesDict = sharedDefaults.dictionary(forKey: "Devices")! // Device has been recorded before so deviceDict must exist
+        let sharedDefaults = UserDefaults.sharedSuite!
+        var devicesDict = sharedDefaults.dictionary(forKey: .devices)! // Device has been recorded before so deviceDict must exist
 
         devicesDict.removeValue(forKey: deviceSerial)
         
-        sharedDefaults.set(devicesDict, forKey: "Devices")
+        sharedDefaults.set(devicesDict, forKey: .devices)
         sharedDefaults.synchronize()
 
-        delegate?.expirationMetForDevice(serial: deviceSerial)
+        delegate?.deviceManager(self, expirationMetForDeviceWith: deviceSerial)
     }
 
 }
