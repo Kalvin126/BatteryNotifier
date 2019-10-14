@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class NotifierMenu: NSMenu {
+final class NotifierMenu: NSMenu {
 
     private var menuItems = [String : DeviceMenuItem]()  // Serial - menuItem
     var preferenceController: NSWindowController?

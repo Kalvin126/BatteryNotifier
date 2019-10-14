@@ -9,7 +9,7 @@
 import Cocoa
 import NotificationCenter
 
-class TodayViewController: NSViewController {
+final class TodayViewController: NSViewController {
 
     @IBOutlet var listViewController: NCWidgetListViewController!
     private var needsUpdate = false

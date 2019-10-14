@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class ListRowViewController: NSViewController {
+final class ListRowViewController: NSViewController {
 
     @IBOutlet weak var deviceImageView: NSImageView!
     @IBOutlet weak var nameField: NSTextField!

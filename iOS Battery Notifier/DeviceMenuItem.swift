@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class DeviceMenuItem: NSMenuItem {
+final class DeviceMenuItem: NSMenuItem {
 
     private var batteryVC: BatteryVC?
     private var textField = NSTextField()

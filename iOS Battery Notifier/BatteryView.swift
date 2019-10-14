@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class BatteryView : NSView {
+final class BatteryView : NSView {
 
     @IBOutlet weak var nub: NSView!
     @IBOutlet weak var body: NSView!

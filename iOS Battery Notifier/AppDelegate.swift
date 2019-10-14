@@ -10,7 +10,7 @@ import Cocoa
 import SDMMobileDevice
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
+final class AppDelegate: NSObject, NSApplicationDelegate {
 
     let statusItemController = StatusItemController()
 

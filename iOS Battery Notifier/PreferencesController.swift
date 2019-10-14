@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class PreferencesController: NSViewController {
+final class PreferencesController: NSViewController {
 
     @IBOutlet weak var versionField: NSTextField!
 

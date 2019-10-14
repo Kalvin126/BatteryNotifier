@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class BatteryVC: NSViewController {
+final class BatteryVC: NSViewController {
 
     @IBOutlet private var batteryView: BatteryView!
 

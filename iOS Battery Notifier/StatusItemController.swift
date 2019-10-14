@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class StatusItemController : NSObject {
+final class StatusItemController : NSObject {
 
     private var statusItem: NSStatusItem
     private let itemView = NSView()

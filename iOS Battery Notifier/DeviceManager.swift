@@ -13,7 +13,7 @@ protocol DeviceManagerDelegate: class {
     func expirationMetForDevice(serial: String)
 }
 
-class DeviceManager : NSObject {
+final class DeviceManager : NSObject {
 
     static let shared = DeviceManager()
     weak var delegate: DeviceManagerDelegate?
