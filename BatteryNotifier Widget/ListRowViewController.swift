@@ -15,7 +15,7 @@ final class ListRowViewController: NSViewController {
     @IBOutlet weak var batteryLevelField: NSTextField!
     @IBOutlet weak var batteryView: NSView!
 
-    private var batteryVC: BatteryVC?
+    private var batteryViewController: BatteryViewController?
     
     override var nibName: String? {
         return "ListRowViewController"
@@ -25,8 +25,8 @@ final class ListRowViewController: NSViewController {
         super.loadView()
 
         let storyboard = NSStoryboard(name: "Main", bundle: nil)
-        batteryVC = storyboard.instantiateController(withIdentifier: "batteryVC") as? BatteryVC
-        batteryView.addSubview(batteryVC!.view, positioned: .above, relativeTo: nil)
+        batteryViewController = storyboard.instantiateController(withIdentifier: "batteryViewController") as? BatteryViewController
+        batteryView.addSubview(batteryViewController!.view, positioned: .above, relativeTo: nil)
 
         guard let dictionary = representedObject as? [String : AnyObject],
             let device = Device(dictionary: dictionary) else { return }
@@ -38,8 +38,8 @@ final class ListRowViewController: NSViewController {
 
         batteryLevelField.cell?.title = "\(device.batteryCapacity)%"
 
-        batteryVC?.displayedDevice = device
-        batteryVC?.whiteThemeOnly = true
+        batteryViewController?.displayedDevice = device
+        batteryViewController?.whiteThemeOnly = true
     }
 
     override func viewDidLayout() {
@@ -47,7 +47,7 @@ final class ListRowViewController: NSViewController {
 
         var battFrame = batteryView.frame
         battFrame.origin = .zero
-        batteryVC!.view.frame = battFrame
+        batteryViewController!.view.frame = battFrame
     }
 
 }

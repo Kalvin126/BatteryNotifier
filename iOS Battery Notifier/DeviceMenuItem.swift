@@ -10,20 +10,20 @@ import Cocoa
 
 final class DeviceMenuItem: NSMenuItem {
 
-    private var batteryVC: BatteryVC?
+    private var batteryViewController: BatteryViewController?
     private var textField = NSTextField()
 
     init(withDevice device: Device) {
         super.init(title: "", action: nil, keyEquivalent: "")
 
         let storyboard = NSStoryboard(name: "Main", bundle: nil)
-        batteryVC = storyboard.instantiateController(withIdentifier: "batteryVC") as? BatteryVC
+        batteryViewController = storyboard.instantiateController(withIdentifier: "batteryViewController") as? BatteryViewController
 
         let pad: CGFloat = 18.0
         let spacing: CGFloat = 2.0
-        batteryVC!.view.frame = NSMakeRect(pad,0,30,22)
+        batteryViewController!.view.frame = NSMakeRect(pad,0,30,22)
 
-        textField.frame = NSMakeRect(pad+batteryVC!.view.frame.size.width+spacing,3,125,21)
+        textField.frame = NSMakeRect(pad+batteryViewController!.view.frame.size.width+spacing,3,125,21)
         textField.backgroundColor = NSColor.clear
         textField.font = NSFont.systemFont(ofSize: 14.0)
         textField.alignment = .left
@@ -31,7 +31,7 @@ final class DeviceMenuItem: NSMenuItem {
         textField.isSelectable = false
 
         let deviceView = NSView(frame: NSMakeRect(0,0,155,22))
-        deviceView.addSubview(batteryVC!.view)
+        deviceView.addSubview(batteryViewController!.view)
         deviceView.addSubview(textField)
         view = deviceView
 
@@ -61,14 +61,14 @@ final class DeviceMenuItem: NSMenuItem {
     }
 
     func updateWithDevice(_ device: Device) {
-        batteryVC!.displayedDevice = device
+        batteryViewController!.displayedDevice = device
 
         setItemText()
     }
 
     func setItemText() {
         let userDefaults = UserDefaults.standard
-        let device = batteryVC!.displayedDevice!
+        let device = batteryViewController!.displayedDevice!
         var textString = device.name
 
         let showPercentage = userDefaults.bool(forKey: "ShowMenuPercentage")

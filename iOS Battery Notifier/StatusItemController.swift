@@ -14,7 +14,7 @@ final class StatusItemController : NSObject {
     private let itemView = NSView()
 
     private let menu = NotifierMenu(title: "notifierMenu")
-    private var batteryVC: BatteryVC
+    private var batteryViewController: BatteryViewController
 
     private var updating = false
 
@@ -22,15 +22,15 @@ final class StatusItemController : NSObject {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
         let storyboard = NSStoryboard(name: "Main", bundle: nil)
-        batteryVC = storyboard.instantiateController(withIdentifier: "batteryVC") as! BatteryVC
+        batteryViewController = storyboard.instantiateController(withIdentifier: "BatteryViewController") as! BatteryViewController
 
         super.init()
 
         statusItem.length = 30.0
 
-        batteryVC.view.frame = statusItem.button!.frame  // This force loads view as well
+        batteryViewController.view.frame = statusItem.button!.frame  // This force loads view as well
 
-        statusItem.button?.addSubview(batteryVC.view, positioned: .above, relativeTo: nil)
+        statusItem.button?.addSubview(batteryViewController.view, positioned: .above, relativeTo: nil)
 
         statusItem.highlightMode = true
         statusItem.menu = menu
@@ -46,7 +46,7 @@ final class StatusItemController : NSObject {
             let lowestDevice = devices.sorted { $0.batteryCapacity < $1.batteryCapacity }.first!
             var updateDisplayDevice = false
 
-            let displayedDevice = self.batteryVC.displayedDevice
+            let displayedDevice = self.batteryViewController.displayedDevice
             if  displayedDevice == nil ||
                 displayedDevice!.batteryCapacity > lowestDevice.batteryCapacity ||
                 displayedDevice! == lowestDevice ||
@@ -57,7 +57,7 @@ final class StatusItemController : NSObject {
 
             DispatchQueue.main.async {
                 if updateDisplayDevice {
-                    self.batteryVC.displayedDevice = lowestDevice
+                    self.batteryViewController.displayedDevice = lowestDevice
                 }
                 self.menu.updateBatteryLabels(devices: devices)
             }

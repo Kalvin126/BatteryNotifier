@@ -10,7 +10,7 @@
 		860B0C9E1C9CD61000ED63B7 /* BatteryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860B0C9D1C9CD61000ED63B7 /* BatteryView.swift */; };
 		860B0CA21C9DD22E00ED63B7 /* NotifierMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860B0CA11C9DD22E00ED63B7 /* NotifierMenu.swift */; };
 		8619923C1CA5F3E200181DF7 /* BatteryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860B0C9D1C9CD61000ED63B7 /* BatteryView.swift */; };
-		8619923D1CA5F3E900181DF7 /* BatteryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86FB9C0B1C9C83A4000330CD /* BatteryVC.swift */; };
+		8619923D1CA5F3E900181DF7 /* BatteryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86FB9C0B1C9C83A4000330CD /* BatteryViewController.swift */; };
 		861992401CA5F40F00181DF7 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8619923F1CA5F40F00181DF7 /* Device.swift */; };
 		861992411CA5F44000181DF7 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8619923F1CA5F40F00181DF7 /* Device.swift */; };
 		861992421CA5FA6B00181DF7 /* SDMMobileDevice.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86BB7DE01CA1D3B200EA3503 /* SDMMobileDevice.framework */; };
@@ -35,7 +35,7 @@
 		86BB7DE31CA1D3E800EA3503 /* SDMMobileDevice.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 86BB7DE01CA1D3B200EA3503 /* SDMMobileDevice.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		86BB7DE51CA1E18100EA3503 /* DeviceMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BB7DE41CA1E18100EA3503 /* DeviceMenuItem.swift */; };
 		86BB7DEA1CA2124400EA3503 /* DarwinNotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 86BB7DE91CA2124400EA3503 /* DarwinNotificationsManager.m */; };
-		86FB9C0C1C9C83A4000330CD /* BatteryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86FB9C0B1C9C83A4000330CD /* BatteryVC.swift */; };
+		86FB9C0C1C9C83A4000330CD /* BatteryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86FB9C0B1C9C83A4000330CD /* BatteryViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,7 +100,7 @@
 		86BB7DE71CA2124400EA3503 /* iOS Battery Notifier-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iOS Battery Notifier-Bridging-Header.h"; sourceTree = "<group>"; };
 		86BB7DE81CA2124400EA3503 /* DarwinNotificationsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DarwinNotificationsManager.h; sourceTree = "<group>"; };
 		86BB7DE91CA2124400EA3503 /* DarwinNotificationsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DarwinNotificationsManager.m; sourceTree = "<group>"; };
-		86FB9C0B1C9C83A4000330CD /* BatteryVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatteryVC.swift; sourceTree = "<group>"; };
+		86FB9C0B1C9C83A4000330CD /* BatteryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatteryViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,7 +230,7 @@
 			isa = PBXGroup;
 			children = (
 				868E5EBD1C98E721001A68E6 /* StatusItemController.swift */,
-				86FB9C0B1C9C83A4000330CD /* BatteryVC.swift */,
+				86FB9C0B1C9C83A4000330CD /* BatteryViewController.swift */,
 				86549D661CA274BE00B7D5ED /* PreferencesController.swift */,
 			);
 			name = Controller;
@@ -369,7 +369,7 @@
 				8619923C1CA5F3E200181DF7 /* BatteryView.swift in Sources */,
 				864A09BE1CA50D2900656F28 /* TodayViewController.swift in Sources */,
 				866368102354000700E3D59A /* Notification.swift in Sources */,
-				8619923D1CA5F3E900181DF7 /* BatteryVC.swift in Sources */,
+				8619923D1CA5F3E900181DF7 /* BatteryViewController.swift in Sources */,
 				864A09C01CA50D2900656F28 /* ListRowViewController.swift in Sources */,
 				861992411CA5F44000181DF7 /* Device.swift in Sources */,
 			);
@@ -386,7 +386,7 @@
 				860B0C9E1C9CD61000ED63B7 /* BatteryView.swift in Sources */,
 				868E5EE41C9B2150001A68E6 /* DeviceManager.swift in Sources */,
 				868E5EBE1C98E721001A68E6 /* StatusItemController.swift in Sources */,
-				86FB9C0C1C9C83A4000330CD /* BatteryVC.swift in Sources */,
+				86FB9C0C1C9C83A4000330CD /* BatteryViewController.swift in Sources */,
 				8663680F2353FE7C00E3D59A /* Notification.swift in Sources */,
 				868E5EA61C98E19D001A68E6 /* AppDelegate.swift in Sources */,
 				861992401CA5F40F00181DF7 /* Device.swift in Sources */,
