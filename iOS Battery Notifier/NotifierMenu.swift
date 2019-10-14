@@ -103,9 +103,11 @@ extension NotifierMenu {
 
     @objc func clickedPreferences(sender: NSMenuItem) {
         if preferenceController == nil {
-            let storyboard = NSStoryboard(name: "Main", bundle: nil)
-            preferenceController = storyboard.instantiateController(withIdentifier: "preferencesController") as? NSWindowController
-            preferenceController?.window?.delegate = self
+            guard let controller = MainStoryBoard.instantiateController(with: .batteryViewController) as? NSWindowController else {
+                fatalError(#function + " - Could not instantiate PreferenceViewController")
+            }
+
+            controller.window?.delegate = self
         }
 
         preferenceController?.window?.makeKeyAndOrderFront(nil)

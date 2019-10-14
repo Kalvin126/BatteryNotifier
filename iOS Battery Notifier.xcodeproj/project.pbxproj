@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		860B0C9E1C9CD61000ED63B7 /* BatteryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860B0C9D1C9CD61000ED63B7 /* BatteryView.swift */; };
 		860B0CA21C9DD22E00ED63B7 /* NotifierMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860B0CA11C9DD22E00ED63B7 /* NotifierMenu.swift */; };
+		8611A5C3235444FA00D956C6 /* NSStoryboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8611A5C2235444FA00D956C6 /* NSStoryboard.swift */; };
+		8611A5C72354462300D956C6 /* MainStoryboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8611A5C62354462300D956C6 /* MainStoryboard.swift */; };
+		8611A5C82354480D00D956C6 /* MainStoryboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8611A5C62354462300D956C6 /* MainStoryboard.swift */; };
+		8611A5C92354487800D956C6 /* NSStoryboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8611A5C2235444FA00D956C6 /* NSStoryboard.swift */; };
 		8619923C1CA5F3E200181DF7 /* BatteryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860B0C9D1C9CD61000ED63B7 /* BatteryView.swift */; };
 		8619923D1CA5F3E900181DF7 /* BatteryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86FB9C0B1C9C83A4000330CD /* BatteryViewController.swift */; };
 		861992401CA5F40F00181DF7 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8619923F1CA5F40F00181DF7 /* Device.swift */; };
@@ -75,6 +79,8 @@
 /* Begin PBXFileReference section */
 		860B0C9D1C9CD61000ED63B7 /* BatteryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatteryView.swift; sourceTree = "<group>"; };
 		860B0CA11C9DD22E00ED63B7 /* NotifierMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotifierMenu.swift; sourceTree = "<group>"; };
+		8611A5C2235444FA00D956C6 /* NSStoryboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSStoryboard.swift; sourceTree = "<group>"; };
+		8611A5C62354462300D956C6 /* MainStoryboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainStoryboard.swift; sourceTree = "<group>"; };
 		8619923F1CA5F40F00181DF7 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		864A09B71CA50D2900656F28 /* BatteryNotifier Widget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "BatteryNotifier Widget.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		864A09B81CA50D2900656F28 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
@@ -124,6 +130,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8611A5C42354450700D956C6 /* Cocoa */ = {
+			isa = PBXGroup;
+			children = (
+				8611A5C2235444FA00D956C6 /* NSStoryboard.swift */,
+			);
+			path = Cocoa;
+			sourceTree = "<group>";
+		};
+		8611A5C52354460E00D956C6 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				8611A5C62354462300D956C6 /* MainStoryboard.swift */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		8611A5CA235448B600D956C6 /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				8663680E2353FE7C00E3D59A /* Notification.swift */,
+			);
+			path = Foundation;
+			sourceTree = "<group>";
+		};
 		8619923E1CA5F3FD00181DF7 /* Device */ = {
 			isa = PBXGroup;
 			children = (
@@ -167,7 +197,8 @@
 		8663680D2353FE4200E3D59A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				8663680E2353FE7C00E3D59A /* Notification.swift */,
+				8611A5C42354450700D956C6 /* Cocoa */,
+				8611A5CA235448B600D956C6 /* Foundation */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -196,12 +227,13 @@
 			isa = PBXGroup;
 			children = (
 				868E5EA51C98E19D001A68E6 /* AppDelegate.swift */,
-				8663680D2353FE4200E3D59A /* Extensions */,
-				8619923E1CA5F3FD00181DF7 /* Device */,
 				868E5EBB1C98E67C001A68E6 /* Controller */,
-				868E5EBA1C98E676001A68E6 /* View */,
 				86BB7DE61CA2121900EA3503 /* DarwinNotificationsManager */,
+				8619923E1CA5F3FD00181DF7 /* Device */,
+				8663680D2353FE4200E3D59A /* Extensions */,
+				8611A5C52354460E00D956C6 /* Storyboard */,
 				861992431CA5FDE600181DF7 /* Supporting Files */,
+				868E5EBA1C98E676001A68E6 /* View */,
 			);
 			path = "iOS Battery Notifier";
 			sourceTree = "<group>";
@@ -370,8 +402,10 @@
 				864A09BE1CA50D2900656F28 /* TodayViewController.swift in Sources */,
 				866368102354000700E3D59A /* Notification.swift in Sources */,
 				8619923D1CA5F3E900181DF7 /* BatteryViewController.swift in Sources */,
+				8611A5C82354480D00D956C6 /* MainStoryboard.swift in Sources */,
 				864A09C01CA50D2900656F28 /* ListRowViewController.swift in Sources */,
 				861992411CA5F44000181DF7 /* Device.swift in Sources */,
+				8611A5C92354487800D956C6 /* NSStoryboard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -384,8 +418,10 @@
 				860B0CA21C9DD22E00ED63B7 /* NotifierMenu.swift in Sources */,
 				86549D671CA274BE00B7D5ED /* PreferencesController.swift in Sources */,
 				860B0C9E1C9CD61000ED63B7 /* BatteryView.swift in Sources */,
+				8611A5C72354462300D956C6 /* MainStoryboard.swift in Sources */,
 				868E5EE41C9B2150001A68E6 /* DeviceManager.swift in Sources */,
 				868E5EBE1C98E721001A68E6 /* StatusItemController.swift in Sources */,
+				8611A5C3235444FA00D956C6 /* NSStoryboard.swift in Sources */,
 				86FB9C0C1C9C83A4000330CD /* BatteryViewController.swift in Sources */,
 				8663680F2353FE7C00E3D59A /* Notification.swift in Sources */,
 				868E5EA61C98E19D001A68E6 /* AppDelegate.swift in Sources */,

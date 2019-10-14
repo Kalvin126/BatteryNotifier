@@ -16,8 +16,11 @@ final class DeviceMenuItem: NSMenuItem {
     init(withDevice device: Device) {
         super.init(title: "", action: nil, keyEquivalent: "")
 
-        let storyboard = NSStoryboard(name: "Main", bundle: nil)
-        batteryViewController = storyboard.instantiateController(withIdentifier: "batteryViewController") as? BatteryViewController
+        guard let controller = MainStoryBoard.instantiateController(with: .batteryViewController) as? BatteryViewController else {
+            fatalError(#function + " - Could not instantiate BatteryViewController")
+        }
+
+        batteryViewController = controller
 
         let pad: CGFloat = 18.0
         let spacing: CGFloat = 2.0

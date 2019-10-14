@@ -24,8 +24,12 @@ final class ListRowViewController: NSViewController {
     override func loadView() {
         super.loadView()
 
-        let storyboard = NSStoryboard(name: "Main", bundle: nil)
-        batteryViewController = storyboard.instantiateController(withIdentifier: "batteryViewController") as? BatteryViewController
+        guard let controller = MainStoryBoard.instantiateController(with: .batteryViewController) as? BatteryViewController else {
+            fatalError(#function + " - Could not instantiate BatteryViewController")
+        }
+
+        batteryViewController = controller
+
         batteryView.addSubview(batteryViewController!.view, positioned: .above, relativeTo: nil)
 
         guard let dictionary = representedObject as? [String : AnyObject],

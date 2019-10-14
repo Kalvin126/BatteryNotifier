@@ -23,8 +23,11 @@ final class StatusItemController: NSObject {
     override init() {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
-        let storyboard = NSStoryboard(name: "Main", bundle: nil)
-        batteryViewController = storyboard.instantiateController(withIdentifier: "BatteryViewController") as! BatteryViewController
+        guard let controller = MainStoryBoard.instantiateController(with: .batteryViewController) as? BatteryViewController else {
+            fatalError(#function + " - Could not instantiate BatteryViewController")
+        }
+
+        batteryViewController = controller
 
         super.init()
 
