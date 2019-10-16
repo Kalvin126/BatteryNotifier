@@ -8,9 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-#ifndef DarwinNotifications_h
-#define DarwinNotifications_h
-
 NS_ASSUME_NONNULL_BEGIN
 
 @interface DarwinNotificationsManager : NSObject
@@ -25,8 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
-
-#endif
 
 /*
  http://stackoverflow.com/questions/26637023/how-to-properly-use-cfnotificationcenteraddobserver-in-swift-for-ios

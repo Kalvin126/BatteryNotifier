@@ -17,6 +17,9 @@
 		8611A5CF23544A7C00D956C6 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8611A5CE23544A7C00D956C6 /* UserDefaults.swift */; };
 		8611A5D023544F0D00D956C6 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8611A5CE23544A7C00D956C6 /* UserDefaults.swift */; };
 		8611A5D123544F1500D956C6 /* ConfigKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8611A5CC235449EF00D956C6 /* ConfigKey.swift */; };
+		8611A5DB2355591100D956C6 /* SDMMobileDevice.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8611A5DA2355591100D956C6 /* SDMMobileDevice.framework */; };
+		8611A5DC2355591100D956C6 /* SDMMobileDevice.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8611A5DA2355591100D956C6 /* SDMMobileDevice.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8611A5E0235567CB00D956C6 /* DeviceProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8611A5DF235567CB00D956C6 /* DeviceProxy.m */; };
 		8619923C1CA5F3E200181DF7 /* BatteryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860B0C9D1C9CD61000ED63B7 /* BatteryView.swift */; };
 		8619923D1CA5F3E900181DF7 /* BatteryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86FB9C0B1C9C83A4000330CD /* BatteryViewController.swift */; };
 		861992401CA5F40F00181DF7 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8619923F1CA5F40F00181DF7 /* Device.swift */; };
@@ -39,11 +42,11 @@
 		868E5EBE1C98E721001A68E6 /* StatusItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868E5EBD1C98E721001A68E6 /* StatusItemController.swift */; };
 		868E5EE41C9B2150001A68E6 /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868E5EE31C9B2150001A68E6 /* DeviceManager.swift */; };
 		869200B91CA74569000F2E5E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 868E5EA91C98E19D001A68E6 /* Assets.xcassets */; };
-		86BB7DE11CA1D3B200EA3503 /* SDMMobileDevice.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86BB7DE01CA1D3B200EA3503 /* SDMMobileDevice.framework */; };
-		86BB7DE31CA1D3E800EA3503 /* SDMMobileDevice.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 86BB7DE01CA1D3B200EA3503 /* SDMMobileDevice.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		86BB7DE51CA1E18100EA3503 /* DeviceMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BB7DE41CA1E18100EA3503 /* DeviceMenuItem.swift */; };
 		86BB7DEA1CA2124400EA3503 /* DarwinNotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 86BB7DE91CA2124400EA3503 /* DarwinNotificationsManager.m */; };
 		86FB9C0C1C9C83A4000330CD /* BatteryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86FB9C0B1C9C83A4000330CD /* BatteryViewController.swift */; };
+		86FC09DA2355902600185A1E /* NotificationsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86FC09D92355902600185A1E /* NotificationsHandler.swift */; };
+		86FC09E4235598B100185A1E /* Weak.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86FC09E3235598B100185A1E /* Weak.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +60,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		8611A5DD2355591100D956C6 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				8611A5DC2355591100D956C6 /* SDMMobileDevice.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		864A09D11CA50D2900656F28 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -68,16 +82,6 @@
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		86BB7DE21CA1D3E000EA3503 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				86BB7DE31CA1D3E800EA3503 /* SDMMobileDevice.framework in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -87,6 +91,10 @@
 		8611A5C62354462300D956C6 /* MainStoryboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainStoryboard.swift; sourceTree = "<group>"; };
 		8611A5CC235449EF00D956C6 /* ConfigKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigKey.swift; sourceTree = "<group>"; };
 		8611A5CE23544A7C00D956C6 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
+		8611A5D42355503B00D956C6 /* SDMMobileDevice.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SDMMobileDevice.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8611A5DA2355591100D956C6 /* SDMMobileDevice.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SDMMobileDevice.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8611A5DE235567BC00D956C6 /* DeviceProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeviceProxy.h; sourceTree = "<group>"; };
+		8611A5DF235567CB00D956C6 /* DeviceProxy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeviceProxy.m; sourceTree = "<group>"; };
 		8619923F1CA5F40F00181DF7 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		864A09B71CA50D2900656F28 /* BatteryNotifier Widget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "BatteryNotifier Widget.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		864A09B81CA50D2900656F28 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
@@ -113,6 +121,8 @@
 		86BB7DE81CA2124400EA3503 /* DarwinNotificationsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DarwinNotificationsManager.h; sourceTree = "<group>"; };
 		86BB7DE91CA2124400EA3503 /* DarwinNotificationsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DarwinNotificationsManager.m; sourceTree = "<group>"; };
 		86FB9C0B1C9C83A4000330CD /* BatteryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatteryViewController.swift; sourceTree = "<group>"; };
+		86FC09D92355902600185A1E /* NotificationsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsHandler.swift; sourceTree = "<group>"; };
+		86FC09E3235598B100185A1E /* Weak.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weak.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,7 +139,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				86BB7DE11CA1D3B200EA3503 /* SDMMobileDevice.framework in Frameworks */,
+				8611A5DB2355591100D956C6 /* SDMMobileDevice.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -167,15 +177,6 @@
 				8611A5CC235449EF00D956C6 /* ConfigKey.swift */,
 			);
 			path = Config;
-			sourceTree = "<group>";
-		};
-		8619923E1CA5F3FD00181DF7 /* Device */ = {
-			isa = PBXGroup;
-			children = (
-				868E5EE31C9B2150001A68E6 /* DeviceManager.swift */,
-				8619923F1CA5F40F00181DF7 /* Device.swift */,
-			);
-			name = Device;
 			sourceTree = "<group>";
 		};
 		861992431CA5FDE600181DF7 /* Supporting Files */ = {
@@ -245,8 +246,9 @@
 				8611A5CB235449DD00D956C6 /* Config */,
 				868E5EBB1C98E67C001A68E6 /* Controller */,
 				86BB7DE61CA2121900EA3503 /* DarwinNotificationsManager */,
-				8619923E1CA5F3FD00181DF7 /* Device */,
 				8663680D2353FE4200E3D59A /* Extensions */,
+				86FC09DD2355912100185A1E /* Models */,
+				86FC09D823558FE300185A1E /* Services */,
 				8611A5C52354460E00D956C6 /* Storyboard */,
 				861992431CA5FDE600181DF7 /* Supporting Files */,
 				868E5EBA1C98E676001A68E6 /* View */,
@@ -257,6 +259,8 @@
 		868E5EB41C98E1E6001A68E6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8611A5DA2355591100D956C6 /* SDMMobileDevice.framework */,
+				8611A5D42355503B00D956C6 /* SDMMobileDevice.framework */,
 				86BB7DE01CA1D3B200EA3503 /* SDMMobileDevice.framework */,
 				864A09B81CA50D2900656F28 /* NotificationCenter.framework */,
 			);
@@ -294,6 +298,34 @@
 			name = DarwinNotificationsManager;
 			sourceTree = "<group>";
 		};
+		86FC09D823558FE300185A1E /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				868E5EE31C9B2150001A68E6 /* DeviceManager.swift */,
+				86FC09D92355902600185A1E /* NotificationsHandler.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		86FC09DD2355912100185A1E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				86FC09DE2355912B00185A1E /* Device */,
+				86FC09E3235598B100185A1E /* Weak.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		86FC09DE2355912B00185A1E /* Device */ = {
+			isa = PBXGroup;
+			children = (
+				8619923F1CA5F40F00181DF7 /* Device.swift */,
+				8611A5DE235567BC00D956C6 /* DeviceProxy.h */,
+				8611A5DF235567CB00D956C6 /* DeviceProxy.m */,
+			);
+			path = Device;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -321,8 +353,8 @@
 				868E5E9E1C98E19D001A68E6 /* Sources */,
 				868E5E9F1C98E19D001A68E6 /* Frameworks */,
 				868E5EA01C98E19D001A68E6 /* Resources */,
-				86BB7DE21CA1D3E000EA3503 /* CopyFiles */,
 				864A09D11CA50D2900656F28 /* Embed App Extensions */,
+				8611A5DD2355591100D956C6 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -436,11 +468,14 @@
 				860B0CA21C9DD22E00ED63B7 /* NotifierMenu.swift in Sources */,
 				86549D671CA274BE00B7D5ED /* PreferencesController.swift in Sources */,
 				860B0C9E1C9CD61000ED63B7 /* BatteryView.swift in Sources */,
+				86FC09E4235598B100185A1E /* Weak.swift in Sources */,
 				8611A5C72354462300D956C6 /* MainStoryboard.swift in Sources */,
 				868E5EE41C9B2150001A68E6 /* DeviceManager.swift in Sources */,
 				868E5EBE1C98E721001A68E6 /* StatusItemController.swift in Sources */,
 				8611A5C3235444FA00D956C6 /* NSStoryboard.swift in Sources */,
 				86FB9C0C1C9C83A4000330CD /* BatteryViewController.swift in Sources */,
+				8611A5E0235567CB00D956C6 /* DeviceProxy.m in Sources */,
+				86FC09DA2355902600185A1E /* NotificationsHandler.swift in Sources */,
 				8663680F2353FE7C00E3D59A /* Notification.swift in Sources */,
 				8611A5CF23544A7C00D956C6 /* UserDefaults.swift in Sources */,
 				8611A5CD235449EF00D956C6 /* ConfigKey.swift in Sources */,
@@ -549,6 +584,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -602,6 +638,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
