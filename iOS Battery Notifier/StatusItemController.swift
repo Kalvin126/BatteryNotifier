@@ -50,8 +50,8 @@ extension StatusItemController {
 // MARK - DeviceManagerDelegate
 extension StatusItemController: DeviceObserver {
 
-    func deviceManager(_ manager: DeviceManager, didFetch devices: [Device]) {
-        guard let lowestCapacityDevice = devices.min(by: { $0.batteryCapacity < $1.batteryCapacity }) else {
+    func deviceManager(_ manager: DeviceManager, didFetch devices: Set<Device>) {
+        guard let lowestCapacityDevice = devices.min(by: { $0.currentBatteryCapacity < $1.currentBatteryCapacity }) else {
             return
         }
         let displayedDevice = self.batteryViewController.displayedDevice
@@ -59,25 +59,23 @@ extension StatusItemController: DeviceObserver {
         var updateDisplayDevice = false
 
         if let displayedDevice = displayedDevice,
-            displayedDevice.batteryCapacity > lowestCapacityDevice.batteryCapacity ||
+            displayedDevice.currentBatteryCapacity > lowestCapacityDevice.currentBatteryCapacity ||
                 displayedDevice == lowestCapacityDevice ||
                 devices.contains(displayedDevice) {
             updateDisplayDevice = true
         }
 
-        DispatchQueue.main.async {
-            if updateDisplayDevice {
-                self.batteryViewController.displayedDevice = lowestCapacityDevice
-            }
-
-            self.menu.updateBatteryLabels(devices: devices)
+        if updateDisplayDevice {
+            self.batteryViewController.displayedDevice = lowestCapacityDevice
         }
+
+        self.menu.updateBatteryLabels(devices: devices)
     }
 
-    func deviceManager(_ manager: DeviceManager, expirationMetFor device: Device) {
+    func deviceManager(_ manager: DeviceManager, didExpire device: Device) {
         if batteryViewController.displayedDevice?.serialNumber == device.serialNumber {
             let sortedDevices = manager.devices.values
-                .sorted { $0.batteryCapacity < $1.batteryCapacity }
+                .sorted { $0.currentBatteryCapacity < $1.currentBatteryCapacity }
             batteryViewController.displayedDevice = sortedDevices.first
         }
 

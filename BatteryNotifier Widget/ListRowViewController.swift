@@ -10,16 +10,18 @@ import Cocoa
 
 final class ListRowViewController: NSViewController {
 
-    @IBOutlet weak var deviceImageView: NSImageView!
-    @IBOutlet weak var nameField: NSTextField!
-    @IBOutlet weak var batteryLevelField: NSTextField!
-    @IBOutlet weak var batteryView: NSView!
+    // MARK: Children
+
+    @IBOutlet private var deviceImageView: NSImageView!
+    @IBOutlet private var nameField: NSTextField!
+    @IBOutlet private var batteryLevelField: NSTextField!
+    @IBOutlet private var batteryView: NSView!
 
     private var batteryViewController: BatteryViewController?
-    
-    override var nibName: String? {
-        return "ListRowViewController"
-    }
+
+    // MARK: NSViewController
+
+    override var nibName: String? { "ListRowViewController" }
 
     override func loadView() {
         super.loadView()
@@ -40,7 +42,7 @@ final class ListRowViewController: NSViewController {
         deviceImageView.image = image
         nameField.cell?.title = device.name
 
-        batteryLevelField.cell?.title = "\(device.batteryCapacity)%"
+        batteryLevelField.cell?.title = "\(device.currentBatteryCapacity)%"
 
         batteryViewController?.displayedDevice = device
         batteryViewController?.whiteThemeOnly = true

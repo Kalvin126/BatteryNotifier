@@ -11,14 +11,14 @@ import NotificationCenter
 
 final class TodayViewController: NSViewController {
 
-    @IBOutlet var listViewController: NCWidgetListViewController!
     private var needsUpdate = false
-    
-    // MARK: - NSViewController
 
-    override var nibName: String? {
-        return "TodayViewController"
-    }
+    // MARK: Children
+
+    @IBOutlet private var listViewController: NCWidgetListViewController!
+
+    // MARK: Init
+
     override init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 
@@ -38,41 +38,56 @@ final class TodayViewController: NSViewController {
                                                object: nil)
     }
 
+    // MARK: - NSViewController
+
+    override var nibName: String? { "TodayViewController" }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         updateDeviceContent()
     }
 
-    @objc
-    func sharedDefaultsDidChange(notification: NSNotification) {
-        needsUpdate = true
-    }
+}
 
+// MARK: - Actions
+private extension TodayViewController {
+
+    /// Updates list content. Returns `true` if content was updated; otherwise `false`.
     @discardableResult
     func updateDeviceContent() -> Bool {
         guard needsUpdate else { return false }
 
-        let sharedDefaults = UserDefaults.sharedSuite!
-
-        if let devicesDict = sharedDefaults.dictionary(forKey: "Devices") {
-            listViewController.contents = Array(devicesDict.values)
+        if let devices = DeviceStore.getDevices() {
+            listViewController.contents = devices // TODO Does this work with set?
 
             return true
         } else {
             return false
         }
     }
+
+}
+
+// MARK: - Events
+private extension TodayViewController {
+
+    @objc
+    func sharedDefaultsDidChange(notification: NSNotification) {
+        needsUpdate = true
+    }
+
 }
 
 // MARK: - NCWidgetProviding
-extension TodayViewController : NCWidgetProviding {
+extension TodayViewController: NCWidgetProviding {
 
-    func widgetPerformUpdateWithCompletionHandler(completionHandler: ((NCUpdateResult) -> Void)!) {
+    func widgetPerformUpdate(completionHandler: @escaping (NCUpdateResult) -> Void) {
         completionHandler( updateDeviceContent() ? .newData : .noData )
     }
 
-    func widgetMarginInsetsForProposedMarginInsets(defaultMarginInset: NSEdgeInsets) -> NSEdgeInsets {
+    func widgetMarginInsets(forProposedMarginInsets defaultMarginInset: NSEdgeInsets) -> NSEdgeInsets {
+        // TODO Redo this
         let inset = NSEdgeInsets(top: defaultMarginInset.top, left: 3, bottom: defaultMarginInset.bottom, right: defaultMarginInset.right)
         return inset
     }
@@ -80,7 +95,7 @@ extension TodayViewController : NCWidgetProviding {
 }
 
 // MARK: - NCWidgetListViewDelegate
-extension TodayViewController : NCWidgetListViewDelegate {
+extension TodayViewController: NCWidgetListViewDelegate {
 
     func widgetList(_ list: NCWidgetListViewController, viewControllerForRow row: Int) -> NSViewController {
         let listRow = ListRowViewController()

@@ -25,7 +25,7 @@ final class BatteryViewController: NSViewController {
             isEnabled = (displayedDevice != nil)
 
             batteryView.isCharging = displayedDevice?.isBatteryCharging ?? false
-            batteryView.fillLevel(by: displayedDevice?.batteryCapacity ?? 0)
+            batteryView.fillLevel(by: displayedDevice?.currentBatteryCapacity ?? 0)
         }
     }
 

@@ -19,7 +19,7 @@ struct Device {
     let deviceClass : String // kDeviceClass
 
     let isBatteryCharging: Bool // kBatteryIsCharging
-    let batteryCapacity: Int // kBatteryCurrentCapacity // TODO change name
+    let currentBatteryCapacity: Int // kBatteryCurrentCapacity
 
     // MARK: Init
 
@@ -38,7 +38,7 @@ struct Device {
         self.deviceClass = deviceClass
         self.serialNumber = serialNumber
         self.isBatteryCharging = batteryCharging
-        self.batteryCapacity = batteryCapacity
+        self.currentBatteryCapacity = batteryCapacity
     }
 
     /* TODO: response handling?

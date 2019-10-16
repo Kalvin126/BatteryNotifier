@@ -69,7 +69,7 @@ extension NotifierMenu {
         insertItem(deviceItem, at: 0)
     }
 
-    func updateBatteryLabels(devices: [Device]) {
+    func updateBatteryLabels(devices: Set<Device>) {
         if let firstMenuItem = items.first,
             firstMenuItem.title == Self.listeningForDevicesText {
             removeItem(at: 0)
