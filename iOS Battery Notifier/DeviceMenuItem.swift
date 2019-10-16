@@ -87,9 +87,9 @@ extension DeviceMenuItem {
 
         let showPercentage = userDefaults.bool(forKey: .showMenuPercentage)
         if showPercentage {
-            let digits = device.batteryCapacity.description.map{ Int(String($0)) ?? 0 }
+            let digits = device.currentBatteryCapacity.description.map{ Int(String($0)) ?? 0 }
             let padding = String(repeating: " ", count: 2*(3-digits.count))
-            let percentString = "\(padding)\(device.batteryCapacity)% "
+            let percentString = "\(padding)\(device.currentBatteryCapacity)% "
 
             textString = percentString + textString
         }

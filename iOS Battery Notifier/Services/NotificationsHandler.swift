@@ -11,9 +11,13 @@ import Cocoa
 final class NotificationsHandler: NSObject {
 
     private var deviceNotificationTimers: [Device.SerialNumber: Timer] = [:]
-    private var devices: [Device] = []
+    private var devices: Set<Device> = []
 
     private let userDefaults = UserDefaults.standard
+
+    private lazy var queue: DispatchQueue = DispatchQueue(label: "com.redpanda.NotificationsHandler",
+                                                          qos: .default,
+                                                          target: .global())
 
     // MARK: Notification Thresholds
 
@@ -43,7 +47,9 @@ final class NotificationsHandler: NSObject {
             // Remove all pending notifications if turned off, notifications re-enabled upon device re-connection
             if let newChange = change?[.newKey] as? Int,
                 newChange == 0 {
-                removeAllNotificationTimers()
+                queue.async {
+                    self.removeAllNotificationTimers()
+                }
             }
         }
     }
@@ -72,20 +78,20 @@ extension NotificationsHandler {
         let deadline = DispatchTime.now() + .seconds(snoozeInterval*60)
 
         // dispatch re-enabling of notification timer after snooze interval
-        DispatchQueue.main.asyncAfter(deadline: deadline) {
+        queue.asyncAfter(deadline: deadline) {
             self.updateLowBatteryNotificationTimer(for: device)
         }
     }
 
     private func updateLowBatteryNotification(for device: Device) {
         guard !device.isBatteryCharging ||
-            device.batteryCapacity <= batteryThreshold else {
+            device.currentBatteryCapacity <= batteryThreshold else {
                 removeLowBatteryNotification(for: device.serialNumber)
                 return
         }
 
         guard deviceNotificationTimers[device.serialNumber] == nil,
-            device.batteryCapacity <= userDefaults.integer(forKey: .batteryThreshold),
+            device.currentBatteryCapacity <= userDefaults.integer(forKey: .batteryThreshold),
             userDefaults.bool(forKey: .lowBatteryNotificationsOn) else { return }
 
         updateLowBatteryNotificationTimer(for: device)
@@ -105,17 +111,16 @@ extension NotificationsHandler {
 
         timer.fire()
         deviceNotificationTimers[device.serialNumber] = timer
-
     }
 
-    @objc func sendLowBatteryNotification(timer: Timer) {
+    @objc private func sendLowBatteryNotification(timer: Timer) {
         guard let deviceSerialNumber = timer.userInfo as? String,
             let device = devices.first(where: { $0.serialNumber == deviceSerialNumber }) else { return }
         let userInfo = ["deviceSerialNumber": deviceSerialNumber]
 
         let notification = NSUserNotification()
         notification.title = "Low Battery: \(device.name)"
-        notification.subtitle = "\(device.batteryCapacity)% of battery remaining"
+        notification.subtitle = "\(device.currentBatteryCapacity)% of battery remaining"
         notification.soundName = NSUserNotificationDefaultSoundName
         notification.userInfo = userInfo
 
@@ -136,12 +141,19 @@ extension NotificationsHandler { }
 // MARK: - DeviceObserver
 extension NotificationsHandler: DeviceObserver {
 
-    func deviceManager(_ manager: DeviceManager, didFetch devices: [Device]) {
-        self.devices = devices
-        // TODO: remove notifications for old devices
+    func deviceManager(_ manager: DeviceManager, didFetch devices: Set<Device>) {
+        queue.async {
+            devices.forEach { self.devices.update(with: $0) }
+        }
     }
 
-    func deviceManager(_ manager: DeviceManager, expirationMetFor device: Device) { }
+    func deviceManager(_ manager: DeviceManager, didExpire device: Device) {
+        queue.async {
+            _ = self.devices.remove(device)
+
+            self.removeLowBatteryNotification(for: device.serialNumber)
+        }
+    }
 
 }
 
@@ -158,7 +170,9 @@ extension NotificationsHandler: NSUserNotificationCenterDelegate {
             guard let deviceSerialNumber = notification.userInfo?["deviceSerialNumber"] as? String,
                 let device = devices.first(where: { $0.serialNumber == deviceSerialNumber }) else { return }
 
-            snoozeDevice(device)
+            queue.async {
+                self.snoozeDevice(device)
+            }
 
         default:
             break

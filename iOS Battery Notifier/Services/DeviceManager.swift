@@ -11,13 +11,27 @@ import SDMMobileDevice
 
 protocol DeviceObserver: class {
 
-    func deviceManager(_ manager: DeviceManager, didFetch devices: [Device])
+    func deviceManager(_ manager: DeviceManager, didFetch devices: Set<Device>)
 
-    func deviceManager(_ manager: DeviceManager, expirationMetFor device: Device)
+    func deviceManager(_ manager: DeviceManager, didExpire device: Device)
 
 }
 
 final class DeviceManager {
+
+    private(set) var devices: [Device.SerialNumber: Device] = [:]
+
+    private var deviceTimers = [Device.SerialNumber: Timer]()
+
+    private lazy var queue: DispatchQueue = DispatchQueue(label: "com.redpanda.DeviceManager",
+                                                          qos: .default,
+                                                          target: .global())
+
+    // MARK: Constants
+
+    private static var deviceExpirationInterval: TimeInterval = 30*60
+
+    // MARK: Observers
 
     private var weakObservers: [Weak<AnyObject>] = [] {
         didSet {
@@ -27,10 +41,6 @@ final class DeviceManager {
     private var observers: [DeviceObserver] {
         return (weakObservers.compactMapStrong as? [DeviceObserver]) ?? []
     }
-
-    private(set) var devices: [Device.SerialNumber: Device] = [:]
-
-    private var deviceTimers = [Device.SerialNumber: Timer]()
 
     // MARK: Init
 
@@ -64,7 +74,7 @@ extension DeviceManager {
 extension DeviceManager {
     
     func refresh() {
-        DispatchQueue.global(qos: .default).async {
+        queue.async {
             self.refreshDevices()
         }
     }
@@ -75,76 +85,60 @@ extension DeviceManager {
         deviceInfo.forEach {
             guard let device = Device(dictionary: $0) else { return }
 
-            NSLog("DeviceManager: Fetched \(device.name) at \(device.batteryCapacity)")
+            NSLog("DeviceManager: Fetched \(device.name) at \(device.currentBatteryCapacity)")
 
-            recordDevice(device)
-//            handleLowBatteryNotification(forDevice: device)
-            updateDeviceTimer(forDevice: device)
+            updateTimer(for: device)
 
             self.devices[device.serialNumber] = device
         }
 
+        DeviceStore.storeDevices(Array(self.devices.values))
+
         DispatchQueue.main.async {
             self.observers.forEach {
-                $0.deviceManager(self, didFetch: Array(self.devices.values))
+                $0.deviceManager(self, didFetch: Set(self.devices.values))
             }
         }
     }
 
-    private func recordDevice(_ device: Device) {
-//        let deviceSnoozed = shared.devices[device.serialNumber]?.isSnoozed ?? false
-//        shared.devices[device.serialNumber] = device
-//        shared.devices[device.serialNumber]?.isSnoozed = deviceSnoozed
-//
-//        let sharedDefaults = UserDefaults.sharedSuite!
-//        var devicesDict = sharedDefaults.dictionary(forKey: "Devices") ?? [String : AnyObject]()
-//        var deviceDict = [String : AnyObject]()
-//
-//        deviceDict["Name"] = device.name as AnyObject
-//        deviceDict["Class"] = device.deviceClass as AnyObject
-//        deviceDict["Serial"] = device.serialNumber as AnyObject
-//
-//        deviceDict["BatteryCharging"] = device.isBatteryCharging as AnyObject
-//        deviceDict["LastKnownBatteryLevel"] = NSNumber(value: device.batteryCapacity)
-//
-//        devicesDict[device.serialNumber] = deviceDict
-//        sharedDefaults.set(devicesDict, forKey: "Devices")
-//        sharedDefaults.synchronize()
-    }
+}
 
-    // removes device records if device has not been synced for 30 minutes
-    func updateDeviceTimer(forDevice device: Device) {
-        let timer = Timer.scheduledTimer(timeInterval: 30*60,
-                                         target: self,
-                                         selector: #selector(invalidateDevice(timer:)),
-                                         userInfo: device.serialNumber,
-                                         repeats: false)
-
-        deviceTimers[device.serialNumber]?.invalidate()
-        deviceTimers[device.serialNumber] = timer
-    }
+// MARK: - Handling Device Lifetime
+private extension DeviceManager {
 
     @objc func invalidateDevice(timer: Timer) {
-        let deviceSerial = timer.userInfo as! String
-        devices.removeValue(forKey: deviceSerial)
-        deviceTimers.removeValue(forKey: deviceSerial)
-//        removeLowBatteryNotification(forSerial: deviceSerial)
+        guard let deviceSerialNumber = timer.userInfo as? String else { return }
 
-        // remove from sharedDefaults
-        let sharedDefaults = UserDefaults.sharedSuite!
-        var devicesDict = sharedDefaults.dictionary(forKey: .devices)! // Device has been recorded before so deviceDict must exist
+        queue.sync {
+            self.deviceTimers.removeValue(forKey: deviceSerialNumber)
 
-        devicesDict.removeValue(forKey: deviceSerial)
-        
-        sharedDefaults.set(devicesDict, forKey: .devices)
-        sharedDefaults.synchronize()
+            if let device = self.devices[deviceSerialNumber] {
+                self.devices.removeValue(forKey: deviceSerialNumber)
 
+                DeviceStore.storeDevices(Array(self.devices.values))
 
-//        DispatchQueue.main.async {
-//            weakObservers.compactMapStrong.forEach {
-//                $0.deviceManager(self, expirationMetFor: device)
-//            }
-//        }
+                self.notifyDeviceExpiration(device: device)
+            }
+        }
+    }
+
+}
+
+// MARK: - Handling Device Lifetime
+private extension DeviceManager {
+
+    /// Removes device records if device has not been synced for 30 minutes
+    func updateTimer(for device: Device) {
+        queue.sync {
+            let timer = Timer.scheduledTimer(timeInterval: Self.deviceExpirationInterval,
+                                             target: self,
+                                             selector: #selector(invalidateDevice(timer:)),
+                                             userInfo: device.serialNumber,
+                                             repeats: false)
+
+            deviceTimers[device.serialNumber]?.invalidate()
+            deviceTimers[device.serialNumber] = timer
+        }
     }
 
 }
@@ -164,11 +158,15 @@ extension DeviceManager {
 
 }
 
-// MARK: - Events
+// MARK: - Notifying Observers
 private extension DeviceManager {
 
-    func didFetchDevices(_ devices: [Device]) {
-
+    func notifyDeviceExpiration(device: Device) {
+        DispatchQueue.main.async {
+            self.observers.forEach {
+                $0.deviceManager(self, didExpire: device)
+            }
+        }
     }
 
 }
