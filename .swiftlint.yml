@@ -1,0 +1,24 @@
+opt_in_rules:
+  - empty_count
+  - first_where
+  - fatal_error_message
+  - override_in_extension
+  - sorted_first_last
+  - overridden_super_call
+  - redundant_nil_coalescing
+  - single_test_class
+  - explicit_init
+  - vertical_parameter_alignment_on_call
+  - closure_spacing
+  - yoda_condition
+  - empty_xctest_method
+  - empty_string
+  - legacy_random
+  - toggle_bool
+  - collection_alignment
+  - last_where
+  - xct_specific_matcher
+  - legacy_multiple
+  - contains_over_filter_count
+  - contains_over_filter_is_empty
+  - empty_collection_literal

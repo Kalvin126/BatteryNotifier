@@ -354,6 +354,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 868E5EB11C98E19D001A68E6 /* Build configuration list for PBXNativeTarget "BatteryNotifier" */;
 			buildPhases = (
+				868398AA235978E3004A66F4 /* Swiftlint */,
 				868E5E9E1C98E19D001A68E6 /* Sources */,
 				868E5E9F1C98E19D001A68E6 /* Frameworks */,
 				868E5EA01C98E19D001A68E6 /* Resources */,
@@ -444,6 +445,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		868398AA235978E3004A66F4 /* Swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Swiftlint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		864A09B31CA50D2900656F28 /* Sources */ = {
