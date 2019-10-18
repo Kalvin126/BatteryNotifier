@@ -8,43 +8,52 @@
 
 import Cocoa
 
-class ListRowViewController: NSViewController {
+final class ListRowViewController: NSViewController {
 
-    @IBOutlet weak var deviceImageView: NSImageView!
-    @IBOutlet weak var nameField: NSTextField!
-    @IBOutlet weak var batteryLevelField: NSTextField!
-    @IBOutlet weak var batteryView: NSView!
+    // MARK: Children
 
-    private var batteryVC: BatteryVC?
-    
-    override var nibName: String? {
-        return "ListRowViewController"
-    }
+    @IBOutlet private var deviceImageView: NSImageView!
+    @IBOutlet private var nameField: NSTextField!
+    @IBOutlet private var batteryLevelField: NSTextField!
+    @IBOutlet private var batteryView: NSView!
+
+    private var batteryViewController: BatteryViewController?
+
+    // MARK: NSViewController
+
+    override var nibName: String? { "ListRowViewController" }
 
     override func loadView() {
         super.loadView()
 
-        let storyboard = NSStoryboard(name: "Main", bundle: nil)
-        batteryVC = storyboard.instantiateControllerWithIdentifier("batteryVC") as? BatteryVC
-        batteryView.addSubview(batteryVC!.view, positioned: .Above, relativeTo: nil)
+        guard let controller = MainStoryBoard.instantiateController(with: .batteryViewController) as? BatteryViewController else {
+            fatalError(#function + " - Could not instantiate BatteryViewController")
+        }
 
-        let device = Device(withDictionary: representedObject as! [String : AnyObject])
+        batteryViewController = controller
+
+        batteryView.addSubview(batteryViewController!.view, positioned: .above, relativeTo: nil)
+
+        guard let dictionary = representedObject as? [String : AnyObject],
+            let device = Device(dictionary: dictionary) else { return }
+
 
         let image = NSImage(named: device.deviceClass) ?? NSImage(named: "iPhone")
         deviceImageView.image = image
         nameField.cell?.title = device.name
 
-        batteryLevelField.cell?.title = "\(device.batteryCapacity)%"
-        batteryVC?.displayedDevice = device
-        batteryVC?.whiteThemeOnly = true
+        batteryLevelField.cell?.title = "\(device.currentBatteryCapacity)%"
+
+        batteryViewController?.displayedDevice = device
+        batteryViewController?.whiteThemeOnly = true
     }
 
     override func viewDidLayout() {
         super.viewDidLayout()
 
         var battFrame = batteryView.frame
-        battFrame.origin = CGPointZero
-        batteryVC!.view.frame = battFrame
+        battFrame.origin = .zero
+        batteryViewController!.view.frame = battFrame
     }
 
 }

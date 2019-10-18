@@ -3,3 +3,4 @@
 //
 
 #import "DarwinNotificationsManager.h"
+#import "DeviceProxy.h"

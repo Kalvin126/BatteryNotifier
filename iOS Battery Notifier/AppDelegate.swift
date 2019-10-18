@@ -10,54 +10,62 @@ import Cocoa
 import SDMMobileDevice
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
+final class AppDelegate: NSObject {
 
-    let statusItemController = StatusItemController()
+    // MARK: Services
 
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
-        NSUserNotificationCenter.defaultUserNotificationCenter().delegate = self
+    private let deviceManager = DeviceManager()
+    private let notificationsHandler = NotificationsHandler()
 
-        let userDefaults = NSUserDefaults.standardUserDefaults()
+    // MARK: Views
 
-        if !(userDefaults.dictionaryRepresentation().keys.contains("NotificationInterval")) {
-            // Default values
-            userDefaults.setBool(true, forKey: "LowBatteryNotificationsOn")
-            userDefaults.setBool(false, forKey: "ShowMenuPercentage")
-            userDefaults.setDouble(2.0, forKey: "NotificationInterval")
-            userDefaults.setInteger(30, forKey: "BatteryThreshold")
-            userDefaults.setInteger(10, forKey: "SnoozeInterval")
-        }
+    private let statusItemController = StatusItemController()
 
-        // Reset device history
-        let sharedDefaults = NSUserDefaults(suiteName: "group.redpanda.BatteryNotifier")!
-        sharedDefaults.removeObjectForKey("Devices")
-        sharedDefaults.synchronize()
+}
 
+// MARK: - Actions
+private extension AppDelegate {
+
+    func setupServices() {
         InitializeSDMMobileDevice()
-        statusItemController.startMonitoring()
 
-        DeviceManager.shared.delegate = statusItemController
+        deviceManager.addObserver(statusItemController)
+        deviceManager.addObserver(notificationsHandler)
+    }
+
+    // MARK: User Preferences
+
+    func resetDeviceHistory() {
+        if let sharedDefaults = UserDefaults.sharedSuite {
+            sharedDefaults.removeObject(forKey: .devices)
+            sharedDefaults.synchronize()
+        }
+    }
+
+    func setPreferencesDefaultsIfNeeded() {
+        let userDefaults = UserDefaults.standard
+
+        guard  !(userDefaults.dictionaryRepresentation().keys.contains(ConfigKey.notificationInterval.id)) else { return }
+
+        userDefaults.set(true, forKey: .lowBatteryNotificationsOn)
+        userDefaults.set(false, forKey: .showMenuPercentage)
+        userDefaults.set(2.0, forKey: .notificationInterval)
+        userDefaults.set(30, forKey: .batteryThreshold)
+        userDefaults.set(10, forKey: .snoozeInterval)
     }
 
 }
 
-extension AppDelegate: NSUserNotificationCenterDelegate {
+// MARK: - NSApplicationDelegate
+extension AppDelegate: NSApplicationDelegate {
 
-    func userNotificationCenter(center: NSUserNotificationCenter, shouldPresentNotification notification: NSUserNotification) -> Bool {
-        return true
-    }
+    func applicationDidFinishLaunching(_ notification: Notification) {
+        NSUserNotificationCenter.default.delegate = notificationsHandler
 
-    func userNotificationCenter(center: NSUserNotificationCenter, didActivateNotification notification: NSUserNotification) {
+        setPreferencesDefaultsIfNeeded()
+        resetDeviceHistory()
 
-        switch notification.activationType {
-
-        case .ActionButtonClicked:
-            DeviceManager.shared.snoozeDevice(notification.userInfo!)
-
-        default:
-            break
-        }
-
+        setupServices()
     }
 
 }
