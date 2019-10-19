@@ -61,7 +61,6 @@ final class BatteryViewController: NSViewController {
                            object: nil)
     }
 
-
 }
 
 // MARK: - Actions

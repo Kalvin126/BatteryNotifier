@@ -15,7 +15,7 @@ struct MainStoryBoard {
         case batteryViewController
         case preferencesController
 
-        var id: String { rawValue }
+        var id: String { rawValue } // swiftlint:disable:this identifier_name
     }
 
 }

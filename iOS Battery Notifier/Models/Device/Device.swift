@@ -16,7 +16,7 @@ struct Device {
     let name: String // kDeviceName
     let serialNumber: SerialNumber // kSerialNumber
 
-    let deviceClass : String // kDeviceClass
+    let deviceClass: String // kDeviceClass
 
     let isBatteryCharging: Bool // kBatteryIsCharging
     let currentBatteryCapacity: Int // kBatteryCurrentCapacity
@@ -70,9 +70,18 @@ extension Device: Hashable {
 // MARK: - Identifiable
 extension Device: Identifiable {
 
-    var id: String { serialNumber }
+    var id: String { serialNumber } // swiftlint:disable:this identifier_name
 
 }
 
 // MARK: - Codable
 extension Device: Codable { }
+
+// MARK: - Collection Extensions
+extension Collection where Element == Device {
+
+    var lowestCapacityDevice: Device? {
+        self.min(by: { $0.currentBatteryCapacity < $1.currentBatteryCapacity })
+    }
+
+}
