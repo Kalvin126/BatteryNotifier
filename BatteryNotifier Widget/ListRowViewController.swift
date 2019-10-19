@@ -26,17 +26,17 @@ final class ListRowViewController: NSViewController {
     override func loadView() {
         super.loadView()
 
-        guard let controller = MainStoryBoard.instantiateController(with: .batteryViewController) as? BatteryViewController else {
+        guard let controller = MainStoryBoard.instantiateController(with: .batteryViewController),
+            let batteryController = controller as? BatteryViewController else {
             fatalError(#function + " - Could not instantiate BatteryViewController")
         }
 
-        batteryViewController = controller
+        self.batteryViewController = batteryController
 
         batteryView.addSubview(batteryViewController!.view, positioned: .above, relativeTo: nil)
 
-        guard let dictionary = representedObject as? [String : AnyObject],
+        guard let dictionary = representedObject as? [String: AnyObject],
             let device = Device(dictionary: dictionary) else { return }
-
 
         let image = NSImage(named: device.deviceClass) ?? NSImage(named: "iPhone")
         deviceImageView.image = image

@@ -46,7 +46,9 @@ final class PreferencesController: NSViewController {
         lowBatteryThresholdField.cell?.title = "\(batteryThreshold)%"
         lowBatteryThresholdStepper.integerValue = batteryThreshold
 
-        notificationIntervalField.cell?.title = String(format: "%.2f", userDefaults.double(forKey: .notificationInterval))
+        let notificationIntervalText = String(format: "%.2f", userDefaults.double(forKey: .notificationInterval))
+
+        notificationIntervalField.cell?.title = notificationIntervalText
         notificationIntervalStepper.doubleValue = userDefaults.double(forKey: .notificationInterval)
 
         snoozeIntervalField.cell?.title = "\(userDefaults.integer(forKey: .snoozeInterval))"
@@ -60,9 +62,9 @@ extension PreferencesController {
 
     @IBAction func toggledMenuPercentage(sender: NSButton) {
         let userDefaults = UserDefaults.standard
-        let on = (sender.state == .on ? true : false)
+        let isOn = (sender.state == .on)
 
-        userDefaults.set(on, forKey: .showMenuPercentage)
+        userDefaults.set(isOn, forKey: .showMenuPercentage)
     }
 
     @IBAction func toggledLowBatteryNotifications(sender: NSButton) {

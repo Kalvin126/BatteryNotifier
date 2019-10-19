@@ -10,7 +10,7 @@ import Cocoa
 
 final class NotifierMenu: NSMenu {
 
-    private var menuItems = [String : DeviceMenuItem]()  // Serial - menuItem
+    private var menuItems = [Device.SerialNumber: DeviceMenuItem]()
     private var preferenceController: NSWindowController?
 
     // MARK: Text
@@ -39,9 +39,15 @@ final class NotifierMenu: NSMenu {
 extension NotifierMenu {
 
     private func setup() {
-        let listenItem = NSMenuItem(title: Self.listeningForDevicesText, action: nil, keyEquivalent: "")
-        let prefItem = NSMenuItem(title: Self.preferencesTitle, action: #selector(clickedPreferences(sender:)), keyEquivalent: "")
-        let quitItem = NSMenuItem(title: Self.quitTitle, action: #selector(quit(sender:)), keyEquivalent: "")
+        let listenItem = NSMenuItem(title: Self.listeningForDevicesText,
+                                    action: nil,
+                                    keyEquivalent: "")
+        let prefItem = NSMenuItem(title: Self.preferencesTitle,
+                                  action: #selector(clickedPreferences(sender:)),
+                                  keyEquivalent: "")
+        let quitItem = NSMenuItem(title: Self.quitTitle,
+                                  action: #selector(quit(sender:)),
+                                  keyEquivalent: "")
 
         prefItem.target = self
         quitItem.target = self
@@ -64,7 +70,7 @@ extension NotifierMenu {
 
     private func setupLabelForDevice(_ device: Device) {
         let deviceItem = DeviceMenuItem(device: device)
-        
+
         menuItems[device.serialNumber] = deviceItem
         insertItem(deviceItem, at: 0)
     }
@@ -103,11 +109,12 @@ extension NotifierMenu {
 
     @objc func clickedPreferences(sender: NSMenuItem) {
         if preferenceController == nil {
-            guard let controller = MainStoryBoard.instantiateController(with: .batteryViewController) as? NSWindowController else {
+            guard let controller = MainStoryBoard.instantiateController(with: .batteryViewController),
+                let windowController = controller as? NSWindowController else {
                 fatalError(#function + " - Could not instantiate PreferenceViewController")
             }
 
-            controller.window?.delegate = self
+            windowController.window?.delegate = self
         }
 
         preferenceController?.window?.makeKeyAndOrderFront(nil)

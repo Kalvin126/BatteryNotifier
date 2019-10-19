@@ -32,7 +32,7 @@ extension UserDefaults {
         array(forKey: key.id)
     }
 
-    func dictionary(forKey key: ConfigKey) -> [String : Any]? {
+    func dictionary(forKey key: ConfigKey) -> [String: Any]? {
         dictionary(forKey: key.id)
     }
 

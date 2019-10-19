@@ -72,7 +72,7 @@ extension DeviceManager {
 
 // MARK: - Fetching Devices
 extension DeviceManager {
-    
+
     func refresh() {
         queue.async {
             self.refreshDevices()

@@ -27,6 +27,6 @@ enum ConfigKey: String {
 // MARK: - Identifiable
 extension ConfigKey: Identifiable {
 
-    var id: String { rawValue }
+    var id: String { rawValue } // swiftlint:disable:this identifier_name
 
 }

@@ -45,7 +45,7 @@ private extension AppDelegate {
     func setPreferencesDefaultsIfNeeded() {
         let userDefaults = UserDefaults.standard
 
-        guard  !(userDefaults.dictionaryRepresentation().keys.contains(ConfigKey.notificationInterval.id)) else { return }
+        guard !userDefaults.dictionaryRepresentation().keys.contains(ConfigKey.notificationInterval.id) else { return }
 
         userDefaults.set(true, forKey: .lowBatteryNotificationsOn)
         userDefaults.set(false, forKey: .showMenuPercentage)

@@ -20,31 +20,37 @@ final class DeviceMenuItem: NSMenuItem {
     init(device: Device) {
         super.init(title: "", action: nil, keyEquivalent: "")
 
-        guard let batteryViewController = MainStoryBoard.instantiateController(with: .batteryViewController) as? BatteryViewController else {
+        guard let controller = MainStoryBoard.instantiateController(with: .batteryViewController),
+            let batteryController = controller as? BatteryViewController else {
             fatalError(#function + " - Could not instantiate BatteryViewController")
         }
 
-        self.batteryViewController = batteryViewController
+        self.batteryViewController = batteryController
 
         let pad: CGFloat = 18.0
         let spacing: CGFloat = 2.0
-        batteryViewController.view.frame = NSMakeRect(pad,0,30,22)
+        batteryController.view.frame = NSRect(x: pad, y: 0, width: 30, height: 22)
 
-        textField.frame = NSMakeRect(pad+batteryViewController.view.frame.size.width+spacing,3,125,21)
+        let textFieldX = pad+batteryController.view.frame.size.width+spacing
+
+        textField.frame = NSRect(x: textFieldX, y: 3, width: 125, height: 21)
         textField.backgroundColor = NSColor.clear
         textField.font = NSFont.systemFont(ofSize: 14.0)
         textField.alignment = .left
         textField.cell?.isBezeled = false
         textField.isSelectable = false
 
-        let deviceView = NSView(frame: NSMakeRect(0,0,155,22))
-        deviceView.addSubview(batteryViewController.view)
+        let deviceView = NSView(frame: NSRect(x: 0, y: 0, width: 155, height: 22))
+        deviceView.addSubview(batteryController.view)
         deviceView.addSubview(textField)
         view = deviceView
 
         updateWithDevice(device)
 
-        UserDefaults.standard.addObserver(self, forKeyPath: ConfigKey.showMenuPercentage.id, options: .new, context: nil)
+        UserDefaults.standard.addObserver(self,
+                                          forKeyPath: ConfigKey.showMenuPercentage.id,
+                                          options: .new,
+                                          context: nil)
     }
 
     override init(title aString: String, action aSelector: Selector?, keyEquivalent charCode: String) {
@@ -63,7 +69,10 @@ final class DeviceMenuItem: NSMenuItem {
 
     // MARK: NSKeyValueObserving
 
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    override func observeValue(forKeyPath keyPath: String?,
+                               of object: Any?,
+                               change: [NSKeyValueChangeKey: Any]?,
+                               context: UnsafeMutableRawPointer?) {
         if keyPath == ConfigKey.showMenuPercentage.id {
             setItemText()
         }
@@ -87,7 +96,7 @@ extension DeviceMenuItem {
 
         let showPercentage = userDefaults.bool(forKey: .showMenuPercentage)
         if showPercentage {
-            let digits = device.currentBatteryCapacity.description.map{ Int(String($0)) ?? 0 }
+            let digits = device.currentBatteryCapacity.description.map { Int(String($0)) ?? 0 }
             let padding = String(repeating: " ", count: 2*(3-digits.count))
             let percentString = "\(padding)\(device.currentBatteryCapacity)% "
 
@@ -99,7 +108,7 @@ extension DeviceMenuItem {
 
         let deviceViewWidth = textField.frame.origin.x + textField.frame.size.width + 18
 
-        view?.frame = NSMakeRect(0,0,deviceViewWidth,22)
+        view?.frame = NSRect(x: 0, y: 0, width: deviceViewWidth, height: 22)
     }
 
 }

@@ -23,11 +23,12 @@ final class StatusItemController: NSObject {
     override init() {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
-        guard let controller = MainStoryBoard.instantiateController(with: .batteryViewController) as? BatteryViewController else {
+        guard let controller = MainStoryBoard.instantiateController(with: .batteryViewController),
+            let batteryController = controller as? BatteryViewController else {
             fatalError(#function + " - Could not instantiate BatteryViewController")
         }
 
-        batteryViewController = controller
+        self.batteryViewController = batteryController
 
         super.init()
 
@@ -47,11 +48,11 @@ final class StatusItemController: NSObject {
 extension StatusItemController {
 }
 
-// MARK - DeviceManagerDelegate
+// MARK: - DeviceManagerDelegate
 extension StatusItemController: DeviceObserver {
 
     func deviceManager(_ manager: DeviceManager, didFetch devices: Set<Device>) {
-        guard let lowestCapacityDevice = devices.min(by: { $0.currentBatteryCapacity < $1.currentBatteryCapacity }) else {
+        guard let lowestCapacityDevice = devices.lowestCapacityDevice else {
             return
         }
         let displayedDevice = self.batteryViewController.displayedDevice
@@ -74,9 +75,8 @@ extension StatusItemController: DeviceObserver {
 
     func deviceManager(_ manager: DeviceManager, didExpire device: Device) {
         if batteryViewController.displayedDevice?.serialNumber == device.serialNumber {
-            let sortedDevices = manager.devices.values
-                .sorted { $0.currentBatteryCapacity < $1.currentBatteryCapacity }
-            batteryViewController.displayedDevice = sortedDevices.first
+            let newLowestCapacityDevice = manager.devices.values.lowestCapacityDevice
+            batteryViewController.displayedDevice = newLowestCapacityDevice
         }
 
         menu.invalidateDeviceItem(serial: device.serialNumber)

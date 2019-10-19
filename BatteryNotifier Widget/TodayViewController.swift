@@ -88,7 +88,10 @@ extension TodayViewController: NCWidgetProviding {
 
     func widgetMarginInsets(forProposedMarginInsets defaultMarginInset: NSEdgeInsets) -> NSEdgeInsets {
         // TODO Redo this
-        let inset = NSEdgeInsets(top: defaultMarginInset.top, left: 3, bottom: defaultMarginInset.bottom, right: defaultMarginInset.right)
+        let inset = NSEdgeInsets(top: defaultMarginInset.top,
+                                 left: 3,
+                                 bottom: defaultMarginInset.bottom,
+                                 right: defaultMarginInset.right)
         return inset
     }
 

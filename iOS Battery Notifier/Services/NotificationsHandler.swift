@@ -42,7 +42,10 @@ final class NotificationsHandler: NSObject {
 
     // MARK: NSKeyValueObserving
 
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    override func observeValue(forKeyPath keyPath: String?,
+                               of object: Any?,
+                               change: [NSKeyValueChangeKey: Any]?,
+                               context: UnsafeMutableRawPointer?) {
         if keyPath == ConfigKey.lowBatteryNotificationsOn.id {
             // Remove all pending notifications if turned off, notifications re-enabled upon device re-connection
             if let newChange = change?[.newKey] as? Int,
@@ -160,7 +163,8 @@ extension NotificationsHandler: DeviceObserver {
 // MARK: - NSUserNotificationCenterDelegate
 extension NotificationsHandler: NSUserNotificationCenterDelegate {
 
-    func userNotificationCenter(_ center: NSUserNotificationCenter, shouldPresent notification: NSUserNotification) -> Bool {
+    func userNotificationCenter(_ center: NSUserNotificationCenter,
+                                shouldPresent notification: NSUserNotification) -> Bool {
         return true
     }
 
