@@ -1,16 +1,16 @@
 //
-//  DeviceProxy.m
+//  SDMMobileDeviceService.m
 //  BatteryNotifier
 //
 //  Created by Kalvin Loc on 10/14/19.
 //  Copyright © 2019 Red Panda. All rights reserved.
 //
 
-#import "DeviceProxy.h"
+#import "SDMMobileDeviceService.h"
 @import Foundation;
 @import SDMMobileDevice;
 
-@implementation DeviceProxy
+@implementation SDMMobileDeviceService
 
 + (nullable NSArray<NSDictionary<NSString*, id>*>*)getDeviceInformation {
     NSMutableArray<NSDictionary*>* returnInfo = [NSMutableArray array];

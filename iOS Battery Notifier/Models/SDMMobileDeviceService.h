@@ -1,5 +1,5 @@
 //
-//  DeviceProxy.h
+//  SDMMobileDeviceService.h
 //  iOS Battery Notifier
 //
 //  Created by Kalvin Loc on 10/14/19.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface DeviceProxy : NSObject
+@interface SDMMobileDeviceService : NSObject
 
 + (nullable NSArray<NSDictionary<NSString*, id>*>*)getDeviceInformation;
 

@@ -14,7 +14,9 @@ final class AppDelegate: NSObject {
 
     // MARK: Services
 
-    private let deviceManager = DeviceManager()
+    private let deviceService: DeviceService = SDMMobileDeviceService()
+
+    private lazy var deviceManager = DeviceManager(deviceService: self.deviceService)
     private let notificationsHandler = NotificationsHandler()
 
     // MARK: Views
