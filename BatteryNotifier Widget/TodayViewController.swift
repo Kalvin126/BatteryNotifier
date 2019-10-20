@@ -59,7 +59,7 @@ private extension TodayViewController {
         guard needsUpdate else { return false }
 
         if let devices = DeviceStore.getDevices() {
-            listViewController.contents = devices // TODO Does this work with set?
+            listViewController.contents = Array(devices)
 
             return true
         } else {

@@ -95,7 +95,7 @@ extension DeviceManager {
             self.devices[device.serialNumber] = device
         }
 
-        DeviceStore.storeDevices(Array(self.devices.values))
+        DeviceStore.storeDevices(Set(self.devices.values))
 
         DispatchQueue.main.async {
             self.observers.forEach {
@@ -118,7 +118,7 @@ private extension DeviceManager {
             if let device = self.devices[deviceSerialNumber] {
                 self.devices.removeValue(forKey: deviceSerialNumber)
 
-                DeviceStore.storeDevices(Array(self.devices.values))
+                DeviceStore.storeDevices(Set(self.devices.values))
 
                 self.notifyDeviceExpiration(device: device)
             }
