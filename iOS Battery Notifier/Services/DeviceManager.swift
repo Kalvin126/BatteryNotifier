@@ -23,9 +23,12 @@ final class DeviceManager {
 
     private var deviceTimers = [Device.SerialNumber: Timer]()
 
-    private lazy var queue: DispatchQueue = DispatchQueue(label: "com.redpanda.DeviceManager",
-                                                          qos: .default,
-                                                          target: .global())
+    private lazy var refreshQueue: DispatchQueue = DispatchQueue(label: "com.redpanda.DeviceManager",
+                                                                 qos: .default,
+                                                                 target: .global())
+    private lazy var timerQueue: DispatchQueue = DispatchQueue(label: "com.redpanda.DeviceManager",
+                                                               qos: .default,
+                                                               target: .global())
 
     // MARK: Constants
 
@@ -74,7 +77,7 @@ extension DeviceManager {
 extension DeviceManager {
 
     func refresh() {
-        queue.async {
+        refreshQueue.async {
             self.refreshDevices()
         }
     }
@@ -109,7 +112,7 @@ private extension DeviceManager {
     @objc func invalidateDevice(timer: Timer) {
         guard let deviceSerialNumber = timer.userInfo as? String else { return }
 
-        queue.sync {
+        timerQueue.sync {
             self.deviceTimers.removeValue(forKey: deviceSerialNumber)
 
             if let device = self.devices[deviceSerialNumber] {
@@ -129,7 +132,7 @@ private extension DeviceManager {
 
     /// Removes device records if device has not been synced for 30 minutes
     func updateTimer(for device: Device) {
-        queue.sync {
+        timerQueue.sync {
             let timer = Timer.scheduledTimer(timeInterval: Self.deviceExpirationInterval,
                                              target: self,
                                              selector: #selector(invalidateDevice(timer:)),
