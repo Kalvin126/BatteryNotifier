@@ -19,6 +19,8 @@ protocol DeviceObserver: class {
 
 final class DeviceManager {
 
+    private let deviceService: DeviceService
+
     private(set) var devices: [Device.SerialNumber: Device] = [:]
 
     private var deviceTimers = [Device.SerialNumber: Timer]()
@@ -47,7 +49,9 @@ final class DeviceManager {
 
     // MARK: Init
 
-    init() {
+    init(deviceService: DeviceService) {
+        self.deviceService = deviceService
+
         observeDeviceAttached()
     }
 
@@ -83,11 +87,9 @@ extension DeviceManager {
     }
 
     private func refreshDevices() {
-        guard let deviceInfo = DeviceProxy.getDeviceInformation() else { return }
+        guard let devices = deviceService.getAttachedDevices() else { return }
 
-        deviceInfo.forEach {
-            guard let device = Device(dictionary: $0) else { return }
-
+        devices.forEach { device in
             NSLog("DeviceManager: Fetched \(device.name) at \(device.currentBatteryCapacity)")
 
             updateTimer(for: device)
