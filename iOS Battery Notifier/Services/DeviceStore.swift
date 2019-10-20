@@ -28,7 +28,7 @@ struct DeviceStore {
 // MARK: - Storing Devices
 extension DeviceStore {
 
-    static func storeDevices(_ devices: [Device]) {
+    static func storeDevices(_ devices: Set<Device>) {
         guard let data = try? encoder.encode(devices) else { return }
 
         sharedStore?.set(data, forKey: .devices)
@@ -39,11 +39,11 @@ extension DeviceStore {
 // MARK: - Getting Devices
 extension DeviceStore {
 
-    static func getDevices() -> [Device]? {
+    static func getDevices() -> Set<Device>? {
         guard let deviceData = sharedStore?.data(forKey: .devices) else { return nil }
         var format: PropertyListSerialization.PropertyListFormat = .binary
 
-        return try? decoder.decode([Device].self,
+        return try? decoder.decode(Set<Device>.self,
                                    from: deviceData,
                                    format: &format)
     }
